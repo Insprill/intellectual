@@ -20,10 +20,10 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
     let mut res: String = "".to_string();
 
     for hit in deserialized.response.hits {
-        res.push_str(&format!("{}\n\n", hit.result.full_title));
+        res.push_str(&format!("<a href=\"lyrics?path={}\">{}</a><br/>", hit.result.path, hit.result.full_title));
     }
 
-    HttpResponse::Ok().append_header(("Content-Type", "text/plain; charset=utf-8")).body(res)
+    HttpResponse::Ok().append_header(("Content-Type", "text/html; charset=utf-8")).body(res)
 }
 
 // region Genius Response
@@ -49,6 +49,7 @@ struct GeniusResult {
     full_title: String,
     id: u64,
     language: String,
+    path: String,
     //TODO: rest of these
 }
 // endregion
