@@ -9,6 +9,7 @@ edition = "2021"
 actix-web = "4"
 actix-files = "0.6.2"
 clap = "3.2.21"
+serde = { version = "1.0.144", features = ["derive"] }
 
 [profile.release]
 strip = true
