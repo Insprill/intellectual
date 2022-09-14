@@ -15,6 +15,7 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
         .send()
         .await.unwrap().text_with_charset("utf-8")
         .await.unwrap();
+    println!("{}", body);
     let deserialized: GeniusSearch = serde_json::from_str(&body).unwrap();
 
     let mut res: String = "".to_string();
@@ -45,12 +46,8 @@ struct GeniusHit {
 #[allow(dead_code)]
 #[derive(Deserialize)]
 struct GeniusResult {
-    artist_names: String,
     full_title: String,
-    id: u64,
-    language: String,
     path: String,
-    //TODO: rest of these
 }
 // endregion
 
