@@ -12,11 +12,17 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
         .get(format!("https://api.genius.com/search?q={}", info.q))
         .header("Authorization", format!("Bearer {}", std::env::var("AUTH_TOKEN").unwrap()))
         .send()
-        .await.unwrap().text()
+        .await.unwrap().text_with_charset("utf-8")
         .await.unwrap();
     let deserialized: GeniusSearch = serde_json::from_str(&body).unwrap();
-    let x = deserialized.response.hits.into_iter().nth(0).unwrap();
-    HttpResponse::Ok().body(x.result.full_title)
+
+    let mut res: String = "".to_string();
+
+    for hit in deserialized.response.hits {
+        res.push_str(&format!("{}\n\n", hit.result.full_title));
+    }
+
+    HttpResponse::Ok().append_header(("Content-Type", "text/plain; charset=utf-8")).body(res)
 }
 
 #[derive(Deserialize)]
