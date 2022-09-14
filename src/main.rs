@@ -24,8 +24,8 @@ async fn main() -> std::io::Result<()> {
         )
         .get_matches();
 
-    let address = matches.value_of("address").unwrap_or("0.0.0.0");
-    let port = std::env::var("PORT").unwrap_or_else(|_| matches.value_of("port").unwrap_or("8080").to_string()).parse::<u16>().unwrap();
+    let address = matches.value_of("address").unwrap_or("0.0.0.0"); //TODO: Validate this
+    let port = std::env::var("PORT").unwrap_or_else(|_| matches.value_of("port").unwrap_or("8080").to_string()).parse::<u16>().unwrap(); //TODO: Validate this
 
     HttpServer::new(|| {
         App::new()
