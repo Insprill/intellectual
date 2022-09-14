@@ -25,6 +25,7 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
     HttpResponse::Ok().append_header(("Content-Type", "text/plain; charset=utf-8")).body(res)
 }
 
+// region Genius Response
 #[derive(Deserialize)]
 struct GeniusSearch {
     response: GeniusResponse,
@@ -49,3 +50,4 @@ struct GeniusResult {
     language: String,
     //TODO: rest of these
 }
+// endregion
