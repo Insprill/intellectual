@@ -10,7 +10,7 @@ pub struct SearchQuery {
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<SearchQuery>) -> impl Responder {
     let body = reqwest::Client::new()
-        .get(format!("https://genius.com/{}", info.path))
+        .get(format!("https://genius.com/{}", info.path.trim_start_matches("/")))
         .header("Authorization", format!("Bearer {}", std::env::var("AUTH_TOKEN").unwrap()))
         .send()
         .await.unwrap().text_with_charset("utf-8")
