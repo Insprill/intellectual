@@ -1,5 +1,9 @@
-use actix_web::{App, get, HttpResponse, HttpServer, Responder};
+use actix_web::{App, HttpServer};
 use clap::{Arg, Command};
+
+mod home;
+mod lyrics;
+mod search;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -29,26 +33,11 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
-            .service(home)
-            .service(search)
-            .service(lyrics)
+            .service(home::home)
+            .service(search::search)
+            .service(lyrics::lyrics)
     })
         .bind((address, port))?
         .run()
         .await
-}
-
-#[get("/")]
-async fn home() -> impl Responder {
-    HttpResponse::Ok().body("Hello, world!")
-}
-
-#[get("/search")]
-async fn search() -> impl Responder {
-    HttpResponse::Ok().body("search")
-}
-
-#[get("/lyrics")]
-async fn lyrics() -> impl Responder {
-    HttpResponse::Ok().body("lyrics")
 }
