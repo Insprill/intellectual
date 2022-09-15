@@ -1,5 +1,4 @@
 use actix_web::{get, HttpResponse, Responder, web};
-use askama::Template;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -49,7 +48,3 @@ struct GeniusResult {
     path: String,
 }
 // endregion
-
-#[derive(Template)]
-#[template(path = "search.html")]
-struct SearchTemplate {}

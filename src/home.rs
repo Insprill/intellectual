@@ -1,9 +1,13 @@
-use std::io;
+use actix_web::{get, Responder};
+use askama::Template;
 
-use actix_files::NamedFile;
-use actix_web::{get};
+use crate::templates::template;
+
+#[derive(Template)]
+#[template(path = "home.html")]
+struct SearchTemplate {}
 
 #[get("/")]
-pub async fn home() -> io::Result<NamedFile> {
-    Ok(NamedFile::open("static/home.html")?)
+pub async fn home() -> impl Responder {
+    template(SearchTemplate {})
 }

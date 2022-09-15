@@ -5,6 +5,7 @@ use clap::{Arg, Command};
 mod home;
 mod lyrics;
 mod search;
+mod templates;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

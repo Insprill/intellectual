@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Intellectual</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
 <form method="get" action="/search" autocomplete="off">
     <label>
         <input type="text" name="q" autofocus="" placeholder="Enter search query..." dir="auto"/>
@@ -12,5 +9,4 @@
         Search
     </button>
 </form>
-</body>
-</html>
+{% endblock %}
