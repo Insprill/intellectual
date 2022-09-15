@@ -5,9 +5,9 @@ use crate::templates::template;
 
 #[derive(Template)]
 #[template(path = "home.html")]
-struct SearchTemplate {}
+struct HomeTemplate {}
 
 #[get("/")]
 pub async fn home() -> impl Responder {
-    template(SearchTemplate {})
+    template(HomeTemplate {})
 }
