@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/search.css">
+{% endblock %}
+
+{% block content %}
+    {% for result in results %}
+        <a href="lyrics?path={{ result.full_title|e }}">{{ result.full_title|e }}</a><br/>
+    {% endfor %}
+{% endblock %}

@@ -1,5 +1,14 @@
-use actix_web::{get, HttpResponse, Responder, web};
+use actix_web::{get, Responder, web};
+use askama::Template;
 use serde::Deserialize;
+
+use crate::templates::template;
+
+#[derive(Template)]
+#[template(path = "search.html")]
+struct SearchTemplate {
+    results: Vec<GeniusResult>,
+}
 
 #[derive(Debug, Deserialize)]
 pub struct SearchQuery {
@@ -16,13 +25,9 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
         .await.unwrap();
     let deserialized: GeniusSearch = serde_json::from_str(&body).unwrap();
 
-    let mut res: String = "".to_string();
-
-    for hit in deserialized.response.hits {
-        res.push_str(&format!("<a href=\"lyrics?path={}\">{}</a><br/>", hit.result.path, hit.result.full_title));
-    }
-
-    HttpResponse::Ok().append_header(("Content-Type", "text/html; charset=utf-8")).body(res)
+    template(SearchTemplate {
+        results: deserialized.response.hits.into_iter().map(|x| x.result).collect(),
+    })
 }
 
 // region Genius Response
