@@ -63,37 +63,6 @@ nav {
 
 /* endregion */
 
-.search-bar > form {
-    padding: 12px;
-    border-radius: 6px;
-    display: flex;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    margin: -50px auto auto;
-    background: #161b22;
-}
-
-.search-bar > form button {
-    background: #0d1117;
-    color: #fff;
-    border: 0;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.search-bar > form input {
-    background: #0d1117;
-    color: #fff;
-    font-size: 24px;
-    width: 100%;
-    border: 0;
-    border-radius: 6px;
-    padding: 4px;
-    margin-right: 8px;
-    height: unset;
-}
-
 .container {
     display: flex;
     flex-wrap: wrap;
@@ -102,11 +71,6 @@ nav {
     margin: auto;
     min-height: 100vh;
     background-color: #0d1117;
-}
-
-.panel-container {
-    margin: auto;
-    font-size: 130%;
 }
 
 html, body {
