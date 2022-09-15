@@ -1,3 +1,4 @@
+use actix_files::Files;
 use actix_web::{App, HttpServer};
 use clap::{Arg, Command};
 
@@ -33,12 +34,12 @@ async fn main() -> std::io::Result<()> {
 
     println!("Running Intellectual v{}, listening on {}:{}!", env!("CARGO_PKG_VERSION"), address, port);
 
-    HttpServer::new(|| {
-        App::new()
-            .service(home::home)
-            .service(search::search)
-            .service(lyrics::lyrics)
-    })
+    HttpServer::new(|| App::new()
+        .service(home::home)
+        .service(search::search)
+        .service(lyrics::lyrics)
+        .service(Files::new("/", "./static").show_files_listing())
+    )
         .bind((address, port))?
         .run()
         .await
