@@ -4,12 +4,27 @@
     {% block head %}
     <title>{% block title %}Intellectual{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" type="text/css" href="/font/inter/inter.css">
     {% endblock %}
 </head>
 <body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="inner-nav">
+        <div class="nav-item">
+            <a class="site-version" href="https://github.com/Insprill/intellectual">v{{ env!("CARGO_PKG_VERSION") }}</a>
+        </div>
+        <a href="/" class="site-name">Intellectual</a>
+        <div class="nav-item right">
+            {% block navright %}{% endblock %}
+        </div>
+    </div>
+</nav>
+
 <!-- MAIN CONTENT -->
 {% block body %}
-<main>
+<main class="container">
     {% block content %}
     {% endblock %}
 </main>
