@@ -1,0 +1,42 @@
+.card-list {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 1000px;
+    padding: 10px 20px;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.card {
+    background: #161b22;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: 0.2s background;
+    display: grid;
+    padding: 10px;
+    grid-template:
+			"card-title" 1fr
+			"card-artist" auto
+			"card-views" auto
+			/ minmax(40px, auto) minmax(0, 1fr) fit-content(min(20%, 152px));
+}
+
+.card:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-weight: 900;
+    font-size: 32px;
+}
+
+.card-artist {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.card-views {
+    font-weight: 500;
+    font-size: 12px;
+}

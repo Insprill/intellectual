@@ -5,7 +5,14 @@
 {% endblock %}
 
 {% block content %}
+<div class="card-list">
     {% for result in results %}
-        <a href="lyrics?path={{ result.full_title|e }}">{{ result.full_title|e }}</a><br/>
+    <div class="card">
+        <a href="lyrics?path={{ result.path|e }}">
+            <h2 class="card-title">{{ result.title|e }}</h2>
+            <h3 class="card-artist">{{ result.artist_names|e }}</h3>
+        </a>
+    </div>
     {% endfor %}
+</div>
 {% endblock %}

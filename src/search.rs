@@ -49,7 +49,8 @@ struct GeniusHit {
 #[allow(dead_code)]
 #[derive(Deserialize)]
 struct GeniusResult {
-    full_title: String,
+    title: String,
+    artist_names: String,
     path: String,
 }
 // endregion
