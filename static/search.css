@@ -17,7 +17,7 @@
     display: grid;
     padding: 10px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 3em 4em 2em;
     grid-template-areas:
     "song-title ."
     "song-artist ."
