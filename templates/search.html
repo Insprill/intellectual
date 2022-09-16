@@ -7,12 +7,10 @@
 {% block content %}
 <div class="song-list">
     {% for result in results %}
-    <div class="song">
-        <a href="lyrics?path={{ result.path|e }}">
-            <h2 class="song-title">{{ result.title|e }}</h2>
-            <h3 class="song-artist">{{ result.artist_names|e }}</h3>
-        </a>
-    </div>
+    <a class="song" href="lyrics?path={{ result.path|e }}">
+        <h2 class="song-title">{{ result.title|e }}</h2>
+        <h3 class="song-artist">{{ result.artist_names|e }}</h3>
+    </a>
     {% endfor %}
 </div>
 {% endblock %}
