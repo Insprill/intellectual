@@ -15,12 +15,12 @@
     transition: 0.2s background;
     display: grid;
     padding: 10px;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas:
-    "song-title . ."
-    "song-artist . ."
-    "song-views . .";
+    "song-title ."
+    "song-artist ."
+    "song-views .";
 }
 
 .song:not(:last-child) {
