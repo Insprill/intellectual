@@ -52,5 +52,12 @@ struct GeniusResult {
     title: String,
     artist_names: String,
     path: String,
+    stats: GeniusStats,
+}
+
+#[allow(dead_code)]
+#[derive(Deserialize)]
+struct GeniusStats {
+    pageviews: Option<i32>,
 }
 // endregion

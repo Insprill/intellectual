@@ -10,6 +10,9 @@
     <a class="song" href="lyrics?path={{ result.path|e }}">
         <h2 class="song-title">{{ result.title|e }}</h2>
         <h3 class="song-artist">{{ result.artist_names|e }}</h3>
+        {% if result.stats.pageviews.is_some() %}
+        <h3 class="song-views">{{ result.stats.pageviews.unwrap()|e }}</h3>
+        {% endif %}
     </a>
     {% endfor %}
 </div>
