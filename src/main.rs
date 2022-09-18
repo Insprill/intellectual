@@ -6,6 +6,7 @@ mod home;
 mod lyrics;
 mod search;
 mod templates;
+mod api;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -39,6 +40,7 @@ async fn main() -> std::io::Result<()> {
         .service(home::home)
         .service(search::search)
         .service(lyrics::lyrics)
+        .service(api::api)
         .service(Files::new("/", "./static").show_files_listing())
     )
         .bind((address, port))?
