@@ -33,15 +33,21 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
     template(LyricsTemplate { verses: x })
 }
 
-fn scrape_lyrics(doc: String) -> String {
+fn scrape_lyrics(doc: String) -> Vec<Verse> {
     let document = Html::parse_document(&doc);
-    let mut data: String = "".to_string();
-
     let parser = &Selector::parse("div[data-lyrics-container=true]").unwrap();
 
-    for element in document.select(parser) {
-        data.push_str(&element.html());
+    let mut verses: Vec<Verse> = Vec::new();
+
+    for x in document.select(parser).flat_map(|x| x.text()).into_iter() {
+        if x.starts_with('[') && x.ends_with(']') {
+            verses.push(Verse { title: x.to_string(), lyrics: Vec::new() })
+        } else {
+            let mut x1 = verses.remove(verses.len() - 1);
+            x1.lyrics.push(x.to_string());
+            verses.push(x1);
+        }
     }
 
-    data
+    verses
 }
