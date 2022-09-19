@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/lyrics.css">
+{% endblock %}
+
+{% block content %}
+    {% for verse in verses %}
+        <h2>{{ verse.title }}</h2>
+        <br>
+        {% for lyric in verse.lyrics %}
+            <p>{{ lyric }}</p>
+            <br>
+        {% endfor %}
+        <br>
+    {% endfor %}
+{% endblock %}

@@ -1,14 +1,28 @@
-use actix_web::{get, HttpResponse, Responder, web};
+use actix_web::{get, Responder, web};
+use askama::Template;
 use scraper::{Html, Selector};
 use serde::Deserialize;
 
+use crate::templates::template;
+
+struct Verse {
+    title: String,
+    lyrics: Vec<String>,
+}
+
+#[derive(Template)]
+#[template(path = "lyrics.html")]
+struct LyricsTemplate {
+    verses: Vec<Verse>,
+}
+
 #[derive(Debug, Deserialize)]
-pub struct SearchQuery {
+pub struct LyricsQuery {
     path: String,
 }
 
 #[get("/lyrics")]
-pub async fn lyrics(info: web::Query<SearchQuery>) -> impl Responder {
+pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
     let body = reqwest::Client::new()
         .get(format!("https://genius.com/{}", info.path.trim_start_matches("/")))
         .header("Authorization", format!("Bearer {}", std::env::var("AUTH_TOKEN").unwrap()))
@@ -16,7 +30,7 @@ pub async fn lyrics(info: web::Query<SearchQuery>) -> impl Responder {
         .await.unwrap().text_with_charset("utf-8")
         .await.unwrap();
     let x = scrape_lyrics(body);
-    HttpResponse::Ok().body(x)
+    template(LyricsTemplate { verses: x })
 }
 
 fn scrape_lyrics(doc: String) -> String {
