@@ -8,10 +8,8 @@
 <div class="song-lyrics">
     {% for verse in verses %}
         <h2>{{ verse.title }}</h2>
-        <br>
         {% for lyric in verse.lyrics %}
             <p>{{ lyric }}</p>
-            <br>
         {% endfor %}
         <br>
     {% endfor %}
