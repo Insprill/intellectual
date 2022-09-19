@@ -14,7 +14,7 @@
 
 .search-bar > form button {
     background: #0d1117;
-    color: #fff;
+    color: #c9d1d9;
     border: 0;
     border-radius: 6px;
     cursor: pointer;
@@ -24,7 +24,7 @@
 
 .search-bar > form input {
     background: #0d1117;
-    color: #fff;
+    color: #c9d1d9;
     font-size: 24px;
     width: 100%;
     border: 0;
