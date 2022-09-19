@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="song-lyrics">
     {% for verse in verses %}
         <h2>{{ verse.title }}</h2>
         <br>
@@ -14,4 +15,5 @@
         {% endfor %}
         <br>
     {% endfor %}
+</div>
 {% endblock %}

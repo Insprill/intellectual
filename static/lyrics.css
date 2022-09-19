@@ -1,0 +1,11 @@
+.song-lyrics {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 1000px;
+    padding: 10px 20px;
+    margin: 0 auto;
+    border-radius: 5px;
+    background: #161b22;
+    color: #fff;
+}
