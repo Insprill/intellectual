@@ -1,3 +1,5 @@
+use std::process::exit;
+
 use actix_files::Files;
 use actix_web::{App, HttpServer};
 use clap::{Arg, Command};
@@ -33,6 +35,11 @@ async fn main() -> std::io::Result<()> {
 
     let address = matches.value_of("address").unwrap_or("0.0.0.0"); //TODO: Validate this
     let port = std::env::var("PORT").unwrap_or_else(|_| matches.value_of("port").unwrap_or("8080").to_string()).parse::<u16>().unwrap(); //TODO: Validate this
+
+    if std::env::var("GENIUS_AUTH_TOKEN").is_err() {
+        println!("GENIUS_AUTH_TOKEN environment variable not set!");
+        exit(1);
+    }
 
     println!("Running Intellectual v{}, listening on {}:{}!", env!("CARGO_PKG_VERSION"), address, port);
 
