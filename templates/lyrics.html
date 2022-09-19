@@ -11,7 +11,9 @@
         {% for lyric in verse.lyrics %}
             <p class="song-lyric">{{ lyric }}</p>
         {% endfor %}
+        {% if !loop.last %}
         <br>
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
