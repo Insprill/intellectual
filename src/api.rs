@@ -12,7 +12,7 @@ pub async fn api(info: web::Query<UrlQuery>) -> impl Responder {
     let img_path = info.url.as_str().split('/').last().unwrap_or_default();
     let bytes = reqwest::Client::new()
         .get(format!("https://images.genius.com/{}", img_path))
-        .header("Authorization", format!("Bearer {}", std::env::var("AUTH_TOKEN").unwrap()))
+        .header("Authorization", format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()))
         .send()
         .await.unwrap().bytes()
         .await.unwrap();

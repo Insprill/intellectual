@@ -25,7 +25,7 @@ pub struct LyricsQuery {
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
     let body = reqwest::Client::new()
         .get(format!("https://genius.com/{}", info.path.trim_start_matches("/")))
-        .header("Authorization", format!("Bearer {}", std::env::var("AUTH_TOKEN").unwrap()))
+        .header("Authorization", format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()))
         .send()
         .await.unwrap().text_with_charset("utf-8")
         .await.unwrap();
