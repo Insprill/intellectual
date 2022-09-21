@@ -43,6 +43,9 @@ fn scrape_lyrics(doc: String) -> Vec<Verse> {
         if x.starts_with('[') && x.ends_with(']') {
             verses.push(Verse { title: x.to_string(), lyrics: Vec::new() })
         } else {
+            if verses.is_empty() {
+                verses.push(Verse { title: "".to_string(), lyrics: Vec::new() })
+            }
             let mut x1 = verses.remove(verses.len() - 1);
             x1.lyrics.push(x.to_string());
             verses.push(x1);
