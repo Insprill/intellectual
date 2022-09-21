@@ -14,6 +14,7 @@ struct Verse {
 #[template(path = "lyrics.html")]
 struct LyricsTemplate {
     verses: Vec<Verse>,
+    query: LyricsQuery,
 }
 
 #[derive(Debug, Deserialize)]
@@ -30,7 +31,7 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
         .await.unwrap().text_with_charset("utf-8")
         .await.unwrap();
     let x = scrape_lyrics(body);
-    template(LyricsTemplate { verses: x })
+    template(LyricsTemplate { verses: x, query: info.into_inner() })
 }
 
 fn scrape_lyrics(doc: String) -> Vec<Verse> {

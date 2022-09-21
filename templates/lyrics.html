@@ -4,6 +4,12 @@
 <link rel="stylesheet" type="text/css" href="/lyrics.css">
 {% endblock %}
 
+{% block navright %}
+<div class="nav-item.right">
+    <a class="external-link" href="https://genius.com{{ query.path }}">View on Genius</a>
+</div>
+{% endblock %}
+
 {% block content %}
 <div class="song-lyrics">
     {% for verse in verses %}

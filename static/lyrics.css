@@ -9,3 +9,8 @@
 .song-lyric {
     margin: 0.33rem;
 }
+
+.external-link {
+    color: #c9d1d9;
+    font-weight: 500;
+}
