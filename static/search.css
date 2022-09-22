@@ -32,24 +32,27 @@
 .song-title {
     grid-area: song-title;
     font-weight: 900;
+    color: #c9d1d9;
     font-size: 32px;
 }
 
 .song-artist {
+    grid-area: song-artist;
     font-weight: 600;
     font-size: 24px;
-    grid-area: song-artist;
+    color: #c9d1d9;
 }
 
 .song-views {
+    grid-area: song-views;
     font-weight: 500;
     font-size: 12px;
-    grid-area: song-views;
+    color: #c9d1d9;
 }
 
 .song-thumbnail {
+    grid-area: song-thumbnail;
     width: 100%;
     height: 100%;
-    grid-area: song-thumbnail;
     border-radius: 5%;
 }
