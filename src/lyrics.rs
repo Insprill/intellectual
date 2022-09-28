@@ -49,5 +49,9 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
         }
     }
 
+    if verses.is_empty() {
+        verses.push(Verse { title: "This song has no lyrics".to_string(), lyrics: Vec::new() })
+    }
+
     verses
 }
