@@ -34,7 +34,7 @@ jobs:
           toolchain: stable
 
       - name: Run Clippy
-        uses: actions-rs/clippy@v1
+        uses: actions-rs/clippy@master
         with:
           args: -- -D warnings
 
