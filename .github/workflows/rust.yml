@@ -26,21 +26,21 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Rust Toolchain
-      - uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v1
         with:
           override: true
           target: ${{ matrix.target }}
           toolchain: stable
 
       - name: Build
-      - uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v1
         with:
           use-cross: true
           command: build
           args: --release --target=${{ matrix.target }}
 
       - name: Upload Artifact
-      - uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: Intellectual-${{ matrix.target }}
           path: target/release/intellectual${{ matrix.suffix }}
