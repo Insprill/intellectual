@@ -2,6 +2,7 @@ use actix_web::{get, Responder, web};
 use askama::Template;
 use serde::Deserialize;
 
+use crate::genius;
 use crate::templates::template;
 
 #[derive(Template)]
@@ -17,13 +18,8 @@ pub struct SearchQuery {
 
 #[get("/search")]
 pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
-    let body = reqwest::Client::new()
-        .get(format!("https://api.genius.com/search?q={}", info.q))
-        .header("Authorization", format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()))
-        .send()
-        .await.unwrap().text_with_charset("utf-8")
-        .await.unwrap();
-    let deserialized: GeniusSearch = serde_json::from_str(&body).unwrap();
+    let response = genius::text(genius::SubDomain::API, &format!("search?q={}", info.q)).await;
+    let deserialized: GeniusSearch = serde_json::from_str(&response).unwrap();
 
     template(SearchTemplate {
         results: deserialized.response.hits.into_iter().map(|x| x.result).collect(),

@@ -9,6 +9,7 @@ mod lyrics;
 mod search;
 mod templates;
 mod api;
+mod genius;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

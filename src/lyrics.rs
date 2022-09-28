@@ -3,6 +3,7 @@ use askama::Template;
 use scraper::{Html, Selector};
 use serde::Deserialize;
 
+use crate::genius;
 use crate::templates::template;
 
 struct Verse {
@@ -24,18 +25,13 @@ pub struct LyricsQuery {
 
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
-    let body = reqwest::Client::new()
-        .get(format!("https://genius.com/{}", info.path.trim_start_matches("/")))
-        .header("Authorization", format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()))
-        .send()
-        .await.unwrap().text_with_charset("utf-8")
-        .await.unwrap();
-    let x = scrape_lyrics(body);
-    template(LyricsTemplate { verses: x, query: info.into_inner() })
+    let response = genius::text(genius::SubDomain::ROOT, info.path.trim_start_matches("/")).await;
+    let verses = scrape_lyrics(&response);
+    template(LyricsTemplate { verses, query: info.into_inner() })
 }
 
-fn scrape_lyrics(doc: String) -> Vec<Verse> {
-    let document = Html::parse_document(&doc);
+fn scrape_lyrics(doc: &str) -> Vec<Verse> {
+    let document = Html::parse_document(doc);
     let parser = &Selector::parse("div[data-lyrics-container=true]").unwrap();
 
     let mut verses: Vec<Verse> = Vec::new();
