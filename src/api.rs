@@ -12,6 +12,6 @@ pub struct UrlQuery {
 pub async fn api(info: web::Query<UrlQuery>) -> impl Responder {
     // Ensure this can't be abused.
     let img_path = info.url.as_str().split('/').last().unwrap_or_default();
-    let response = genius::bytes(genius::SubDomain::IMAGES, img_path).await;
+    let response = genius::bytes(genius::SubDomain::Images, img_path).await;
     HttpResponse::Ok().body(response)
 }

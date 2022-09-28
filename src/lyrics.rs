@@ -25,7 +25,7 @@ pub struct LyricsQuery {
 
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
-    let response = genius::text(genius::SubDomain::ROOT, info.path.trim_start_matches("/")).await;
+    let response = genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')).await;
     let verses = scrape_lyrics(&response);
     template(LyricsTemplate { verses, query: info.into_inner() })
 }
@@ -36,7 +36,7 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
 
     let mut verses: Vec<Verse> = Vec::new();
 
-    for x in document.select(parser).flat_map(|x| x.text()).into_iter() {
+    for x in document.select(parser).flat_map(|x| x.text()) {
         if x.starts_with('[') && x.ends_with(']') {
             verses.push(Verse { title: x.to_string(), lyrics: Vec::new() })
         } else {

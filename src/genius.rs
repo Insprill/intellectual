@@ -18,17 +18,17 @@ async fn request(subdomain: SubDomain, path: &str) -> Response {
 }
 
 pub enum SubDomain {
-    API,
-    IMAGES,
-    ROOT,
+    Api,
+    Images,
+    Root,
 }
 
 impl SubDomain {
     fn value(&self) -> &str {
         match *self {
-            SubDomain::API => "api.",
-            SubDomain::IMAGES => "images.",
-            SubDomain::ROOT => "",
+            SubDomain::Api => "api.",
+            SubDomain::Images => "images.",
+            SubDomain::Root => "",
         }
     }
 }

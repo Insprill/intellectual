@@ -18,7 +18,7 @@ pub struct SearchQuery {
 
 #[get("/search")]
 pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
-    let response = genius::text(genius::SubDomain::API, &format!("search?q={}", info.q)).await;
+    let response = genius::text(genius::SubDomain::Api, &format!("search?q={}", info.q)).await;
     let deserialized: GeniusSearch = serde_json::from_str(&response).unwrap();
 
     template(SearchTemplate {
