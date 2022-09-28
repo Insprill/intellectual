@@ -25,12 +25,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Rust Toolchain
+      - name: Setup Toolchain
         uses: actions-rs/toolchain@v1
         with:
+          components: clippy
           override: true
           target: ${{ matrix.target }}
           toolchain: stable
+
+      - name: Run Clippy
+        uses: actions-rs/clippy@v1
+        with:
+          args: -- -D warnings
 
       - name: Build
         uses: actions-rs/cargo@v1
