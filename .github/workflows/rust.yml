@@ -27,6 +27,7 @@ jobs:
         with:
           components: clippy
           override: true
+          profile: minimal
           target: ${{ matrix.target }}
           toolchain: stable
 
