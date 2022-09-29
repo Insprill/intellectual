@@ -13,6 +13,7 @@ async fn request(subdomain: SubDomain, path: &str) -> Response {
     Client::new()
         .get(format!("https://{}genius.com/{}", subdomain.value(), path))
         .header("Authorization", format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()))
+        .query(&[("text_format", "plain")])
         .send()
         .await.unwrap()
 }
