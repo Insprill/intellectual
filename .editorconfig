@@ -9,3 +9,10 @@ indent_size = 4
 
 [{*.yml,*.json}]
 indent_size = 2
+
+[Cargo.lock]
+end_of_line = unset
+insert_final_newline = unset
+charset = unset
+indent_style = unset
+indent_size = unset
