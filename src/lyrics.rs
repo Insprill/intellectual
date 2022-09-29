@@ -1,5 +1,6 @@
 use actix_web::{get, Responder, web};
 use askama::Template;
+use futures::future;
 use scraper::{Html, Selector};
 use serde::Deserialize;
 
@@ -27,10 +28,12 @@ pub struct LyricsQuery {
 
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
-    let api_response = genius::text(genius::SubDomain::Api, info.api_path.trim_start_matches('/')).await;
-    let api: GeniusRequest = serde_json::from_str(&api_response).unwrap();
-    let lyric_response = genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')).await;
-    let verses = scrape_lyrics(&lyric_response);
+    let responses = future::join(
+        genius::text(genius::SubDomain::Api, info.api_path.trim_start_matches('/')),
+        genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/'))
+    ).await;
+    let api: GeniusRequest = serde_json::from_str(&responses.0).unwrap();
+    let verses = scrape_lyrics(&responses.1);
     template(LyricsTemplate { verses, query: info.into_inner(), song: api.response.song })
 }
 
