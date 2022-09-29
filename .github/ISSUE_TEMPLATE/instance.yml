@@ -1,0 +1,28 @@
+name: New Instance
+description: Request your own instance be added to the instances list
+labels: [ "instance" ]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: The URL linking to your Intellectual instance.
+      placeholder: ex. https://intellectual.insprill.net
+    validations:
+      required: true
+  - type: input
+    id: region
+    attributes:
+      label: Region
+      description: The region the instance is hosted in.
+      placeholder: US
+    validations:
+      required: true
+  - type: checkboxes
+    id: cloudflare
+    attributes:
+      label: Cloudflare
+      description: Is the instance proxied behind Cloudflare? Using Cloudflare as DNS only does not apply.
+      options:
+        - label: Is the instance proxied behind Cloudflare?
+          required: true
