@@ -8,7 +8,7 @@
 <div class="song-list">
     {% for result in results %}
     <a class="song" href="lyrics?path={{ result.path|e }}&api_path={{ result.api_path|e }}">
-        <img class="song-thumbnail" src="api/image?format=jpeg&url={{ result.song_art_image_thumbnail_url|e }}"
+        <img class="song-thumbnail" src="api/image?url={{ result.song_art_image_thumbnail_url|e }}"
              alt="Thumbnail"/>
         <h2 class="song-title">{{ result.title|e }}</h2>
         <h3 class="song-artist">{{ result.artist_names|e }}</h3>
