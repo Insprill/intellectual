@@ -61,7 +61,8 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 |-----------------------------------|---------|------------|
 | https://intellectual.insprill.net | 🇺🇸 US | ✔️         |
 
-If there is a checkmark under "Cloudflare", that means the site is proxied behind [Cloudflare](https://www.cloudflare.com/).  
+If there is a checkmark under "Cloudflare", that means the site 
+is proxied behind [Cloudflare](https://www.cloudflare.com/).  
 This means they have the ability to monitor traffic between you and the server.
 
 
@@ -82,7 +83,7 @@ Instructions coming soon™
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create.  
 Any contributions you make are **greatly appreciated**!  
-If you're new to contributing to open-source projects, 
+If you're new to contributing to open-source projects,
 you can follow [this](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) guide.
 
 
