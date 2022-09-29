@@ -48,6 +48,7 @@ struct GeniusResult {
     title: String,
     artist_names: String,
     path: String,
+    api_path: String,
     song_art_image_thumbnail_url: String,
     stats: GeniusStats,
 }
