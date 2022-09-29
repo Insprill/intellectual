@@ -60,6 +60,7 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | URL                               | Country | Cloudflare |
 |-----------------------------------|---------|------------|
 | https://intellectual.insprill.net | 🇺🇸 US | ✔️         |
+
 If there is a checkmark under "Cloudflare", that means the site is proxied behind [Cloudflare](https://www.cloudflare.com/).  
 This means they have the ability to monitor traffic between you and the server.
 
