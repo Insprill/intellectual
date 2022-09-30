@@ -48,10 +48,6 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      - name: Make Linux Binary Executable
-        if: ${{ runner.os == 'Linux' }}
-        run: chmod +x target/release/intellectual
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
