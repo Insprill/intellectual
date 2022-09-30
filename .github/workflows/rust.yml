@@ -7,16 +7,16 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - target: x86_64-apple-darwin
+          - os: macos-latest
             suffix: ''
-          - target: x86_64-unknown-linux-gnu
+          - os: ubuntu-latest
             suffix: ''
-          - target: x86_64-pc-windows-msvc
+          - os: windows-latest
             suffix: .exe
     steps:
       - name: Checkout Repository
@@ -28,20 +28,26 @@ jobs:
           components: clippy
           override: true
           profile: minimal
-          target: ${{ matrix.target }}
           toolchain: stable
 
-      - name: Run Clippy
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v1
+
+      - name: Install Linux Dependencies
+        if: ${{ runner.os == 'Linux' }}
+        run: sudo apt-get install -y libssl-dev
+
+      - name: Check Code Style
         uses: actions-rs/clippy@master
         with:
           args: -- -D warnings
 
       - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          use-cross: true
-          command: build
-          args: --release --target=${{ matrix.target }}
+        run: cargo build --release
+
+      - name: Make Linux Binary Executable
+        if: ${{ runner.os == 'Linux' }}
+        run: chmod +x target/release/intellectual
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
