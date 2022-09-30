@@ -14,10 +14,13 @@ jobs:
         include:
           - os: macos-latest
             suffix: ''
+            name: macOS
           - os: ubuntu-latest
             suffix: ''
+            name: Linux
           - os: windows-latest
             suffix: .exe
+            name: Windows
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -52,5 +55,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Intellectual-${{ matrix.target }}
+          name: Intellectual-${{ matrix.name }}
           path: target/release/intellectual${{ matrix.suffix }}
