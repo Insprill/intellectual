@@ -17,7 +17,6 @@ struct Verse {
 struct LyricsTemplate {
     verses: Vec<Verse>,
     query: LyricsQuery,
-    song: GeniusSong,
 }
 
 #[derive(Debug, Deserialize)]
@@ -30,11 +29,10 @@ pub struct LyricsQuery {
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
     let responses = future::join(
         genius::text(genius::SubDomain::Api, info.api_path.trim_start_matches('/')),
-        genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/'))
+        genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')),
     ).await;
-    let api: GeniusRequest = serde_json::from_str(&responses.0).unwrap();
     let verses = scrape_lyrics(&responses.1);
-    template(LyricsTemplate { verses, query: info.into_inner(), song: api.response.song })
+    template(LyricsTemplate { verses, query: info.into_inner() })
 }
 
 fn scrape_lyrics(doc: &str) -> Vec<Verse> {
@@ -61,27 +59,4 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
     }
 
     verses
-}
-
-#[derive(Deserialize)]
-struct GeniusRequest {
-    response: GeniusResponse,
-}
-
-#[derive(Deserialize)]
-struct GeniusResponse {
-    song: GeniusSong,
-}
-
-#[derive(Deserialize)]
-struct GeniusSong {
-    title: String,
-    artist_names: String,
-    description: GeniusDescription,
-    header_image_url: String,
-}
-
-#[derive(Deserialize)]
-struct GeniusDescription {
-    plain: String,
 }
