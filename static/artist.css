@@ -1,8 +1,8 @@
 .artist {
     display: grid;
-    grid-template-columns: 15em auto;
+    grid-template-columns: 15em 25em;
     grid-template-rows: 15em 15em;
-    gap: 0 0.5em;
+    gap: 1em 1em;
     grid-auto-flow: row;
     grid-template-areas:
     "image name"

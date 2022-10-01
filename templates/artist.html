@@ -24,6 +24,8 @@
             </p>
         {% endif %}
     </div>
-    <div class="artist-description"></div>
+    {% if artist.description.is_some() %}
+    <div class="artist-description">{{ artist.description.as_ref().unwrap().plain|e }}</div>
+    {% endif %}
 </div>
 {% endblock %}
