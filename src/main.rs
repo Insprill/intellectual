@@ -6,12 +6,12 @@ use clap::{Arg, Command};
 use log::{error, info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TerminalMode, TermLogger};
 
+mod api;
+mod genius;
 mod home;
 mod lyrics;
 mod search;
 mod templates;
-mod api;
-mod genius;
 mod utils;
 
 #[actix_web::main]
