@@ -74,3 +74,8 @@ html, body {
     padding: 0;
     font-family: Inter var, serif;
 }
+
+.external-link {
+    color: #c9d1d9;
+    font-weight: 500;
+}

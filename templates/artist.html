@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/artist.css">
+{% endblock %}
+
+{% block navright %}
+<div class="nav-item.right">
+    <a class="external-link" href="{{ artist.url }}">View on Genius</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="artist">
+    <img class="artist-image" src="api/image?url={{ artist.image_url|e }}" alt="Thumbnail"/>
+    <div class="artist-info">
+        <p class="artist-name">{{ artist.name|e }}</p>
+        {% if artist.alternate_names.is_some() %}
+            <p class="artist-nicknames">
+                AKA:
+                {% for nickname in artist.alternate_names.as_ref().unwrap() %}
+                    {{ nickname }}{% if !loop.last %},{% endif %}
+                {% endfor %}
+            </p>
+        {% endif %}
+    </div>
+    <div class="artist-description"></div>
+</div>
+{% endblock %}

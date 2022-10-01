@@ -10,11 +10,6 @@
     margin: 0.33rem;
 }
 
-.external-link {
-    color: #c9d1d9;
-    font-weight: 500;
-}
-
 .header {
     display: grid;
     grid-template-columns: 12em auto;

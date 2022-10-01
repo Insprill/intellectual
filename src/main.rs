@@ -7,6 +7,7 @@ use log::{error, info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TerminalMode, TermLogger};
 
 mod api;
+mod artist;
 mod genius;
 mod home;
 mod lyrics;
@@ -56,10 +57,11 @@ async fn main() -> std::io::Result<()> {
     info!("Running Intellectual v{}, listening on {}:{}!", env!("CARGO_PKG_VERSION"), address, port);
 
     HttpServer::new(|| App::new()
-        .service(home::home)
-        .service(search::search)
-        .service(lyrics::lyrics)
         .service(api::api)
+        .service(artist::artist)
+        .service(home::home)
+        .service(lyrics::lyrics)
+        .service(search::search)
         .service(Files::new("/", "./static").show_files_listing())
     )
         .bind((address, port))?
