@@ -3,6 +3,8 @@ use std::process::exit;
 use actix_files::Files;
 use actix_web::{App, HttpServer};
 use clap::{Arg, Command};
+use log::{error, info, LevelFilter};
+use simplelog::{ColorChoice, CombinedLogger, Config, TerminalMode, TermLogger};
 
 mod home;
 mod lyrics;
@@ -39,12 +41,18 @@ async fn main() -> std::io::Result<()> {
         |_| matches.get_one::<String>("port").unwrap().to_string()
     ).parse::<u16>().unwrap();
 
+    CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Info, Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
+        ]
+    ).unwrap();
+
     if std::env::var("GENIUS_AUTH_TOKEN").is_err() {
-        println!("GENIUS_AUTH_TOKEN environment variable not set!");
+        error!("GENIUS_AUTH_TOKEN environment variable not set!");
         exit(1);
     }
 
-    println!("Running Intellectual v{}, listening on {}:{}!", env!("CARGO_PKG_VERSION"), address, port);
+    info!("Running Intellectual v{}, listening on {}:{}!", env!("CARGO_PKG_VERSION"), address, port);
 
     HttpServer::new(|| App::new()
         .service(home::home)
