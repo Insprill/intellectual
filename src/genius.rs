@@ -42,6 +42,7 @@ impl SubDomain {
 
 // region Structs
 
+// region Search Endpoint
 #[derive(Deserialize)]
 pub struct GeniusSearchRequest {
     pub response: GeniusSearchResponse,
@@ -53,6 +54,13 @@ pub struct GeniusSearchResponse {
 }
 
 #[derive(Deserialize)]
+pub struct GeniusHit {
+    pub result: GeniusSong,
+}
+// endregion
+
+// region Song Endpoint
+#[derive(Deserialize)]
 pub struct GeniusSongRequest {
     pub response: GeniusSongResponse,
 }
@@ -61,11 +69,7 @@ pub struct GeniusSongRequest {
 pub struct GeniusSongResponse {
     pub song: GeniusSong,
 }
-
-#[derive(Deserialize)]
-pub struct GeniusHit {
-    pub result: GeniusSong,
-}
+// endregion
 
 #[derive(Deserialize)]
 pub struct GeniusSong {
