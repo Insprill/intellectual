@@ -16,10 +16,14 @@
         <div class="song">
             <p class="song-title">{{ song.title|e }}</p>
             <p class="song-artist">By <cite>{{ song.artist_names|e }}</cite></p>
-            <p class="song-album">On <cite>{{ song.album.name|e }}</cite></p>
+            {% if song.album.is_some() %}
+                <p class="song-album">On <cite>{{ song.album.as_ref().unwrap().name|e }}</cite></p>
+            {% endif %}
         </div>
         <div class="stats">
-            <p class="stats-release-date">Released on {{ song.release_date_for_display|e }}</p>
+            {% if song.release_date_for_display.is_some() %}
+                <p class="stats-release-date">Released on {{ song.release_date_for_display.as_ref().unwrap()|e }}</p>
+            {% endif %}
             {% if song.stats.pageviews.is_some() %}
                 <p class="stats-views">{{ search::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
             {% endif %}
