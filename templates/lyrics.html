@@ -25,7 +25,7 @@
                 <p class="stats-release-date">Released on {{ song.release_date_for_display.as_ref().unwrap()|e }}</p>
             {% endif %}
             {% if song.stats.pageviews.is_some() %}
-                <p class="stats-views">{{ search::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
+                <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
             {% endif %}
         </div>
         <img class="header-cover" src="api/image?url={{ song.header_image_url|e }}" alt="Thumbnail"/>

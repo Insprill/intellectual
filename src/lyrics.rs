@@ -7,8 +7,8 @@ use serde::Deserialize;
 
 use crate::genius;
 use crate::genius::{GeniusSong, GeniusSongRequest};
-use crate::search;
 use crate::templates::template;
+use crate::utils;
 
 struct Verse {
     title: String,

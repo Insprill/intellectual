@@ -12,6 +12,7 @@ mod search;
 mod templates;
 mod api;
 mod genius;
+mod utils;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
