@@ -93,7 +93,6 @@ Intellectual support a few different arguments when starting. Append `-h` when r
 
 - [x] Search for songs
 - [x] View lyrics
-- [ ] Paginated searches
 - [ ] More song info on the lryics page
   - Song name
   - Song/album image
@@ -108,14 +107,11 @@ Intellectual support a few different arguments when starting. Append `-h` when r
   - By lyrics
   - For artists
   - For albums
+- [ ] Paginated searches
 - [ ] More reliable media fetching
 - [ ] Improve responsiveness
 - [ ] Annotation support
-- [ ] Implement caching (?)
-  - Media
-  - Song info
-  - Artist info
-  - Album info
+- [ ] More robust error handling
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create.  
 Any contributions you make are **greatly appreciated**!  
