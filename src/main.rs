@@ -22,7 +22,7 @@ async fn main() -> std::io::Result<()> {
                  .value_name("ADDRESS")
                  .help("Sets the address to listen on")
                  .default_value("0.0.0.0")
-                 .takes_value(true),
+                 .num_args(1),
         )
         .arg(Arg::new("port")
                  .short('p')
@@ -30,12 +30,14 @@ async fn main() -> std::io::Result<()> {
                  .value_name("PORT")
                  .help("Sets the port to listen on")
                  .default_value("8080")
-                 .takes_value(true),
+                 .num_args(1),
         )
         .get_matches();
 
-    let address = matches.value_of("address").unwrap_or("0.0.0.0");
-    let port = std::env::var("PORT").unwrap_or_else(|_| matches.value_of("port").unwrap_or("8080").to_string()).parse::<u16>().unwrap();
+    let address = matches.get_one::<String>("address").unwrap().as_str();
+    let port = std::env::var("PORT").unwrap_or_else(
+        |_| matches.get_one::<String>("port").unwrap().to_string()
+    ).parse::<u16>().unwrap();
 
     if std::env::var("GENIUS_AUTH_TOKEN").is_err() {
         println!("GENIUS_AUTH_TOKEN environment variable not set!");
