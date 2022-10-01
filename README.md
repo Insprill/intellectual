@@ -31,7 +31,7 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#instances">Instances</a></li>
     <li><a href="#deployment">Deployment</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
@@ -46,6 +46,9 @@
 Intellectual is an alternative frontend for [Genius](https://genius.com/) focused on privacy and simplicity.  
 Written in Rust, Intellectual is incredibly lightweight.
 Not requiring JavaScript and proxying all requests through the server, including images.
+
+Intellectual is still very early in development and is lacking many features.  
+Check out the [roadmap](#roadmap) for what features will be coming next!
 
 
 
@@ -82,14 +85,41 @@ The Icon URL and Redirect URL do not need to be set.
 Intellectual support a few different arguments when starting. Append `-h` when running it to see all available arguments.
 
 
-<!-- CONTRIBUTING -->
 
-## Contributing
+
+<!-- ROADMAP -->
+
+## Roadmap
+
+- [x] Search for songs
+- [x] View lyrics
+- [ ] Paginated searches
+- [ ] More song info on the lryics page
+  - Song name
+  - Song/album image
+  - Album name
+  - Artist
+  - Release date
+  - Credits
+  - About
+- [ ] View artist info
+- [ ] View album info
+- [ ] More search types
+  - By lyrics
+  - For artists
+  - For albums
+- [ ] More reliable media fetching
+- [ ] Improve responsiveness
+- [ ] Annotation support
+- [ ] Implement caching (?)
+  - Media
+  - Lyrics
+  - Artist information
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create.  
 Any contributions you make are **greatly appreciated**!  
 If you're new to contributing to open-source projects,
-you can follow [this](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) guide.
+you can follow [this](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) guide to get up-to-speed.
 
 
 
