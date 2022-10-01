@@ -90,10 +90,17 @@ struct GeniusSong {
     artist_names: String,
     description: GeniusDescription,
     header_image_url: String,
+    release_date_for_display: String,
+    album: GeniusAlbum,
 }
 
 #[allow(dead_code)]
 #[derive(Deserialize)]
 struct GeniusDescription {
     plain: String,
+}
+
+#[derive(Deserialize)]
+struct GeniusAlbum {
+    name: String,
 }

@@ -12,6 +12,16 @@
 
 {% block content %}
 <div class="song-lyrics">
+    <div class="header">
+        <p class="header-title">{{ song.title|e }}</p>
+        <p class="header-artist">By <cite>{{ song.artist_names|e }}</cite></p>
+        <p class="header-album">On <cite>{{ song.album.name|e }}</cite></p>
+        <p class="header-release-date">Released on {{ song.release_date_for_display|e }}</p>
+        <div class="header-credits"></div>
+        <div class="header-views"></div>
+        <img class="header-cover" src="api/image?url={{ song.header_image_url|e }}" alt="Thumbnail"/>
+    </div>
+    <br/>
     {% for verse in verses %}
         <h2 class="song-lyric">{{ verse.title }}</h2>
         {% for lyric in verse.lyrics %}
