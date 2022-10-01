@@ -1,5 +1,8 @@
 use actix_web::web::Bytes;
 use reqwest::{Client, Response};
+use serde::Deserialize;
+
+// region API
 
 pub async fn text(subdomain: SubDomain, path: &str) -> String {
     request(subdomain, path).await.text().await.unwrap()
@@ -34,3 +37,58 @@ impl SubDomain {
         }
     }
 }
+
+// endregion
+
+// region Structs
+
+#[derive(Deserialize)]
+pub struct GeniusSearchRequest {
+    pub response: GeniusSearchResponse,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusSearchResponse {
+    pub hits: Vec<GeniusHit>,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusSongRequest {
+    pub response: GeniusSongResponse,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusSongResponse {
+    pub song: GeniusSong,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusHit {
+    pub result: GeniusSong,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusSong {
+    pub id: u32,
+    pub title: String,
+    pub artist_names: String,
+    pub path: String,
+    pub header_image_url: String,
+    pub release_date_for_display: Option<String>,
+    pub song_art_image_thumbnail_url: String,
+    pub api_path: String,
+    pub album: Option<GeniusAlbum>,
+    pub stats: GeniusStats,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusAlbum {
+    pub name: String,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusStats {
+    pub pageviews: Option<i32>,
+}
+
+// endregion

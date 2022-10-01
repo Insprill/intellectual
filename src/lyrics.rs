@@ -6,15 +6,15 @@ use scraper::{Html, Selector};
 use serde::Deserialize;
 
 use crate::genius;
-use crate::templates::template;
+use crate::genius::{GeniusSong, GeniusSongRequest};
 use crate::search;
+use crate::templates::template;
 
 struct Verse {
     title: String,
     lyrics: Vec<String>,
 }
 
-#[allow(dead_code)]
 #[derive(Template)]
 #[template(path = "lyrics.html")]
 struct LyricsTemplate {
@@ -35,7 +35,7 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
         genius::text(genius::SubDomain::Api, info.api_path.trim_start_matches('/')),
         genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')),
     ).await;
-    let api: GeniusRequest = serde_json::from_str(&responses.0).unwrap();
+    let api: GeniusSongRequest = serde_json::from_str(&responses.0).unwrap();
     let verses = scrape_lyrics(&responses.1);
     count_view(&api.response.song).await; // TODO: Don't block for this
     template(LyricsTemplate { verses, query: info.into_inner(), song: api.response.song })
@@ -71,44 +71,4 @@ async fn count_view(song: &GeniusSong) {
     let _ = Client::new()
         .post(format!("https://genius.com/api/songs/{}/count_view", song.id))
         .send().await;
-}
-
-#[derive(Deserialize)]
-struct GeniusRequest {
-    response: GeniusResponse,
-}
-
-#[derive(Deserialize)]
-struct GeniusResponse {
-    song: GeniusSong,
-}
-
-#[allow(dead_code)]
-#[derive(Deserialize)]
-struct GeniusSong {
-    id: u32,
-    title: String,
-    artist_names: String,
-    description: GeniusDescription,
-    header_image_url: String,
-    release_date_for_display: String,
-    album: GeniusAlbum,
-    stats: GeniusStats,
-}
-
-#[allow(dead_code)]
-#[derive(Deserialize)]
-struct GeniusDescription {
-    plain: String,
-}
-
-#[derive(Deserialize)]
-struct GeniusAlbum {
-    name: String,
-}
-
-#[allow(dead_code)]
-#[derive(Deserialize)]
-struct GeniusStats {
-    pageviews: Option<i32>,
 }
