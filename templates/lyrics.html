@@ -13,12 +13,17 @@
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
-        <p class="header-title">{{ song.title|e }}</p>
-        <p class="header-artist">By <cite>{{ song.artist_names|e }}</cite></p>
-        <p class="header-album">On <cite>{{ song.album.name|e }}</cite></p>
-        <p class="header-release-date">Released on {{ song.release_date_for_display|e }}</p>
-        <div class="header-credits"></div>
-        <div class="header-views"></div>
+        <div class="song">
+            <p class="song-title">{{ song.title|e }}</p>
+            <p class="song-artist">By <cite>{{ song.artist_names|e }}</cite></p>
+            <p class="song-album">On <cite>{{ song.album.name|e }}</cite></p>
+        </div>
+        <div class="stats">
+            <p class="stats-release-date">Released on {{ song.release_date_for_display|e }}</p>
+            {% if song.stats.pageviews.is_some() %}
+                <p class="stats-views">{{ search::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
+            {% endif %}
+        </div>
         <img class="header-cover" src="api/image?url={{ song.header_image_url|e }}" alt="Thumbnail"/>
     </div>
     <br/>

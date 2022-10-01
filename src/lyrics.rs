@@ -7,6 +7,7 @@ use serde::Deserialize;
 
 use crate::genius;
 use crate::templates::template;
+use crate::search;
 
 struct Verse {
     title: String,
@@ -92,6 +93,7 @@ struct GeniusSong {
     header_image_url: String,
     release_date_for_display: String,
     album: GeniusAlbum,
+    stats: GeniusStats,
 }
 
 #[allow(dead_code)]
@@ -103,4 +105,10 @@ struct GeniusDescription {
 #[derive(Deserialize)]
 struct GeniusAlbum {
     name: String,
+}
+
+#[allow(dead_code)]
+#[derive(Deserialize)]
+struct GeniusStats {
+    pageviews: Option<i32>,
 }

@@ -17,45 +17,13 @@
 
 .header {
     display: grid;
-    grid-template-columns: 12em 25em 15em;
-    grid-template-rows: 3em 3em 3em 3em;
+    grid-template-columns: 12em auto;
+    grid-template-rows: 3em 3em 6em;
     gap: 0 1em;
-    grid-auto-flow: row;
     grid-template-areas:
-    "cover title release-date"
-    "cover artist credits"
-    "cover album ."
-    "cover . views";
-}
-
-.header-title {
-    grid-area: title;
-    font-weight: 900;
-    font-size: 32px;
-}
-
-.header-artist {
-    grid-area: artist;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.header-album {
-    grid-area: album;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.header-release-date {
-    grid-area: release-date;
-}
-
-.header-credits {
-    grid-area: credits;
-}
-
-.header-views {
-    grid-area: views;
+    "cover song"
+    "cover song"
+    "cover stats";
 }
 
 .header-cover {
@@ -65,3 +33,58 @@
     border-radius: 5px;
 }
 
+.song {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-columns: auto;
+    grid-template-rows: 2.5em 1.75em 1.75em;
+    gap: 0.25em 0;
+    grid-template-areas:
+    "title"
+    "artist"
+    "album";
+    grid-area: song;
+    margin-top: 1em;
+}
+
+.song-title {
+    grid-area: title;
+    font-weight: 900;
+    font-size: 32px;
+    margin: 0;
+}
+
+.song-artist {
+    grid-area: artist;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+}
+
+.song-album {
+    grid-area: album;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0 1.5em;
+    grid-template-areas:
+    "release-date views";
+    grid-area: stats;
+    margin-top: auto;
+}
+
+.stats-release-date {
+    grid-area: release-date;
+    font-size: 14px;
+}
+
+.stats-views {
+    grid-area: views;
+    font-size: 14px;
+}
