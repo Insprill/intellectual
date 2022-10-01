@@ -93,14 +93,12 @@ Intellectual support a few different arguments when starting. Append `-h` when r
 
 - [x] Search for songs
 - [x] View lyrics
-- [ ] More song info on the lryics page
+- [x] More song info on the lryics page
   - Song name
   - Song/album image
   - Album name
   - Artist
   - Release date
-  - Credits
-  - About
 - [ ] View artist info
 - [ ] View album info
 - [ ] More search types
