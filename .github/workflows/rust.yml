@@ -34,7 +34,7 @@ jobs:
           toolchain: stable
 
       - name: Setup Cache
-        uses: Swatinem/rust-cache@v1
+        uses: Swatinem/rust-cache@v2
 
       - name: Install Linux Dependencies
         if: ${{ runner.os == 'Linux' }}
