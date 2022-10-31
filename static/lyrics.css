@@ -63,6 +63,10 @@
     margin: 0;
 }
 
+.song-artist-link {
+    color: #c9d1d9;
+}
+
 .stats {
     display: grid;
     grid-template-columns: 1fr 1fr;

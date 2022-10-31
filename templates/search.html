@@ -11,7 +11,7 @@
         <img class="song-thumbnail" src="api/image?url={{ result.song_art_image_thumbnail_url|e }}"
              alt="Thumbnail"/>
         <h2 class="song-title">{{ result.title|e }}</h2>
-        <h3 class="song-artist">{{ result.artist_names|e }}</h3>
+        <h3 class="song-artist">{{ result.primary_artist.name|e }}</h3>
         {% if result.stats.pageviews.is_some() %}
         <h3 class="song-views">{{ utils::pretty_format_num(result.stats.pageviews.unwrap())|e }} Views</h3>
         {% endif %}

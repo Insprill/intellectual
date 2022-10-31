@@ -87,7 +87,6 @@ pub struct GeniusArtistResponse {
 pub struct GeniusSong {
     pub id: u32,
     pub title: String,
-    pub artist_names: String,
     pub path: String,
     pub header_image_url: String,
     pub release_date_for_display: Option<String>,

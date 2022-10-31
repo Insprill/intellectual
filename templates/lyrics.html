@@ -15,7 +15,11 @@
     <div class="header">
         <div class="song">
             <p class="song-title">{{ song.title|e }}</p>
-            <p class="song-artist">By <cite>{{ song.artist_names|e }}</cite></p>
+            <p class="song-artist">By 
+                <a class="song-artist-link" href="artist?api_path={{ song.primary_artist.api_path }}">
+                    <cite>{{ song.primary_artist.name|e }}</cite>
+                </a>
+            </p>
             {% if song.album.is_some() %}
                 <p class="song-album">On <cite>{{ song.album.as_ref().unwrap().name|e }}</cite></p>
             {% endif %}
