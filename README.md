@@ -99,7 +99,7 @@ Intellectual support a few different arguments when starting. Append `-h` when r
   - Album name
   - Artist
   - Release date
-- [ ] View artist info
+- [x] View artist info
 - [ ] View album info
 - [ ] More search types
   - By lyrics
@@ -111,6 +111,7 @@ Intellectual support a few different arguments when starting. Append `-h` when r
 - [ ] Annotation support
 - [ ] More robust error handling
 - [ ] Theme support
+- [ ] Show artists' work on their page.
 - [ ] Better accessibility
 - [ ] Support for more lyric sources
 
