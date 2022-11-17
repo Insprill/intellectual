@@ -1,4 +1,4 @@
-use actix_web::{get, Responder, web};
+use actix_web::{get, web, Responder};
 use askama::Template;
 use serde::Deserialize;
 
@@ -19,7 +19,13 @@ pub struct ArtistQuery {
 
 #[get("/artist")]
 pub async fn artist(info: web::Query<ArtistQuery>) -> impl Responder {
-    let responses = genius::text(genius::SubDomain::Api, info.api_path.trim_start_matches('/')).await;
+    let responses = genius::text(
+        genius::SubDomain::Api,
+        info.api_path.trim_start_matches('/'),
+    )
+    .await;
     let api: GeniusArtistRequest = serde_json::from_str(&responses).unwrap();
-    template(ArtistTemplate { artist: api.response.artist })
+    template(ArtistTemplate {
+        artist: api.response.artist,
+    })
 }

@@ -1,4 +1,4 @@
-use actix_web::{get, Responder, web};
+use actix_web::{get, web, Responder};
 use askama::Template;
 use futures::future;
 use reqwest::Client;
@@ -32,13 +32,21 @@ pub struct LyricsQuery {
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
     let responses = future::join(
-        genius::text(genius::SubDomain::Api, info.api_path.trim_start_matches('/')),
+        genius::text(
+            genius::SubDomain::Api,
+            info.api_path.trim_start_matches('/'),
+        ),
         genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')),
-    ).await;
+    )
+    .await;
     let api: GeniusSongRequest = serde_json::from_str(&responses.0).unwrap();
     let verses = scrape_lyrics(&responses.1);
     count_view(&api.response.song).await; // TODO: Don't block for this
-    template(LyricsTemplate { verses, query: info.into_inner(), song: api.response.song })
+    template(LyricsTemplate {
+        verses,
+        query: info.into_inner(),
+        song: api.response.song,
+    })
 }
 
 fn scrape_lyrics(doc: &str) -> Vec<Verse> {
@@ -49,10 +57,16 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
 
     for x in document.select(parser).flat_map(|x| x.text()) {
         if x.starts_with('[') && x.ends_with(']') {
-            verses.push(Verse { title: x.to_string(), lyrics: Vec::new() })
+            verses.push(Verse {
+                title: x.to_string(),
+                lyrics: Vec::new(),
+            })
         } else {
             if verses.is_empty() {
-                verses.push(Verse { title: "".to_string(), lyrics: Vec::new() })
+                verses.push(Verse {
+                    title: "".to_string(),
+                    lyrics: Vec::new(),
+                })
             }
             let mut x1 = verses.remove(verses.len() - 1);
             x1.lyrics.push(x.to_string());
@@ -61,7 +75,10 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
     }
 
     if verses.is_empty() {
-        verses.push(Verse { title: "This song has no lyrics".to_string(), lyrics: Vec::new() })
+        verses.push(Verse {
+            title: "This song has no lyrics".to_string(),
+            lyrics: Vec::new(),
+        })
     }
 
     verses
@@ -69,6 +86,10 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
 
 async fn count_view(song: &GeniusSong) {
     let _ = Client::new()
-        .post(format!("https://genius.com/api/songs/{}/count_view", song.id))
-        .send().await;
+        .post(format!(
+            "https://genius.com/api/songs/{}/count_view",
+            song.id
+        ))
+        .send()
+        .await;
 }

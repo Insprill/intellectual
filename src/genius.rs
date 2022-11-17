@@ -15,7 +15,10 @@ pub async fn bytes(subdomain: SubDomain, path: &str) -> Bytes {
 async fn request(subdomain: SubDomain, path: &str) -> Response {
     let mut builder = Client::new()
         .get(format!("https://{}genius.com/{}", subdomain.value(), path))
-        .header("Authorization", format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()));
+        .header(
+            "Authorization",
+            format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()),
+        );
     if matches!(subdomain, SubDomain::Api) {
         builder = builder.query(&[("text_format", "plain")]);
     }
