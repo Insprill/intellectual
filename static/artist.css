@@ -1,7 +1,7 @@
 .artist {
     display: grid;
     grid-template-columns: 15em 25em;
-    grid-template-rows: 7.5em 7.5em 1fr;
+    grid-template-rows: 6.5em 8.5em 1fr;
     gap: 1em 1em;
     grid-template-areas: 
       "image name"
