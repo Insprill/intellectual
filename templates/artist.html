@@ -19,7 +19,7 @@
             <p class="artist-nicknames">
                 AKA:
                 {% for nickname in artist.alternate_names.as_ref().unwrap() %}
-                    {{ nickname }}{% if !loop.last %},{% endif %}
+                    {{ nickname|e }}{% if !loop.last %},{% endif %}
                 {% endfor %}
             </p>
         {% endif %}
