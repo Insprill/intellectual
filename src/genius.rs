@@ -118,6 +118,41 @@ pub struct GeniusArtist {
     pub image_url: String,
     pub url: String,
     pub description: Option<GeniusDescription>,
+    pub facebook_name: Option<String>,
+    pub instagram_name: Option<String>,
+    pub twitter_name: Option<String>,
+}
+
+impl GeniusArtist {
+    pub fn socials(&self) -> Vec<ArtistSocial> {
+        let mut socials = Vec::with_capacity(3);
+
+        if let Some(name) = self.facebook_name.as_ref() {
+            socials.push(ArtistSocial {
+                name_raw: name.as_str(),
+                name_formatted: name.to_string(),
+                brand: "facebook",
+            })
+        }
+
+        if let Some(name) = self.instagram_name.as_ref() {
+            socials.push(ArtistSocial {
+                name_raw: name.as_str(),
+                name_formatted: format!("@{}", name),
+                brand: "instagram",
+            })
+        }
+
+        if let Some(name) = self.twitter_name.as_ref() {
+            socials.push(ArtistSocial {
+                name_raw: name.as_str(),
+                name_formatted: format!("@{}", name),
+                brand: "twitter",
+            })
+        }
+
+        socials
+    }
 }
 
 #[derive(Deserialize)]
@@ -126,3 +161,9 @@ pub struct GeniusDescription {
 }
 
 // endregion
+
+pub struct ArtistSocial<'a> {
+    pub name_raw: &'a str,
+    pub name_formatted: String,
+    pub brand: &'a str,
+}

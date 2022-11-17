@@ -1,12 +1,12 @@
 .artist {
     display: grid;
     grid-template-columns: 15em 25em;
-    grid-template-rows: 15em 15em;
+    grid-template-rows: 7.5em 7.5em 1fr;
     gap: 1em 1em;
-    grid-auto-flow: row;
-    grid-template-areas:
-    "image name"
-    "description description";
+    grid-template-areas: 
+      "image name"
+      "image social"
+      "description description";
     padding: 0.75rem;
     margin: 2rem auto;
     border-radius: 5px;
@@ -22,6 +22,7 @@
 }
 
 .artist-info {
+    grid-area: name;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 0.5fr 1.5fr;
@@ -30,7 +31,6 @@
     grid-template-areas:
     "artist-name"
     "artist-nicknames";
-    grid-area: name;
 }
 
 .artist-name {
@@ -49,4 +49,63 @@
 
 .artist-description {
     grid-area: description;
+}
+
+.artist-socials {
+    grid-area: social;
+    display: grid;
+    grid-template-columns: 1fr; 
+    grid-template-rows: 2.5em 2.5em 2.5em; 
+    gap: 0.5em 0; 
+    grid-template-areas: 
+      "facebook"
+      "instagram"
+      "twitter"; 
+}
+
+.social {
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 2em 1fr;
+    grid-template-rows: 1fr;
+    gap: 5px 0;
+    grid-template-areas: 
+      "icon name";
+    align-items: center;
+    transition: all .2s ease-in-out;
+}
+
+.social:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    transform: translate3d(0px, -1px, 0px);
+}
+
+.social-icon {
+    grid-area: icon;
+    width: 26px;
+    height: 26px;
+}
+
+.social-name {
+    grid-area: name;
+    color: #c9d1d9;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.facebook {
+    grid-area: facebook;
+    background-color: #4267B2;
+}
+
+.instagram {
+    grid-area: instagram;
+    background-color: #E1306C;
+}
+
+.twitter {
+    grid-area: twitter;
+    background-color: #1DA1F2;
 }

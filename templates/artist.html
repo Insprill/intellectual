@@ -24,8 +24,16 @@
             </p>
         {% endif %}
     </div>
+    <div class="artist-socials">
+        {% for social in artist.socials() %}
+            <a class="social {{social.brand|e}}" href="https://{{social.brand}}.com/{{social.name_raw|e}}">
+                <img class="social-icon" src="icon/{{social.brand}}.svg"/>
+                <p class="social-name">{{ social.name_formatted|e }}</p>
+            </a>
+        {% endfor %}
+    </div>
     {% if artist.description.is_some() %}
-    <div class="artist-description">{{ artist.description.as_ref().unwrap().plain|e|paragraphbreaks|safe }}</div>
+        <div class="artist-description">{{ artist.description.as_ref().unwrap().plain|e|paragraphbreaks|safe }}</div>
     {% endif %}
 </div>
 {% endblock %}
