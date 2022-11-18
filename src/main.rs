@@ -87,7 +87,7 @@ async fn main() -> std::io::Result<()> {
             .service(home::home)
             .service(lyrics::lyrics)
             .service(search::search)
-            .service(Files::new("/", "./static").show_files_listing())
+            .service(Files::new("/", "./static"))
     });
 
     if workers > 0 {
