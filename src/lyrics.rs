@@ -31,17 +31,20 @@ pub struct LyricsQuery {
 
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
-    let responses = future::join(
-        genius::text(
-            genius::SubDomain::Api,
-            info.api_path.trim_start_matches('/'),
-        ),
+    let trimmed_api_path = info.api_path.trim_start_matches('/');
+    let responses = future::join3(
+        genius::text(genius::SubDomain::Api, trimmed_api_path),
         genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')),
+        count_view(
+            trimmed_api_path
+                .trim_start_matches(|c: char| !c.is_ascii_digit())
+                .parse::<u32>()
+                .unwrap(),
+        ),
     )
     .await;
     let api: GeniusSongRequest = serde_json::from_str(&responses.0).unwrap();
     let verses = scrape_lyrics(&responses.1);
-    count_view(&api.response.song).await; // TODO: Don't block for this
     template(LyricsTemplate {
         verses,
         query: info.into_inner(),
@@ -84,12 +87,9 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
     verses
 }
 
-async fn count_view(song: &GeniusSong) {
+async fn count_view(id: u32) {
     let _ = Client::new()
-        .post(format!(
-            "https://genius.com/api/songs/{}/count_view",
-            song.id
-        ))
+        .post(format!("https://genius.com/api/songs/{}/count_view", id))
         .send()
         .await;
 }
