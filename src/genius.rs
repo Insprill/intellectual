@@ -1,4 +1,3 @@
-use actix_web::web::Bytes;
 use reqwest::{Client, Response};
 use serde::Deserialize;
 
@@ -8,11 +7,7 @@ pub async fn text(subdomain: SubDomain, path: &str) -> String {
     request(subdomain, path).await.text().await.unwrap()
 }
 
-pub async fn bytes(subdomain: SubDomain, path: &str) -> Bytes {
-    request(subdomain, path).await.bytes().await.unwrap()
-}
-
-async fn request(subdomain: SubDomain, path: &str) -> Response {
+pub async fn request(subdomain: SubDomain, path: &str) -> Response {
     let mut builder = Client::new()
         .get(format!("https://{}genius.com/{}", subdomain.value(), path))
         .header(
