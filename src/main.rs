@@ -38,12 +38,26 @@ async fn main() -> std::io::Result<()> {
                 .default_value("8080")
                 .num_args(1),
         )
+        .arg(
+            Arg::new("workers")
+                .short('w')
+                .long("workers")
+                .value_name("WORKERS")
+                .help("The amount of HTTP workers to use. 0 to equal physical CPU cores")
+                .default_value("0")
+                .num_args(1),
+        )
         .get_matches();
 
     let address = matches.get_one::<String>("address").unwrap().as_str();
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| matches.get_one::<String>("port").unwrap().to_string())
         .parse::<u16>()
+        .unwrap();
+    let workers = matches
+        .get_one::<String>("workers")
+        .unwrap_or(&"0".to_string())
+        .parse::<usize>()
         .unwrap();
 
     CombinedLogger::init(vec![TermLogger::new(
@@ -66,7 +80,7 @@ async fn main() -> std::io::Result<()> {
         port
     );
 
-    HttpServer::new(|| {
+    let mut server = HttpServer::new(|| {
         App::new()
             .service(api::api)
             .service(artist::artist)
@@ -74,8 +88,11 @@ async fn main() -> std::io::Result<()> {
             .service(lyrics::lyrics)
             .service(search::search)
             .service(Files::new("/", "./static").show_files_listing())
-    })
-    .bind((address, port))?
-    .run()
-    .await
+    });
+
+    if workers > 0 {
+        server = server.workers(workers);
+    }
+
+    server.bind((address, port))?.run().await
 }
