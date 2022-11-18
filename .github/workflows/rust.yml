@@ -33,10 +33,6 @@ jobs:
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Install Linux Dependencies
-        if: ${{ runner.os == 'Linux' }}
-        run: sudo apt-get install -y libssl-dev
-
       - name: Check Code Style
         run: cargo clippy -- -D warnings
 
