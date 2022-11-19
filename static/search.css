@@ -77,9 +77,9 @@
 }
 
 .pagination a.active {
-    background-color: #161b22;
+    background-color: #1b2027;
 }
 
 .pagination a:hover:not(.active) {
-    background-color: #1b2027;
+    background-color: #161b22;
 }
