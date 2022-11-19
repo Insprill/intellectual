@@ -61,3 +61,25 @@
     height: 100%;
     border-radius: 5%;
 }
+
+.pagination {
+    display: inline-block;
+    margin: auto;
+}
+
+.pagination a {
+    float: left;
+    color: #c9d1d9;
+    background-color: #0d1117;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.pagination a.active {
+    background-color: #161b22;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #1b2027;
+}

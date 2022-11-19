@@ -100,12 +100,12 @@ Intellectual support a few different arguments when starting. Append `-h` when r
   - Artist
   - Release date
 - [x] View artist info
+- [x] Paginated searches
 - [ ] View album info
 - [ ] More search types
   - By lyrics
   - For artists
   - For albums
-- [ ] Paginated searches
 - [ ] More reliable media fetching
 - [ ] Improve responsiveness
 - [ ] Annotation support
