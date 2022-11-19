@@ -111,17 +111,16 @@
     background-color: #1DA1F2;
 }
 
-@media only screen and (max-width: 512px){ 
-
+@media only screen and (max-width: 512px) { 
     .artist {
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: auto;
         gap: 1em 1em;
         grid-template-areas: 
-            "image      " 
-            "name       " 
-            "social     " 
+            "image" 
+            "name" 
+            "social" 
             "description";
         padding: 0.75rem;
         margin: 2rem auto;
@@ -148,20 +147,18 @@
         "artist-name"
         "artist-nicknames";
     }
- }
+}
 
-
- @media only screen and (min-width: 513px) and (max-width: 768px) { 
-
+@media only screen and (min-width: 513px) and (max-width: 768px) { 
     .artist {
         display: grid;
         grid-template-columns: auto auto auto;
         grid-template-rows: auto;
         gap: 1em 1em;
         grid-template-areas: 
-            'image       image       image       image       name       ' 
-            'image      image      image      image      social     ' 
-            'description description description description description';
+            "image image image image name" 
+            "image image image image social" 
+            "description description description description description";
         padding: 0.75rem;
         margin: 2rem auto;
         border-radius: 5px;
@@ -188,4 +185,4 @@
             "artist-name"
             "artist-nicknames";
     }
- }
+}
