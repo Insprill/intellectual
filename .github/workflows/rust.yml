@@ -32,6 +32,8 @@ jobs:
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.name }}
 
       - name: Check Code Style
         run: cargo clippy -- -D warnings
