@@ -7,3 +7,7 @@ pub fn pretty_format_num(num: i32) -> String {
         format!("{}", num)
     }
 }
+
+pub fn borrowed_i8_eq(a: &i8, b: &i8) -> bool {
+    *a == *b
+}
