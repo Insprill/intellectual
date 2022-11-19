@@ -9,5 +9,5 @@ pub fn pretty_format_num(num: i32) -> String {
 }
 
 pub fn borrowed_i8_eq(a: &i8, b: &i8) -> bool {
-    return *a == *b;
+    *a == *b
 }
