@@ -29,7 +29,12 @@ pub struct SearchQuery {
 
 #[get("/search")]
 pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
-    let response = genius::text(genius::SubDomain::Api, &format!("search?q={}", info.q)).await;
+    let response = genius::text(
+        genius::SubDomain::Api,
+        "search",
+        Some(("q", info.q.as_str())),
+    )
+    .await;
     let deserialized: GeniusSearchRequest = serde_json::from_str(&response).unwrap();
 
     let current_page = info.page.unwrap_or(1);

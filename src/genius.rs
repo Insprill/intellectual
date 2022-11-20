@@ -1,25 +1,47 @@
-use reqwest::{Client, Response};
+use actix_web::{http::StatusCode, web::Bytes};
+use awc::Client;
 use serde::Deserialize;
+use urlencoding::encode;
 
 // region API
 
-pub async fn text(subdomain: SubDomain, path: &str) -> String {
-    request(subdomain, path).await.text().await.unwrap()
+pub async fn text(subdomain: SubDomain, path: &str, query: Option<(&str, &str)>) -> String {
+    String::from_utf8(request(subdomain, path, query).await.1.to_vec()).unwrap()
 }
 
-pub async fn request(subdomain: SubDomain, path: &str) -> Response {
-    let mut builder = Client::new()
+pub async fn request(
+    subdomain: SubDomain,
+    path: &str,
+    query: Option<(&str, &str)>,
+) -> (StatusCode, Bytes) {
+    let query_str = if let Some(q) = query {
+        encode(format!("&{}={}", q.0, q.1).as_str()).into_owned()
+    } else {
+        "".into()
+    };
+    let mut res = Client::default()
+        .get(format!(
+            "https://{}genius.com/{}?text_format=plain{}",
+            subdomain.value(),
+            path,
+            query_str
+        ))
+        .bearer_auth(std::env::var("GENIUS_AUTH_TOKEN").unwrap())
+        .send()
+        .await
+        .unwrap();
+    (res.status(), res.body().await.unwrap())
+}
+
+pub async fn post(subdomain: SubDomain, path: &str) -> StatusCode {
+    Client::default()
         .get(format!("https://{}genius.com/{}", subdomain.value(), path))
-        .header(
-            "Authorization",
-            format!("Bearer {}", std::env::var("GENIUS_AUTH_TOKEN").unwrap()),
-        );
-    if matches!(subdomain, SubDomain::Api) {
-        builder = builder.query(&[("text_format", "plain")]);
-    }
-    builder.send().await.unwrap()
+        .bearer_auth(std::env::var("GENIUS_AUTH_TOKEN").unwrap())
+        .send()
+        .await
+        .unwrap()
+        .status()
 }
-
 pub enum SubDomain {
     Api,
     Images,

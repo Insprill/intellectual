@@ -1,5 +1,4 @@
-use actix_web::{get, web, HttpResponse, Responder};
-use reqwest::StatusCode;
+use actix_web::{get, http::StatusCode, web, HttpResponse, Responder};
 use serde::Deserialize;
 
 use crate::genius;
@@ -13,9 +12,9 @@ pub struct UrlQuery {
 pub async fn api(info: web::Query<UrlQuery>) -> impl Responder {
     // Ensure this can't be abused.
     let img_path = info.url.as_str().split('/').last().unwrap_or_default();
-    let response = genius::request(genius::SubDomain::Images, img_path).await;
-    if response.status() != StatusCode::OK {
-        return HttpResponse::build(response.status()).await.unwrap();
+    let (status, body) = genius::request(genius::SubDomain::Images, img_path, None).await;
+    if status != StatusCode::OK {
+        return HttpResponse::build(status).await.unwrap();
     }
-    HttpResponse::Ok().body(response.bytes().await.unwrap())
+    HttpResponse::Ok().body(body)
 }
