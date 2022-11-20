@@ -4,6 +4,12 @@
 <link rel="stylesheet" type="text/css" href="/style/search.css">
 {% endblock %}
 
+{% block navright %}
+<div class="nav-item.right">
+    <a class="external-link" href="https://genius.com/search?q={{ q }}">Search on Genius</a>
+</div>
+{% endblock %}
+
 {% block content %}
 <div class="song-list">
     {% for result in results %}
