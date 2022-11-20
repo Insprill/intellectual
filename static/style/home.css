@@ -7,14 +7,14 @@
     padding: 12px;
     border-radius: 6px;
     display: flex;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow);
     margin: -50px auto auto;
-    background: #161b22;
+    background: var(--foreground);
 }
 
 .search-bar > form button {
-    background: #0d1117;
-    color: #c9d1d9;
+    background: var(--background);
+    color: var(--text);
     border: 0;
     border-radius: 6px;
     cursor: pointer;
@@ -23,8 +23,8 @@
 }
 
 .search-bar > form input {
-    background: #0d1117;
-    color: #c9d1d9;
+    background: var(--background);
+    color: var(--text);
     font-size: 24px;
     width: 100%;
     border: 0;

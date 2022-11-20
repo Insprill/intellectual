@@ -1,10 +1,40 @@
+:root, .dark {
+	--yellow: #ffff64;
+	--text: #c9d1d9;
+	--text-dark: #85817b;
+	--foreground: #161b22;
+	--background: #0d1117;
+	--highlighted: #1b2027;
+	--facebook: #4267b2;
+	--instagram: #e1306c;
+	--twitter: #1da1f2;
+	--shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    --hover-transform: translate3d(0px, -1px, 0px);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+	    --yellow: #ffff64;
+	    --text: #24292f;
+	    --text-dark: #85817b;
+	    --foreground: #f6f8fa;
+	    --background: #ffffff;
+	    --highlighted: #f0f2f4;
+	    --facebook: #4267b2;
+	    --instagram: #e1306c;
+	    --twitter: #1da1f2;
+	    --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        --hover-transform: translate3d(0px, -1px, 0px);
+    }
+}
+
 /* region Navigation Bar */
 
 nav {
     display: flex;
     align-items: center;
     position: fixed;
-    background-color: #161b22;
+    background-color: var(--foreground);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
     width: 100%;
     height: 50px;
@@ -45,7 +75,7 @@ nav {
     font-size: 26px;
     font-weight: 800;
     line-height: 1;
-    color: #ffff64;
+    color: var(--yellow);
     text-decoration: unset;
 }
 
@@ -53,7 +83,7 @@ nav {
     font-size: 12px;
     font-weight: 600;
     line-height: 1;
-    color: #85817b;
+    color: var(--text-dark);
     text-decoration: unset;
 }
 
@@ -66,16 +96,16 @@ nav {
     padding-top: 50px;
     margin: auto;
     min-height: 100vh;
-    background-color: #0d1117;
 }
 
 html, body {
     margin: 0;
     padding: 0;
     font-family: Inter var, sans-serif;
+    background-color: var(--background);
 }
 
 .external-link {
-    color: #c9d1d9;
     font-weight: 500;
+    color: var(--text);
 }

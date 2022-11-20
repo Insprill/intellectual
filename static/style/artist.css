@@ -10,8 +10,8 @@
     padding: 0.75rem;
     margin: 2rem auto;
     border-radius: 5px;
-    background: #161b22;
-    color: #c9d1d9;
+    background: var(--foreground);
+    color: var(--text);
 }
 
 .artist-image {
@@ -79,8 +79,8 @@
 }
 
 .social:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    transform: translate3d(0px, -1px, 0px);
+    box-shadow: var(--shadow);
+    transform: var(--hover-transform);
 }
 
 .social-icon {
@@ -91,7 +91,7 @@
 
 .social-name {
     grid-area: name;
-    color: #c9d1d9;
+    color: var(--text);
     font-size: 22px;
     font-weight: 400;
     margin: 0;
@@ -99,17 +99,17 @@
 
 .facebook {
     grid-area: facebook;
-    background-color: #4267B2;
+    background-color: var(--facebook);
 }
 
 .instagram {
     grid-area: instagram;
-    background-color: #E1306C;
+    background-color: var(--instagram);
 }
 
 .twitter {
     grid-area: twitter;
-    background-color: #1DA1F2;
+    background-color: var(--twitter);
 }
 
 @media only screen and (max-width: 512px) { 

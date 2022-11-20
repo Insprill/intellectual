@@ -2,8 +2,8 @@
     padding: 0.75rem;
     margin: 2rem auto;
     border-radius: 5px;
-    background: #161b22;
-    color: #c9d1d9;
+    background: var(--foreground);
+    color: var(--text);
 }
 
 .song-lyric {
@@ -75,7 +75,7 @@
 }
 
 .song-artist-link {
-    color: #c9d1d9;
+    color: var(--text);
 }
 
 .stats {

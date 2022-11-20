@@ -9,9 +9,9 @@
 }
 
 .song {
-    background: #161b22;
+    background: var(--foreground);
     border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow);
     transition: 0.3s all;
     text-decoration: none;
     display: grid;
@@ -26,8 +26,8 @@
 }
 
 .song:hover {
-    background: #1b2027;
-    transform: translate3d(0px, -1px, 0px);
+    background: var(--highlighted);
+    transform: var(--hover-transform);
 }
 
 .song:not(:last-child) {
@@ -37,7 +37,7 @@
 .song-title {
     grid-area: song-title;
     font-weight: 900;
-    color: #c9d1d9;
+    color: var(--text);
     font-size: 32px;
 }
 
@@ -45,14 +45,14 @@
     grid-area: song-artist;
     font-weight: 600;
     font-size: 16px;
-    color: #c9d1d9;
+    color: var(--text);
 }
 
 .song-views {
     grid-area: song-views;
     font-weight: 500;
     font-size: 12px;
-    color: #c9d1d9;
+    color: var(--text);
 }
 
 .song-thumbnail {
@@ -69,17 +69,17 @@
 
 .pagination a {
     float: left;
-    color: #c9d1d9;
-    background-color: #0d1117;
+    color: var(--text);
+    background-color: var(--background);
     padding: 8px 16px;
     text-decoration: none;
     border-radius: 5px;
 }
 
 .pagination a.active {
-    background-color: #1b2027;
+    background-color: var(--highlighted);
 }
 
 .pagination a:hover:not(.active) {
-    background-color: #161b22;
+    background-color: var(--foreground);
 }
