@@ -15,21 +15,20 @@ pub async fn request(
     query: Option<(&str, &str)>,
 ) -> (StatusCode, Bytes) {
     let query_str = if let Some(q) = query {
-        encode(format!("&{}={}", q.0, q.1).as_str()).into_owned()
+        format!("&{}={}", q.0, encode(q.1).into_owned())
     } else {
         "".into()
     };
-    let mut res = Client::default()
-        .get(format!(
-            "https://{}genius.com/{}?text_format=plain{}",
-            subdomain.value(),
-            path,
-            query_str
-        ))
-        .bearer_auth(std::env::var("GENIUS_AUTH_TOKEN").unwrap())
-        .send()
-        .await
-        .unwrap();
+    let mut client = Client::default().get(format!(
+        "https://{}genius.com/{}?text_format=plain{}",
+        subdomain.value(),
+        path,
+        query_str
+    ));
+    if matches!(subdomain, SubDomain::Api) {
+        client = client.bearer_auth(std::env::var("GENIUS_AUTH_TOKEN").unwrap());
+    }
+    let mut res = client.send().await.unwrap();
     (res.status(), res.body().await.unwrap())
 }
 
