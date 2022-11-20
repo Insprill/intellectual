@@ -29,10 +29,15 @@ pub struct SearchQuery {
 
 #[get("/search")]
 pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
-    let response = genius::text(genius::SubDomain::Api, &format!("search?q={}", info.q)).await;
+    let current_page = info.page.unwrap_or(1);
+
+    let response = genius::text(
+        genius::SubDomain::Api,
+        &format!("search?q={}&page={}", info.q, current_page),
+    )
+    .await;
     let deserialized: GeniusSearchRequest = serde_json::from_str(&response).unwrap();
 
-    let current_page = info.page.unwrap_or(1);
     let nav_min = max(1, current_page - NAV_PAGE_COUNT);
     let nav_max = min(100, current_page + NAV_PAGE_COUNT);
     let nav_pages = RangeInclusive::new(nav_min, nav_max).collect();
