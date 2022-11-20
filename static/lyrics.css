@@ -21,6 +21,17 @@
     "cover stats";
 }
 
+@media only screen and (max-width: 512px) { 
+    .header {
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+        "cover"
+        "song"
+        "stats";
+    }
+}
+
 .header-cover {
     grid-area: cover;
     width: 100%;
