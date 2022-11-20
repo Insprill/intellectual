@@ -1,7 +1,7 @@
 use std::process::exit;
 
 use actix_files::Files;
-use actix_web::{App, HttpServer};
+use actix_web::{middleware, App, HttpServer};
 use clap::{Arg, Command};
 use log::{error, info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
@@ -82,6 +82,13 @@ async fn main() -> std::io::Result<()> {
 
     let mut server = HttpServer::new(|| {
         App::new()
+            .wrap(
+                middleware::DefaultHeaders::new()
+                    .add(("Referrer-Policy", "no-referrer"))
+                    .add(("X-Frame-Options", "DENY"))
+                    .add(("X-Content-Type-Options", "nosniff"))
+                    .add(("Content-Security-Policy", "default-src 'self'")),
+            )
             .service(api::api)
             .service(artist::artist)
             .service(home::home)
