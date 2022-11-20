@@ -2,6 +2,7 @@
 name = "intellectual"
 version = "0.1.0"
 license = "AGPL-3.0"
+repository = "https://github.com/Insprill/intellectual"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
