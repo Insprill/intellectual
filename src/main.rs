@@ -1,6 +1,5 @@
 use std::process::exit;
 
-use actix_files::Files;
 use actix_web::{middleware, App, HttpServer};
 use clap::{Arg, Command};
 use log::{error, info, LevelFilter};
@@ -11,6 +10,7 @@ mod artist;
 mod genius;
 mod home;
 mod lyrics;
+mod resource;
 mod search;
 mod templates;
 mod utils;
@@ -89,12 +89,17 @@ async fn main() -> std::io::Result<()> {
                     .add(("X-Content-Type-Options", "nosniff"))
                     .add(("Content-Security-Policy", "default-src 'self'")),
             )
+            // Routes
             .service(api::api)
             .service(artist::artist)
             .service(home::home)
             .service(lyrics::lyrics)
             .service(search::search)
-            .service(Files::new("/", "./static"))
+            // Static Resources
+            .service(resource::resource)
+            .service(resource::style)
+            .service(resource::icon)
+            .service(resource::font)
     });
 
     if workers > 0 {
