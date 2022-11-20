@@ -90,7 +90,7 @@ async fn main() -> std::io::Result<()> {
                     .add(("Content-Security-Policy", "default-src 'self'")),
             )
             // Routes
-            .service(api::api)
+            .service(api::image)
             .service(artist::artist)
             .service(home::home)
             .service(lyrics::lyrics)

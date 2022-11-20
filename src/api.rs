@@ -9,7 +9,7 @@ pub struct UrlQuery {
 }
 
 #[get("/api/image")]
-pub async fn api(info: web::Query<UrlQuery>) -> impl Responder {
+pub async fn image(info: web::Query<UrlQuery>) -> impl Responder {
     // Ensure this can't be abused.
     let img_path = &info.url.split('/').last().unwrap_or_default();
     let (status, body) = genius::request(genius::SubDomain::Images, img_path, None).await;
