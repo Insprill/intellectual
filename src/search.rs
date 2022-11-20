@@ -33,7 +33,8 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
 
     let response = genius::text(
         genius::SubDomain::Api,
-        &format!("search?q={}&page={}", info.q, current_page),
+        "search",
+        Some(("q", info.q.as_str())),
     )
     .await;
     let deserialized: GeniusSearchRequest = serde_json::from_str(&response).unwrap();

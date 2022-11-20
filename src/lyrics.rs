@@ -1,7 +1,6 @@
 use actix_web::{get, web, Responder};
 use askama::Template;
 use futures::future;
-use reqwest::Client;
 use scraper::{Html, Selector};
 use serde::Deserialize;
 
@@ -33,8 +32,12 @@ pub struct LyricsQuery {
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
     let trimmed_api_path = info.api_path.trim_start_matches('/');
     let responses = future::join3(
-        genius::text(genius::SubDomain::Api, trimmed_api_path),
-        genius::text(genius::SubDomain::Root, info.path.trim_start_matches('/')),
+        genius::text(genius::SubDomain::Api, trimmed_api_path, None),
+        genius::text(
+            genius::SubDomain::Root,
+            info.path.trim_start_matches('/'),
+            None,
+        ),
         count_view(
             trimmed_api_path
                 .trim_start_matches(|c: char| !c.is_ascii_digit())
@@ -88,8 +91,9 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
 }
 
 async fn count_view(id: u32) {
-    let _ = Client::new()
-        .post(format!("https://genius.com/api/songs/{}/count_view", id))
-        .send()
-        .await;
+    genius::post(
+        genius::SubDomain::Api,
+        format!("songs/{}/count_view", id).as_str(),
+    )
+    .await;
 }
