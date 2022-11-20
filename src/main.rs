@@ -82,6 +82,7 @@ async fn main() -> std::io::Result<()> {
 
     let mut server = HttpServer::new(|| {
         App::new()
+            .wrap(middleware::Compress::default())
             .wrap(
                 middleware::DefaultHeaders::new()
                     .add(("Referrer-Policy", "no-referrer"))
