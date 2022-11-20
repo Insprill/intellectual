@@ -148,7 +148,7 @@ impl GeniusArtist {
 
         if let Some(name) = self.facebook_name.as_ref() {
             socials.push(ArtistSocial {
-                name_raw: name.as_str(),
+                name_raw: name,
                 name_formatted: name.to_string(),
                 brand: "facebook",
             })
@@ -156,7 +156,7 @@ impl GeniusArtist {
 
         if let Some(name) = self.instagram_name.as_ref() {
             socials.push(ArtistSocial {
-                name_raw: name.as_str(),
+                name_raw: name,
                 name_formatted: format!("@{}", name),
                 brand: "instagram",
             })
@@ -164,7 +164,7 @@ impl GeniusArtist {
 
         if let Some(name) = self.twitter_name.as_ref() {
             socials.push(ArtistSocial {
-                name_raw: name.as_str(),
+                name_raw: name,
                 name_formatted: format!("@{}", name),
                 brand: "twitter",
             })

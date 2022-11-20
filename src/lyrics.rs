@@ -91,9 +91,5 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
 }
 
 async fn count_view(id: u32) {
-    genius::post(
-        genius::SubDomain::Api,
-        format!("songs/{}/count_view", id).as_str(),
-    )
-    .await;
+    genius::post(genius::SubDomain::Api, &format!("songs/{}/count_view", id)).await;
 }
