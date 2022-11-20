@@ -1,0 +1,8 @@
+{
+	"name": "Intellectual",
+	"short_name": "Intellectual",
+	"display": "standalone",
+	"background_color": "#0d1117",
+	"description": "Alternate frontend for Genius focused on privacy and simplicity",
+	"theme_color": "#0d1117"
+}
