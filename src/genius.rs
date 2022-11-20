@@ -5,17 +5,20 @@ use urlencoding::encode;
 
 // region API
 
-pub async fn text(subdomain: SubDomain, path: &str, query: Option<(&str, &str)>) -> String {
-    String::from_utf8(request(subdomain, path, query).await.1.to_vec()).unwrap()
+pub async fn text(subdomain: SubDomain, path: &str, queries: Option<Vec<(&str, &str)>>) -> String {
+    String::from_utf8(request(subdomain, path, queries).await.1.to_vec()).unwrap()
 }
 
 pub async fn request(
     subdomain: SubDomain,
     path: &str,
-    query: Option<(&str, &str)>,
+    queries: Option<Vec<(&str, &str)>>,
 ) -> (StatusCode, Bytes) {
-    let query_str = if let Some(q) = query {
-        format!("&{}={}", q.0, encode(q.1).into_owned())
+    let query_str = if let Some(q) = queries {
+        String::from_iter(
+            q.iter()
+                .map(|query| format!("&{}={}", query.0, encode(query.1).into_owned())),
+        )
     } else {
         "".into()
     };
