@@ -147,27 +147,33 @@ impl GeniusArtist {
         let mut socials = Vec::with_capacity(3);
 
         if let Some(name) = self.facebook_name.as_ref() {
-            socials.push(ArtistSocial {
-                name_raw: name,
-                name_formatted: name.to_string(),
-                brand: "facebook",
-            })
+            if !name.is_empty() {
+                socials.push(ArtistSocial {
+                    name_raw: name,
+                    name_formatted: name.to_string(),
+                    brand: "facebook",
+                })
+            }
         }
 
         if let Some(name) = self.instagram_name.as_ref() {
-            socials.push(ArtistSocial {
-                name_raw: name,
-                name_formatted: format!("@{}", name),
-                brand: "instagram",
-            })
+            if !name.is_empty() {
+                socials.push(ArtistSocial {
+                    name_raw: name,
+                    name_formatted: format!("@{}", name),
+                    brand: "instagram",
+                })
+            }
         }
 
         if let Some(name) = self.twitter_name.as_ref() {
-            socials.push(ArtistSocial {
-                name_raw: name,
-                name_formatted: format!("@{}", name),
-                brand: "twitter",
-            })
+            if !name.is_empty() {
+                socials.push(ArtistSocial {
+                    name_raw: name,
+                    name_formatted: format!("@{}", name),
+                    brand: "twitter",
+                })
+            }
         }
 
         socials
