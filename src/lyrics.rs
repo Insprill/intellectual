@@ -1,4 +1,4 @@
-use actix_web::{get, web, Responder};
+use actix_web::{get, web, HttpResponse, Responder, Result};
 use askama::Template;
 use futures::future;
 use scraper::{Html, Selector};
@@ -29,8 +29,17 @@ pub struct LyricsQuery {
 }
 
 #[get("/lyrics")]
-pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
+pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     let trimmed_api_path = info.api_path.trim_start_matches('/');
+
+    let song_id = match trimmed_api_path
+        .trim_start_matches(|c: char| !c.is_ascii_digit())
+        .parse::<u32>()
+    {
+        Ok(id) => id,
+        Err(_) => return Ok(HttpResponse::BadRequest().finish()),
+    };
+
     let responses = future::join3(
         genius::text(genius::SubDomain::Api, trimmed_api_path, None),
         genius::text(
@@ -38,21 +47,18 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> impl Responder {
             info.path.trim_start_matches('/'),
             None,
         ),
-        count_view(
-            trimmed_api_path
-                .trim_start_matches(|c: char| !c.is_ascii_digit())
-                .parse::<u32>()
-                .unwrap(),
-        ),
+        count_view(song_id),
     )
     .await;
-    let api: GeniusSongRequest = serde_json::from_str(&responses.0).unwrap();
+
+    let api: GeniusSongRequest = serde_json::from_str(&responses.0)?;
     let verses = scrape_lyrics(&responses.1);
-    template(LyricsTemplate {
+
+    Ok(template(LyricsTemplate {
         verses,
         query: info.into_inner(),
         song: api.response.song,
-    })
+    }))
 }
 
 fn scrape_lyrics(doc: &str) -> Vec<Verse> {
