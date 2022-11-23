@@ -14,7 +14,7 @@ pub async fn image(info: web::Query<UrlQuery>) -> impl Responder {
     let img_path = &info.url.split('/').last().unwrap_or_default();
     let (status, body) = genius::request(genius::SubDomain::Images, img_path, None).await;
     if status != StatusCode::OK {
-        return HttpResponse::build(status).await.unwrap();
+        return HttpResponse::build(status).finish();
     }
     HttpResponse::Ok().body(body)
 }
