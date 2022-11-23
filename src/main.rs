@@ -1,6 +1,11 @@
 use std::process::exit;
 
-use actix_web::{middleware, App, HttpServer};
+use actix_web::{
+    dev,
+    http::StatusCode,
+    middleware::{self, ErrorHandlerResponse},
+    App, HttpServer, Result,
+};
 use clap::{Arg, Command};
 use log::{error, info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
@@ -82,6 +87,10 @@ async fn main() -> std::io::Result<()> {
 
     let mut server = HttpServer::new(|| {
         App::new()
+            .wrap(
+                middleware::ErrorHandlers::new()
+                    .handler(StatusCode::INTERNAL_SERVER_ERROR, internal_server_error),
+            )
             .wrap(middleware::Compress::default())
             .wrap(
                 middleware::DefaultHeaders::new()
@@ -108,4 +117,14 @@ async fn main() -> std::io::Result<()> {
     }
 
     server.bind((address, port))?.run().await
+}
+
+fn internal_server_error<B>(res: dev::ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
+    match res.response().error() {
+        Some(err) => {
+            error!("'{}' at path '{}'", err, res.request().uri())
+        }
+        None => {}
+    }
+    Ok(ErrorHandlerResponse::Response(res.map_into_left_body()))
 }
