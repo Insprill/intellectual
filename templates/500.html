@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/style/error.css">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Internal Error</h1>
+    <p>{{ err }}</p>
+    <br>
+    <p>If this continues to occur, please <a href="https://github.com/Insprill/intellectual/issues/new/choose">report it</a>.</p>
+</div>
+{% endblock %}
