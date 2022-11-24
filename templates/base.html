@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}Intellectual</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="/style/style.css">
     <link rel="stylesheet" type="text/css" href="/font/inter.css">
+
     {% block head %}
     {% endblock %}
 </head>
-<body>
 
-<!-- NAVBAR -->
+<body>
 <nav>
     <div class="inner-nav">
         <div class="nav-item">
-            <a class="site-version" href="https://github.com/Insprill/intellectual">v{{ env!("CARGO_PKG_VERSION") }}</a>
+            <a class="site-version" href="{{env!("CARGO_PKG_REPOSITORY")}}">v{{ env!("CARGO_PKG_VERSION") }}</a>
         </div>
         <a href="/" class="site-name">Intellectual</a>
         <div class="nav-item right">
@@ -24,12 +26,9 @@
     </div>
 </nav>
 
-<!-- MAIN CONTENT -->
-{% block body %}
 <main class="container">
     {% block content %}
     {% endblock %}
 </main>
-{% endblock %}
 </body>
 </html>
