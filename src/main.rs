@@ -120,11 +120,8 @@ async fn main() -> std::io::Result<()> {
 }
 
 fn internal_server_error<B>(res: dev::ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    match res.response().error() {
-        Some(err) => {
-            error!("'{}' at path '{}'", err, res.request().uri())
-        }
-        None => {}
+    if let Some(err) = res.response().error() {
+        error!("'{}' at path '{}'", err, res.request().uri())
     }
     Ok(ErrorHandlerResponse::Response(res.map_into_left_body()))
 }
