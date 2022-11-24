@@ -1,19 +1,13 @@
 use std::process::exit;
 
-use actix_web::{
-    dev::{self, ServiceResponse},
-    http::StatusCode,
-    middleware::{self, ErrorHandlerResponse},
-    App, HttpServer, Result,
-};
-use askama::Template;
+use actix_web::{http::StatusCode, middleware, App, HttpServer};
 use clap::{Arg, Command};
 use log::{error, info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
-use templates::template;
 
 mod api;
 mod artist;
+mod errors;
 mod genius;
 mod home;
 mod lyrics;
@@ -91,8 +85,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(
                 middleware::ErrorHandlers::new()
-                    .handler(StatusCode::INTERNAL_SERVER_ERROR, render_500)
-                    .handler(StatusCode::NOT_FOUND, render_404),
+                    .handler(StatusCode::INTERNAL_SERVER_ERROR, errors::render_500)
+                    .handler(StatusCode::NOT_FOUND, errors::render_404),
             )
             .wrap(middleware::Compress::default())
             .wrap(
@@ -120,35 +114,4 @@ async fn main() -> std::io::Result<()> {
     }
 
     server.bind((address, port))?.run().await
-}
-
-fn render_500<B>(res: dev::ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let err = res.response().error().unwrap().to_string();
-    let request = res.into_parts().0;
-
-    let new_response = template(InternalErrorTemplate { err });
-
-    Ok(ErrorHandlerResponse::Response(
-        ServiceResponse::new(request, new_response).map_into_right_body(),
-    ))
-}
-
-fn render_404<B>(res: dev::ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let request = res.into_parts().0;
-
-    let new_response = template(NotFoundTemplate {});
-
-    Ok(ErrorHandlerResponse::Response(
-        ServiceResponse::new(request, new_response).map_into_right_body(),
-    ))
-}
-
-#[derive(Template)]
-#[template(path = "404.html")]
-struct NotFoundTemplate {}
-
-#[derive(Template)]
-#[template(path = "500.html")]
-struct InternalErrorTemplate {
-    err: String,
 }
