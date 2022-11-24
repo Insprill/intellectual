@@ -86,7 +86,8 @@ async fn main() -> std::io::Result<()> {
             .wrap(
                 middleware::ErrorHandlers::new()
                     .handler(StatusCode::INTERNAL_SERVER_ERROR, errors::render_500)
-                    .handler(StatusCode::NOT_FOUND, errors::render_404),
+                    .handler(StatusCode::NOT_FOUND, errors::render_404)
+                    .handler(StatusCode::BAD_REQUEST, errors::render_400),
             )
             .wrap(middleware::Compress::default())
             .wrap(

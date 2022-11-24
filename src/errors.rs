@@ -21,6 +21,14 @@ pub fn render_404<B>(res: dev::ServiceResponse<B>) -> Result<ErrorHandlerRespons
     create(res, new_response)
 }
 
+pub fn render_400<B>(res: dev::ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
+    let err = res.response().error().unwrap().to_string();
+
+    let new_response = template(BadRequestTemplate { err });
+
+    create(res, new_response)
+}
+
 fn create<B>(
     res: dev::ServiceResponse<B>,
     new_response: HttpResponse,
@@ -31,11 +39,17 @@ fn create<B>(
 }
 
 #[derive(Template)]
+#[template(path = "500.html")]
+struct InternalErrorTemplate {
+    err: String,
+}
+
+#[derive(Template)]
 #[template(path = "404.html")]
 struct NotFoundTemplate {}
 
 #[derive(Template)]
-#[template(path = "500.html")]
-struct InternalErrorTemplate {
+#[template(path = "400.html")]
+struct BadRequestTemplate {
     err: String,
 }
