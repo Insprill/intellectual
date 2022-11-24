@@ -101,17 +101,15 @@ Intellectual support a few different arguments when starting. Append `-h` when r
   - Release date
 - [x] View artist info
 - [x] Paginated searches
-- [ ] View album info
+- [ ] More robust error handling
+- [ ] Theme support
+- [ ] Improve responsiveness
+- [ ] Annotation support
 - [ ] More search types
   - By lyrics
   - For artists
   - For albums
-- [ ] More reliable media fetching
-- [ ] Improve responsiveness
-- [ ] Annotation support
-- [ ] More robust error handling
-- [ ] Theme support
-- [ ] Show artists' work on their page.
+- [ ] Show artists' work on their page
 - [ ] Better accessibility
 - [ ] Support for more lyric sources
 
