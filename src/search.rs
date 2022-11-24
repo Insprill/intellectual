@@ -1,7 +1,7 @@
 use std::cmp::{max, min};
 use std::ops::RangeInclusive;
 
-use actix_web::{get, web, Responder};
+use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use serde::Deserialize;
 
@@ -28,7 +28,7 @@ pub struct SearchQuery {
 }
 
 #[get("/search")]
-pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
+pub async fn search(info: web::Query<SearchQuery>) -> Result<impl Responder> {
     let current_page = info.page.unwrap_or(1);
 
     let response = genius::text(
@@ -37,13 +37,13 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
         Some(vec![("q", &info.q), ("page", &current_page.to_string())]),
     )
     .await;
-    let deserialized: GeniusSearchRequest = serde_json::from_str(&response).unwrap();
+    let deserialized: GeniusSearchRequest = serde_json::from_str(&response)?;
 
     let nav_min = max(1, current_page - NAV_PAGE_COUNT);
     let nav_max = min(100, current_page + NAV_PAGE_COUNT);
     let nav_pages = RangeInclusive::new(nav_min, nav_max).collect();
 
-    template(SearchTemplate {
+    Ok(template(SearchTemplate {
         q: info.q.to_string(),
         current_page,
         nav_pages,
@@ -53,5 +53,5 @@ pub async fn search(info: web::Query<SearchQuery>) -> impl Responder {
             .into_iter()
             .map(|x| x.result)
             .collect(),
-    })
+    }))
 }
