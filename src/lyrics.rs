@@ -56,12 +56,14 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
     let document = Html::parse_document(doc);
     let parser = &Selector::parse("div[data-lyrics-container=true]").unwrap();
 
-    let mut verses: Vec<Verse> = Vec::new();
+    let text_iter = document.select(parser).flat_map(|x| x.text());
 
-    for x in document.select(parser).flat_map(|x| x.text()) {
-        if x.starts_with('[') && x.ends_with(']') {
+    let mut verses = Vec::with_capacity(text_iter.size_hint().0);
+
+    for text in text_iter {
+        if text.starts_with('[') && text.ends_with(']') {
             verses.push(Verse {
-                title: x.to_string(),
+                title: text.to_string(),
                 lyrics: Vec::new(),
             })
         } else {
@@ -72,7 +74,7 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
                 })
             }
             let mut x1 = verses.remove(verses.len() - 1);
-            x1.lyrics.push(x.to_string());
+            x1.lyrics.push(text.to_string());
             verses.push(x1);
         }
     }
