@@ -1,11 +1,11 @@
 .card {
     background: var(--foreground);
-    border-radius: 5px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
     text-decoration: none;
     justify-content: center;
     flex-direction: column;
     padding: 10px 20px;
     margin: auto;
-    border-radius: 5px;
+    border-radius: var(--radius);
 }

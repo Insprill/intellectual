@@ -5,7 +5,7 @@
 
 .search-bar > form {
     padding: 12px;
-    border-radius: 6px;
+    border-radius: var(--radius);
     display: flex;
     box-shadow: var(--shadow);
     margin: -50px auto auto;
@@ -16,7 +16,7 @@
     background: var(--background);
     color: var(--text);
     border: 0;
-    border-radius: 6px;
+    border-radius: var(--radius);
     cursor: pointer;
     font-weight: bold;
     font-size: 18px;
@@ -28,7 +28,7 @@
     font-size: 24px;
     width: 100%;
     border: 0;
-    border-radius: 6px;
+    border-radius: var(--radius);
     padding: 4px;
     margin-right: 8px;
     height: unset;
