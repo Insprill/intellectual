@@ -37,10 +37,7 @@ fn create<B>(
 }
 
 fn get_err_str<B>(res: &ServiceResponse<B>) -> Option<String> {
-    match res.response().error() {
-        Some(err) => Some(err.to_string()),
-        None => None,
-    }
+    res.response().error().map(|err| err.to_string())
 }
 
 #[derive(Template)]
