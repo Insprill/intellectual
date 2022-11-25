@@ -30,6 +30,7 @@ fn asset(path: &str) -> impl Responder {
     };
     HttpResponse::Ok()
         .append_header(("Content-Type", content_type(path)))
+        .append_header(("Cache-Control", "max-age=604800"))
         .body(file.contents())
 }
 
