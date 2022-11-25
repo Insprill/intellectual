@@ -17,5 +17,7 @@ pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
         return Ok(HttpResponse::build(status).finish());
     }
 
-    Ok(HttpResponse::Ok().body(body))
+    Ok(HttpResponse::Ok()
+        .append_header(("Cache-Control", "max-age=604800"))
+        .body(body))
 }
