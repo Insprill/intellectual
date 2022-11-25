@@ -9,7 +9,9 @@
 {% block content %}
 <div class="card">
     <h1>Internal Error</h1>
-    <p>{{ err }}</p>
+    {% if err.is_some() %}
+        <p>{{ err.as_ref().unwrap() }}</p>
+    {% endif %}
     <br>
     <p>If this continues to occur, please <a href="https://github.com/Insprill/intellectual/issues/new/choose">report it</a>.</p>
 </div>
