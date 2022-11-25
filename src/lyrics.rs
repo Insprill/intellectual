@@ -1,6 +1,4 @@
-use std::error::Error;
-
-use actix_web::{get, web, HttpResponse, Responder, Result};
+use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use futures::future;
 use scraper::{Html, Selector};
@@ -34,22 +32,13 @@ pub struct LyricsQuery {
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     let trimmed_api_path = info.api_path.trim_start_matches('/');
 
-    let song_id = match trimmed_api_path
-        .trim_start_matches(|c: char| !c.is_ascii_digit())
-        .parse::<u32>()
-    {
-        Ok(id) => id,
-        Err(_) => return Ok(HttpResponse::BadRequest().finish()),
-    };
-
-    let responses = future::join3(
+    let responses = future::join(
         genius::get_text(genius::SubDomain::Api, trimmed_api_path, None),
         genius::get_text(
             genius::SubDomain::Root,
             info.path.trim_start_matches('/'),
             None,
         ),
-        count_view(song_id),
     )
     .await;
 
@@ -96,9 +85,4 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
     }
 
     verses
-}
-
-async fn count_view(id: u32) -> Result<(), Box<dyn Error>> {
-    genius::post(genius::SubDomain::Api, &format!("songs/{}/count_view", id)).await?;
-    Ok(())
 }

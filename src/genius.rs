@@ -1,5 +1,4 @@
 use std::error::Error;
-use std::fmt;
 
 use actix_web::{http::StatusCode, web::Bytes};
 use awc::Client;
@@ -39,24 +38,11 @@ pub async fn get(
     ));
 
     if matches!(subdomain, SubDomain::Api) {
-        client = client.bearer_auth(token()?);
+        client = client.bearer_auth(std::env::var("GENIUS_AUTH_TOKEN")?);
     }
 
     let mut res = client.send().await?;
     Ok((res.status(), res.body().await?))
-}
-
-pub async fn post(subdomain: SubDomain, path: &str) -> Result<StatusCode, Box<dyn Error>> {
-    Ok(Client::default()
-        .get(format!("https://{}genius.com/{}", subdomain.value(), path))
-        .bearer_auth(token()?)
-        .send()
-        .await?
-        .status())
-}
-
-fn token() -> Result<impl fmt::Display, Box<dyn Error>> {
-    Ok(std::env::var("GENIUS_AUTH_TOKEN")?)
 }
 
 pub enum SubDomain {
