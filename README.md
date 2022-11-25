@@ -101,7 +101,7 @@ Intellectual support a few different arguments when starting. Append `-h` when r
   - Release date
 - [x] View artist info
 - [x] Paginated searches
-- [ ] More robust error handling
+- [x] More robust error handling
 - [ ] Theme support
 - [ ] Improve responsiveness
 - [ ] Annotation support
