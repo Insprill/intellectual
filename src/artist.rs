@@ -19,13 +19,15 @@ pub struct ArtistQuery {
 
 #[get("/artist")]
 pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
-    let response = genius::text(
+    let response = genius::get_text(
         genius::SubDomain::Api,
         info.api_path.trim_start_matches('/'),
         None,
     )
-    .await;
+    .await?;
+
     let res: GeniusArtistRequest = serde_json::from_str(&response)?;
+
     Ok(template(ArtistTemplate {
         artist: res.response.artist,
     }))

@@ -1,4 +1,4 @@
-use actix_web::{get, http::StatusCode, web, HttpResponse, Responder};
+use actix_web::{get, http::StatusCode, web, HttpResponse, Responder, Result};
 use serde::Deserialize;
 
 use crate::genius;
@@ -9,12 +9,13 @@ pub struct UrlQuery {
 }
 
 #[get("/api/image")]
-pub async fn image(info: web::Query<UrlQuery>) -> impl Responder {
-    // Ensure this can't be abused.
+pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
     let img_path = &info.url.split('/').last().unwrap_or_default();
-    let (status, body) = genius::request(genius::SubDomain::Images, img_path, None).await;
+    let (status, body) = genius::get(genius::SubDomain::Images, img_path, None).await?;
+
     if status != StatusCode::OK {
-        return HttpResponse::build(status).finish();
+        return Ok(HttpResponse::build(status).finish());
     }
-    HttpResponse::Ok().body(body)
+
+    Ok(HttpResponse::Ok().body(body))
 }

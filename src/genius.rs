@@ -1,3 +1,6 @@
+use std::error::Error;
+use std::fmt;
+
 use actix_web::{http::StatusCode, web::Bytes};
 use awc::Client;
 use serde::Deserialize;
@@ -5,15 +8,20 @@ use urlencoding::encode;
 
 // region API
 
-pub async fn text(subdomain: SubDomain, path: &str, queries: Option<Vec<(&str, &str)>>) -> String {
-    String::from_utf8(request(subdomain, path, queries).await.1.to_vec()).unwrap()
-}
-
-pub async fn request(
+pub async fn get_text(
     subdomain: SubDomain,
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
-) -> (StatusCode, Bytes) {
+) -> Result<String, Box<dyn Error>> {
+    let bytes = get(subdomain, path, queries).await?.1.to_vec();
+    Ok(String::from_utf8(bytes)?)
+}
+
+pub async fn get(
+    subdomain: SubDomain,
+    path: &str,
+    queries: Option<Vec<(&str, &str)>>,
+) -> Result<(StatusCode, Bytes), Box<dyn Error>> {
     let query_str = if let Some(q) = queries {
         String::from_iter(
             q.iter()
@@ -22,28 +30,35 @@ pub async fn request(
     } else {
         "".into()
     };
+
     let mut client = Client::default().get(format!(
         "https://{}genius.com/{}?text_format=plain{}",
         subdomain.value(),
         path,
         query_str
     ));
+
     if matches!(subdomain, SubDomain::Api) {
-        client = client.bearer_auth(std::env::var("GENIUS_AUTH_TOKEN").unwrap());
+        client = client.bearer_auth(token()?);
     }
-    let mut res = client.send().await.unwrap();
-    (res.status(), res.body().await.unwrap())
+
+    let mut res = client.send().await?;
+    Ok((res.status(), res.body().await?))
 }
 
-pub async fn post(subdomain: SubDomain, path: &str) -> StatusCode {
-    Client::default()
+pub async fn post(subdomain: SubDomain, path: &str) -> Result<StatusCode, Box<dyn Error>> {
+    Ok(Client::default()
         .get(format!("https://{}genius.com/{}", subdomain.value(), path))
-        .bearer_auth(std::env::var("GENIUS_AUTH_TOKEN").unwrap())
+        .bearer_auth(token()?)
         .send()
-        .await
-        .unwrap()
-        .status()
+        .await?
+        .status())
 }
+
+fn token() -> Result<impl fmt::Display, Box<dyn Error>> {
+    Ok(std::env::var("GENIUS_AUTH_TOKEN")?)
+}
+
 pub enum SubDomain {
     Api,
     Images,

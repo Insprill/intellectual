@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use actix_web::{get, web, HttpResponse, Responder, Result};
 use askama::Template;
 use futures::future;
@@ -41,8 +43,8 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     };
 
     let responses = future::join3(
-        genius::text(genius::SubDomain::Api, trimmed_api_path, None),
-        genius::text(
+        genius::get_text(genius::SubDomain::Api, trimmed_api_path, None),
+        genius::get_text(
             genius::SubDomain::Root,
             info.path.trim_start_matches('/'),
             None,
@@ -51,8 +53,8 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     )
     .await;
 
-    let api: GeniusSongRequest = serde_json::from_str(&responses.0)?;
-    let verses = scrape_lyrics(&responses.1);
+    let api: GeniusSongRequest = serde_json::from_str(&responses.0?)?;
+    let verses = scrape_lyrics(&responses.1?);
 
     Ok(template(LyricsTemplate {
         verses,
@@ -96,6 +98,7 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
     verses
 }
 
-async fn count_view(id: u32) {
-    genius::post(genius::SubDomain::Api, &format!("songs/{}/count_view", id)).await;
+async fn count_view(id: u32) -> Result<(), Box<dyn Error>> {
+    genius::post(genius::SubDomain::Api, &format!("songs/{}/count_view", id)).await?;
+    Ok(())
 }

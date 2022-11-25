@@ -31,12 +31,12 @@ pub struct SearchQuery {
 pub async fn search(info: web::Query<SearchQuery>) -> Result<impl Responder> {
     let current_page = info.page.unwrap_or(1);
 
-    let response = genius::text(
+    let response = genius::get_text(
         genius::SubDomain::Api,
         "search",
         Some(vec![("q", &info.q), ("page", &current_page.to_string())]),
     )
-    .await;
+    .await?;
     let deserialized: GeniusSearchRequest = serde_json::from_str(&response)?;
 
     let nav_min = max(1, current_page - NAV_PAGE_COUNT);
