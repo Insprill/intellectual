@@ -20,7 +20,7 @@ mod utils;
 #[command(author, version, about, long_about = None)]
 struct Args {
     /// Sets the address to listen on
-    #[arg(short, long, default_value = "localhost")]
+    #[arg(short, long, default_value = "0.0.0.0")]
     address: String,
 
     /// Sets the port to listen on. Will be overriden by the PORT env var if present
