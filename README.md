@@ -75,14 +75,34 @@ This means they have the ability to monitor traffic between you and the server.
 
 ## Deployment
 
-- Download the [latest nightly release](https://nightly.link/Insprill/intellectual/workflows/rust/master) for your operating system.
-- Create a [new API client on Genius](https://genius.com/api-clients/new). You will need to have an account in order to do this.  
-The Icon URL and Redirect URL do not need to be set.
-- Under "Client Access Token", click "Generate Access Token", and copy the token provided.
-- Set the `GENIUS_AUTH_TOKEN` environment variable to the token you just generated.
-- Start Intellectual! 
+### Getting an API key
 
-Intellectual support a few different arguments when starting. Append `-h` when running it to see all available arguments.
+To host intellectual, you'll need an API key from Genius.
+Firstly, create a [new API client on Genius](https://genius.com/api-clients/new). You will need to have an account in order to do this.
+The Icon URL and Redirect URL do not need to be set.  
+Under "Client Access Token", click "Generate Access Token", and copy the token provided.
+This will need to be passed in via the `GENIUS_AUTH_TOKEN` environment variable.
+
+### Docker
+
+The easiest way to host intellectual is via Docker.  
+First, clone this repo and cd into the directory.
+```
+git clone https://github.com/Insprill/intellectual
+cd intellectual
+```
+Next, open the `docker-compose.yml`, find `GENIUS_AUTH_TOKEN: "token"` and replace `token` with the token you copied above.  
+Then you can start the container.
+```
+docker compose up -d
+```
+
+### Native
+
+If you don't want to use Docker, you can download the latest [stable](https://github.com/Insprill/intellectual/releases) or [nightly](https://nightly.link/Insprill/intellectual/workflows/rust/master) build from GitHub actions. Make sure to choose the version for your target operating system.
+
+Before starting, make sure to set the `GENIUS_AUTH_TOKEN` environment variable to the token you copied above.
+Now you can start Intellectual. Append `-h` when running it to see all available arguments.
 
 
 
