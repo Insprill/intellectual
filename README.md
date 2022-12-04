@@ -104,7 +104,9 @@ If you don't want to use Docker, you can download the latest [stable](https://gi
 Before starting, make sure to set the `GENIUS_AUTH_TOKEN` environment variable to the token you copied above.
 Now you can start Intellectual. Append `-h` when running it to see all available arguments.
 
+### TLS
 
+Intellectual doesn't nativly support https connections. In order to do this, you'll have to run it behind a reverse proxy like [Nginx](https://www.nginx.com/) or [Caddy](https://caddyserver.com/).
 
 
 <!-- ROADMAP -->
