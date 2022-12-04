@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   intellectual:
-    image: insprill/intellectual
+    build: .
     container_name: intellectual
     restart: always
     ports:
