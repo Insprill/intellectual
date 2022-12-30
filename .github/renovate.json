@@ -1,18 +1,5 @@
 {
   "extends": [
-    "config:base",
-    "schedule:monthly"
-  ],
-  "packageRules": [
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    }
-  ],
-  "automergeType": "branch",
-  "dependencyDashboard": false
+    "github>Insprill/renovate-config"
+  ]
 }
