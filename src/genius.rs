@@ -161,7 +161,7 @@ impl GeniusArtist {
             if !name.is_empty() {
                 socials.push(ArtistSocial {
                     name_raw: name,
-                    name_formatted: format!("@{}", name),
+                    name_formatted: format!("@{name}"),
                     brand: "instagram",
                 })
             }
@@ -171,7 +171,7 @@ impl GeniusArtist {
             if !name.is_empty() {
                 socials.push(ArtistSocial {
                     name_raw: name,
-                    name_formatted: format!("@{}", name),
+                    name_formatted: format!("@{name}"),
                     brand: "twitter",
                 })
             }

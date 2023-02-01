@@ -4,7 +4,7 @@ pub fn pretty_format_num(num: i32) -> String {
     } else if num >= 1_000 {
         format!("{}K", num / 1_000)
     } else {
-        format!("{}", num)
+        format!("{num}")
     }
 }
 
