@@ -2,11 +2,11 @@ version: "3.8"
 
 services:
   intellectual:
-    build: .
+    image: insprill/intellectual:latest
     container_name: intellectual
     restart: always
     ports:
-      - "8080:8080"
+      - 127.0.0.1:8080:8080
     environment:
       GENIUS_AUTH_TOKEN: "token"
     healthcheck:
