@@ -78,10 +78,9 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
                 lyrics: Vec::new(),
             })
         }
-        let len = verses.len();
-        match verses.get_mut(len - 1) {
-            Some(verse) => verse.lyrics.push(trimmed.to_owned()),
-            None => {}
+        let idx = verses.len() - 1;
+        if let Some(verse) = verses.get_mut(idx) {
+            verse.lyrics.push(trimmed.to_owned())
         }
     }
 
