@@ -92,6 +92,16 @@ pub struct GeniusSongRequest {
 pub struct GeniusSongResponse {
     pub song: GeniusSong,
 }
+
+#[derive(Deserialize)]
+pub struct GeniusSongsRequest {
+    pub response: GeniusSongsResponse,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusSongsResponse {
+    pub songs: Vec<GeniusSong>,
+}
 // endregion
 
 // region Artist Endpoint
@@ -138,6 +148,8 @@ pub struct GeniusArtist {
     pub image_url: String,
     pub url: String,
     pub description: Option<GeniusDescription>,
+    pub popular_songs: Option<Vec<GeniusSong>>,
+    // pub popular_albums: Option<Vec<GeniusAlbum>>,
     pub facebook_name: Option<String>,
     pub instagram_name: Option<String>,
     pub twitter_name: Option<String>,

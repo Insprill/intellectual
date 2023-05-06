@@ -111,3 +111,7 @@ html, body {
     font-weight: 500;
     color: var(--text);
 }
+
+.text-centered {
+    text-align: center;
+}

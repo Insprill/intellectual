@@ -3,39 +3,32 @@
 {% block title %}Search - {% endblock %}
 
 {% block style %}/style/search.css{% endblock %}
+{% block style2 %}/style/song.css{% endblock %}
 
 {% block navright %}
 <div class="nav-item.right">
-    <a class="external-link" href="https://genius.com/search?q={{ q }}">Search on Genius</a>
+    <a class="external-link" href="https://genius.com/search?q={{ q|urlencode }}">Search on Genius</a>
 </div>
 {% endblock %}
 
 {% block content %}
 <div class="song-list">
-    {% for result in results %}
-    <a class="song" href="lyrics?path={{ result.path|e }}&api_path={{ result.api_path|e }}">
-        <img class="song-thumbnail" src="api/image?url={{ result.song_art_image_thumbnail_url|e }}"
-             alt="Thumbnail"/>
-        <h2 class="song-title">{{ result.title|e }}</h2>
-        <h3 class="song-artist">{{ result.primary_artist.name|e }}</h3>
-        {% if result.stats.pageviews.is_some() %}
-        <h3 class="song-views">{{ utils::pretty_format_num(result.stats.pageviews.unwrap())|e }} Views</h3>
-        {% endif %}
-    </a>
+    {% for song in results %}
+        {% include "song.html" %}
     {% endfor %}
     <div class="pagination">
         {% if current_page > 1 %}
-        <a href="?q={{q}}&page={{current_page - 1}}" accesskey="p">
+        <a href="?q={{q|urlencode}}&page={{current_page - 1}}" accesskey="p">
             Prev
         </a>
         {% endif %}
         {% for n in nav_pages %}
-        <a href="?q={{q}}&page={{n}}" class="{% if utils::borrowed_i8_eq(current_page, n) %}active{% endif %}">
+        <a href="?q={{q|urlencode}}&page={{n}}" class="{% if utils::borrowed_i8_eq(current_page, n) %}active{% endif %}">
             {{n}}
         </a>
         {% endfor %}
         {% if current_page < 100 %}
-        <a href="?q={{q}}&page={{current_page + 1}}" accesskey="n">
+        <a href="?q={{q|urlencode}}&page={{current_page + 1}}" accesskey="n">
             Next
         </a>
         {% endif %}

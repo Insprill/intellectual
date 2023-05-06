@@ -312,6 +312,7 @@ checksum = "47cbc3cf73fa8d9833727bbee4835ba5c421a0d65b72daf9a7b5d0e0f9cfb57e"
 dependencies = [
  "askama_derive",
  "askama_escape",
+ "percent-encoding",
 ]
 
 [[package]]

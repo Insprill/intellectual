@@ -6,7 +6,8 @@
     grid-template-areas: 
       "image name"
       "image social"
-      "description description";
+      "description description"
+      "songs songs";
     padding: 0.75rem;
     margin: 2rem auto;
     border-radius: var(--radius);
@@ -50,6 +51,27 @@
 
 .artist-description {
     grid-area: description;
+}
+
+.artist-songs {
+    grid-area: songs;
+}
+
+.artist-search-songs {
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    background-color: var(--background);
+    color: var(--text);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.artist-search-songs:hover {
+    background: var(--highlighted);
+    transform: var(--hover-transform);
 }
 
 .artist-socials {
@@ -115,7 +137,9 @@
             "image" 
             "name" 
             "social" 
-            "description";
+            "description"
+            "songs"
+            "alubms";
     }
 }
 
@@ -123,9 +147,10 @@
     .artist {
         grid-template-columns: auto auto auto;
         grid-template-rows: auto;
-        grid-template-areas: 
-            "image image image image name" 
-            "image image image image social" 
-            "description description description description description";
+        grid-template-areas:
+            "image name"
+            "imagesocial"
+            "description description"
+            "songs songs";
     }
 }
