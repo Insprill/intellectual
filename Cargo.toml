@@ -22,5 +22,6 @@ simplelog = "0.12.1"
 urlencoding = "2.1.2"
 
 [profile.release]
+codegen-units = 1
 strip = true
 lto = true
