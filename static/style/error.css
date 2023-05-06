@@ -1,4 +1,5 @@
 .card {
+    color: var(--text);
     background: var(--foreground);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
