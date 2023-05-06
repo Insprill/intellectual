@@ -65,23 +65,29 @@ fn scrape_lyrics(doc: &str) -> Vec<Verse> {
             verses.push(Verse {
                 title: text.to_string(),
                 lyrics: Vec::new(),
+            });
+            continue;
+        }
+        let trimmed = text.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
+        if verses.is_empty() {
+            verses.push(Verse {
+                title: String::new(),
+                lyrics: Vec::new(),
             })
-        } else {
-            if verses.is_empty() {
-                verses.push(Verse {
-                    title: "".to_string(),
-                    lyrics: Vec::new(),
-                })
-            }
-            let mut x1 = verses.remove(verses.len() - 1);
-            x1.lyrics.push(text.to_string());
-            verses.push(x1);
+        }
+        let len = verses.len();
+        match verses.get_mut(len - 1) {
+            Some(verse) => verse.lyrics.push(trimmed.to_owned()),
+            None => {}
         }
     }
 
     if verses.is_empty() {
         verses.push(Verse {
-            title: "This song has no lyrics".to_string(),
+            title: "This song has no lyrics".to_owned(),
             lyrics: Vec::new(),
         })
     }
