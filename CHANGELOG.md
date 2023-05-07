@@ -7,6 +7,7 @@
 - Added Cache-Control headers to static resources.
 - Added a description meta tag to the home page.
 - Added logging for internal server errors.
+- Fixed font scaling on smaller devices.
 - Fixed browsers not invalidating static assets between Intellectual versions.
 - Fixed multiple panics from invalid requests/responses.
 - Fixed the Intellectual logo being hard to see in light mode.
