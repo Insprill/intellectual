@@ -1,6 +1,7 @@
 use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use futures::future;
+use once_cell::sync::Lazy;
 use scraper::{Html, Selector};
 use serde::Deserialize;
 
@@ -8,6 +9,11 @@ use crate::genius::GeniusSong;
 use crate::genius::{self, GeniusApi};
 use crate::templates::template;
 use crate::utils;
+
+static SONG_ID_SELECTOR: Lazy<Selector> =
+    Lazy::new(|| Selector::parse("meta[property='twitter:app:url:iphone']").unwrap());
+static LYRIC_SELECTOR: Lazy<Selector> =
+    Lazy::new(|| Selector::parse("div[data-lyrics-container=true]").unwrap());
 
 struct Verse {
     title: String,
@@ -60,9 +66,8 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
 }
 
 fn get_song_id(document: &Html) -> crate::Result<u32> {
-    let parser = &Selector::parse("meta[property='twitter:app:url:iphone']").unwrap();
     let meta = document
-        .select(parser)
+        .select(&SONG_ID_SELECTOR)
         .next()
         .ok_or("Failed to find meta tag with song ID")?;
     let id = meta
@@ -75,9 +80,7 @@ fn get_song_id(document: &Html) -> crate::Result<u32> {
 }
 
 fn scrape_lyrics(document: &Html) -> Vec<Verse> {
-    let parser = &Selector::parse("div[data-lyrics-container=true]").unwrap();
-
-    let text_iter = document.select(parser).flat_map(|x| x.text());
+    let text_iter = document.select(&LYRIC_SELECTOR).flat_map(|x| x.text());
 
     let mut verses = Vec::with_capacity(text_iter.size_hint().0);
 
