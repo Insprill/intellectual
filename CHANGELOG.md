@@ -8,10 +8,11 @@
 - Added a description meta tag to the home page.
 - Added logging for internal server errors.
 - Fixed font scaling on smaller devices.
-- Fixed browsers not invalidating static assets between Intellectual versions.
+- Fixed browsers not invalidating static assets between versions.
 - Fixed multiple panics from invalid requests/responses.
-- Fixed the Intellectual logo being hard to see in light mode.
-- Fixed the lyric parser sometimes returning empty lines.
+- Fixed the logo being hard to see in light mode.
+- Fixed the lyric parser sometimes creating empty lines.
+- Fixed the lyric parser creating new lines where annotations start/end.
 - Changed default address to `0.0.0.0`.
 
 

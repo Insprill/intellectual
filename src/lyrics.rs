@@ -2,7 +2,8 @@ use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use futures::future;
 use once_cell::sync::Lazy;
-use scraper::{Html, Selector};
+
+use scraper::{Html, Node, Selector};
 use serde::Deserialize;
 
 use crate::genius::GeniusSong;
@@ -78,38 +79,49 @@ fn get_song_id(document: &Html) -> crate::Result<u32> {
 }
 
 fn scrape_lyrics(document: &Html) -> Vec<Verse> {
-    let text_iter = document.select(&LYRIC_SELECTOR).flat_map(|x| x.text());
+    let mut verses = Vec::new();
+    let mut current_verse: Option<Verse> = None;
+    let mut new_line = false;
 
-    let mut verses = Vec::with_capacity(text_iter.size_hint().0);
-
-    for text in text_iter {
-        if text.starts_with('[') && text.ends_with(']') {
-            verses.push(Verse {
-                title: text.to_string(),
-                lyrics: Vec::new(),
-            });
-            continue;
-        }
-        let trimmed = text.trim();
-        if trimmed.is_empty() {
-            continue;
-        }
-        if verses.is_empty() {
-            verses.push(Verse {
-                title: String::new(),
-                lyrics: Vec::new(),
-            })
-        }
-        let idx = verses.len() - 1;
-        if let Some(verse) = verses.get_mut(idx) {
-            verse.lyrics.push(trimmed.to_owned())
+    for child in document
+        .select(&LYRIC_SELECTOR)
+        .flat_map(|e| e.descendants())
+    {
+        match child.value() {
+            Node::Element(e) if e.name() == "br" => {
+                new_line = true;
+            }
+            Node::Text(text) => {
+                let text: &str = text;
+                let is_title = text.starts_with('[') && text.ends_with(']');
+                if is_title {
+                    if let Some(curr) = current_verse {
+                        verses.push(curr);
+                    }
+                    current_verse = Some(Verse {
+                        title: text.to_string(),
+                        lyrics: Vec::new(),
+                    });
+                } else if let Some(curr) = current_verse.as_mut() {
+                    let last = curr.lyrics.last_mut();
+                    if new_line || last.is_none() {
+                        curr.lyrics.push(text.to_owned());
+                        new_line = false;
+                    } else if let Some(lyric) = last {
+                        lyric.push_str(text);
+                    }
+                }
+            }
+            _ => {}
         }
     }
 
-    if verses.is_empty() {
+    if let Some(curr) = current_verse {
+        verses.push(curr);
+    } else {
         verses.push(Verse {
-            title: "This song has no lyrics".to_owned(),
-            lyrics: Vec::new(),
+            title: String::new(),
+            lyrics: vec!["This song has no lyrics.".to_owned()],
         })
     }
 
