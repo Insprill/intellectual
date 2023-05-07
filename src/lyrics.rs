@@ -4,8 +4,8 @@ use futures::future;
 use scraper::{Html, Selector};
 use serde::Deserialize;
 
-use crate::genius;
-use crate::genius::{GeniusSong, GeniusSongRequest};
+use crate::genius::GeniusSong;
+use crate::genius::{self, GeniusApi};
 use crate::templates::template;
 use crate::utils;
 
@@ -24,31 +24,25 @@ struct LyricsTemplate {
 
 #[derive(Debug, Deserialize)]
 pub struct LyricsQuery {
+    id: u32,
     path: String,
-    api_path: String,
 }
 
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
-    let trimmed_api_path = info.api_path.trim_start_matches('/');
-
     let responses = future::join(
-        genius::get_text(genius::SubDomain::Api, trimmed_api_path, None),
-        genius::get_text(
-            genius::SubDomain::Root,
-            info.path.trim_start_matches('/'),
-            None,
-        ),
+        GeniusApi::global().get_song(info.id),
+        GeniusApi::global().get_text(genius::SubDomain::Root, &info.path, None),
     )
     .await;
 
-    let api: GeniusSongRequest = serde_json::from_str(&responses.0?)?;
+    let song = responses.0?;
     let verses = scrape_lyrics(&responses.1?);
 
     Ok(template(LyricsTemplate {
         verses,
-        query: info.into_inner(),
-        song: api.response.song,
+        query: info.0,
+        song,
     }))
 }
 

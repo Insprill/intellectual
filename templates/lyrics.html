@@ -6,7 +6,7 @@
 
 {% block navright %}
 <div class="nav-item.right">
-    <a class="external-link" href="https://genius.com{{ query.path }}">View on Genius</a>
+    <a class="external-link" href="https://genius.com/{{ query.path|urlencode }}">View on Genius</a>
 </div>
 {% endblock %}
 
@@ -16,7 +16,7 @@
         <div class="song">
             <p class="song-title">{{ song.title|e }}</p>
             <p class="song-artist">By 
-                <a class="song-artist-link" href="artist?api_path={{ song.primary_artist.api_path }}">
+                <a class="song-artist-link" href="artist?id={{ song.primary_artist.id|urlencode }}">
                     <cite>{{ song.primary_artist.name|e }}</cite>
                 </a>
             </p>
@@ -32,13 +32,13 @@
                 <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
             {% endif %}
         </div>
-        <img class="header-cover" src="api/image?url={{ song.header_image_url|e }}" alt="Thumbnail"/>
+        <img class="header-cover" src="api/image?url={{ song.header_image_url|urlencode }}" alt="Thumbnail"/>
     </div>
     <br/>
     {% for verse in verses %}
-        <h2 class="song-lyric">{{ verse.title }}</h2>
+        <h2 class="song-lyric">{{ verse.title|e }}</h2>
         {% for lyric in verse.lyrics %}
-            <p class="song-lyric">{{ lyric }}</p>
+            <p class="song-lyric">{{ lyric|e }}</p>
         {% endfor %}
         {% if !loop.last %}
         <br>

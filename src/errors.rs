@@ -2,20 +2,22 @@ use actix_web::{
     self, dev::ServiceResponse, middleware::ErrorHandlerResponse, HttpResponse, Result,
 };
 use askama::Template;
+use log::error;
 
 use crate::templates::template;
 
 pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let new_response = template(InternalErrorTemplate {
-        err: get_err_str(&res),
-    });
+    let err = get_err_str(&res);
+    if let Some(str) = &err {
+        error!("{}", str);
+    }
 
+    let new_response = template(InternalErrorTemplate { err });
     create(res, new_response)
 }
 
 pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
     let new_response = template(NotFoundTemplate {});
-
     create(res, new_response)
 }
 
@@ -23,7 +25,6 @@ pub fn render_400<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
     let new_response = template(BadRequestTemplate {
         err: get_err_str(&res),
     });
-
     create(res, new_response)
 }
 

@@ -13,7 +13,7 @@
 
 {% block content %}
 <div class="song-list">
-    {% for song in results %}
+    {% for song in songs %}
         {% include "song.html" %}
     {% endfor %}
     <div class="pagination">
@@ -23,7 +23,7 @@
         </a>
         {% endif %}
         {% for n in nav_pages %}
-        <a href="?q={{q|urlencode}}&page={{n}}" class="{% if utils::borrowed_i8_eq(current_page, n) %}active{% endif %}">
+        <a href="?q={{q|urlencode}}&page={{n}}" class="{% if utils::borrowed_u8_eq(current_page, n) %}active{% endif %}">
             {{n}}
         </a>
         {% endfor %}

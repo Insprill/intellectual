@@ -8,6 +8,6 @@ pub fn pretty_format_num(num: i32) -> String {
     }
 }
 
-pub fn borrowed_i8_eq(a: &i8, b: &i8) -> bool {
+pub fn borrowed_u8_eq(a: &u8, b: &u8) -> bool {
     *a == *b
 }

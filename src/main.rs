@@ -1,9 +1,11 @@
-use std::process::exit;
+use std::{error::Error, process::exit};
 
 use actix_web::{http::StatusCode, middleware, App, HttpServer};
 use clap::{arg, command, Parser};
 use log::{error, info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
+
+use crate::genius::GeniusApi;
 
 mod api;
 mod artist;
@@ -15,6 +17,8 @@ mod resource;
 mod search;
 mod templates;
 mod utils;
+
+pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -34,13 +38,6 @@ struct Args {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let args = Args::parse();
-
-    let port = std::env::var("PORT")
-        .unwrap_or_else(|_| args.port.to_string())
-        .parse::<u16>()
-        .unwrap();
-
     CombinedLogger::init(vec![TermLogger::new(
         LevelFilter::Info,
         Config::default(),
@@ -49,10 +46,22 @@ async fn main() -> std::io::Result<()> {
     )])
     .unwrap();
 
-    if std::env::var("GENIUS_AUTH_TOKEN").is_err() {
-        error!("GENIUS_AUTH_TOKEN environment variable not set!");
-        exit(1);
-    }
+    let args = Args::parse();
+
+    let port = std::env::var("PORT")
+        .unwrap_or_else(|_| args.port.to_string())
+        .parse::<u16>()
+        .unwrap();
+
+    let token = match std::env::var("GENIUS_AUTH_TOKEN") {
+        Ok(token) => token,
+        Err(_) => {
+            error!("GENIUS_AUTH_TOKEN environment variable not set!");
+            exit(1);
+        }
+    };
+
+    GeniusApi { token }.set_global();
 
     info!(
         "Running Intellectual v{}, listening on {}:{}!",

@@ -3,8 +3,8 @@ use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use serde::Deserialize;
 
-use crate::genius::{self, GeniusSong, GeniusSongsRequest};
-use crate::genius::{GeniusArtist, GeniusArtistRequest};
+use crate::genius::SortMode;
+use crate::genius::{GeniusApi, GeniusArtist};
 use crate::templates::template;
 
 #[derive(Template)]
@@ -15,33 +15,20 @@ struct ArtistTemplate {
 
 #[derive(Debug, Deserialize)]
 pub struct ArtistQuery {
-    api_path: String,
+    id: u32,
 }
+
+const MAX_SONGS: u32 = 5;
 
 #[get("/artist")]
 pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
-    let response = genius::get_text(
-        genius::SubDomain::Api,
-        info.api_path.trim_start_matches('/'),
-        None,
-    )
-    .await?;
+    let mut artist: GeniusArtist = GeniusApi::global().get_artist(info.id).await?;
 
-    let mut artist: GeniusArtist = serde_json::from_str::<GeniusArtistRequest>(&response)?
-        .response
-        .artist;
-
-    let response = genius::get_text(
-        genius::SubDomain::Api,
-        &format!("{}/songs", info.api_path.trim_start_matches('/')),
-        Some(vec![("sort", "popularity"), ("per_page", "5")]),
-    )
-    .await?;
-
-    let songs: Vec<GeniusSong> = serde_json::from_str::<GeniusSongsRequest>(&response)?
-        .response
-        .songs;
-    artist.popular_songs = Some(songs);
+    artist.popular_songs = Some(
+        GeniusApi::global()
+            .get_artist_songs(info.id, SortMode::Popularity, MAX_SONGS)
+            .await?,
+    );
 
     Ok(template(ArtistTemplate { artist }))
 }
