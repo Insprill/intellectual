@@ -24,20 +24,33 @@ struct LyricsTemplate {
 
 #[derive(Debug, Deserialize)]
 pub struct LyricsQuery {
-    id: u32,
+    id: Option<u32>,
     path: String,
 }
 
 #[get("/lyrics")]
 pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
-    let responses = future::join(
-        GeniusApi::global().get_song(info.id),
-        GeniusApi::global().get_text(genius::SubDomain::Root, &info.path, None),
-    )
-    .await;
+    let document: Html;
+    let song: GeniusSong;
 
-    let song = responses.0?;
-    let verses = scrape_lyrics(&responses.1?);
+    if let Some(id) = info.id {
+        let responses = future::join(
+            GeniusApi::global().get_text(genius::SubDomain::Root, &info.path, None),
+            GeniusApi::global().get_song(id),
+        )
+        .await;
+        document = Html::parse_document(&responses.0?);
+        song = responses.1?;
+    } else {
+        let lyric_page = GeniusApi::global()
+            .get_text(genius::SubDomain::Root, &info.path, None)
+            .await?;
+        document = Html::parse_document(&lyric_page);
+        let id = get_song_id(&document)?;
+        song = GeniusApi::global().get_song(id).await?;
+    }
+
+    let verses = scrape_lyrics(&document);
 
     Ok(template(LyricsTemplate {
         verses,
@@ -46,8 +59,22 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     }))
 }
 
-fn scrape_lyrics(doc: &str) -> Vec<Verse> {
-    let document = Html::parse_document(doc);
+fn get_song_id(document: &Html) -> crate::Result<u32> {
+    let parser = &Selector::parse("meta[property='twitter:app:url:iphone']").unwrap();
+    let meta = document
+        .select(parser)
+        .next()
+        .ok_or("Failed to find meta tag with song ID")?;
+    let id = meta
+        .value()
+        .attr("content")
+        .and_then(|content| content.strip_prefix("genius://songs/"))
+        .ok_or("Failed to find content attribute")?
+        .parse::<u32>()?;
+    Ok(id)
+}
+
+fn scrape_lyrics(document: &Html) -> Vec<Verse> {
     let parser = &Selector::parse("div[data-lyrics-container=true]").unwrap();
 
     let text_iter = document.select(parser).flat_map(|x| x.text());
