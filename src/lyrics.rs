@@ -66,17 +66,15 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
 }
 
 fn get_song_id(document: &Html) -> crate::Result<u32> {
-    let meta = document
+    Ok(document
         .select(&SONG_ID_SELECTOR)
         .next()
-        .ok_or("Failed to find meta tag with song ID")?;
-    let id = meta
+        .ok_or("Failed to find meta tag with song ID")?
         .value()
         .attr("content")
         .and_then(|content| content.strip_prefix("genius://songs/"))
         .ok_or("Failed to find content attribute")?
-        .parse::<u32>()?;
-    Ok(id)
+        .parse::<u32>()?)
 }
 
 fn scrape_lyrics(document: &Html) -> Vec<Verse> {
