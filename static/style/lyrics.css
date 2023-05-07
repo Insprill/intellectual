@@ -56,8 +56,14 @@
 .song-title {
     grid-area: title;
     font-weight: 900;
-    font-size: 32px;
+    font-size: min(6vw, 32px);
     margin: 0;
+}
+
+@media only screen and (min-width: 513px) and (max-width: 768px) { 
+    .song-title {
+        font-size: min(4vw, 32px);
+    }
 }
 
 .song-artist {

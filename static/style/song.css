@@ -38,7 +38,7 @@
     grid-area: title;
     font-weight: 900;
     color: var(--text);
-    font-size: 32px;
+    font-size: min(4vw, 32px);
 }
 
 .song-artist {

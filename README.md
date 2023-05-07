@@ -125,8 +125,8 @@ Intellectual doesn't nativly support https connections. In order to do this, you
 - [x] Paginated searches
 - [x] More robust error handling
 - [x] Show artists' work on their page
+- [x] Improve responsiveness
 - [ ] Theme support
-- [ ] Improve responsiveness
 - [ ] Annotation support
 - [ ] More search types
   - By lyrics
