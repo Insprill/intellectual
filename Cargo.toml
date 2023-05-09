@@ -1,6 +1,6 @@
 [package]
 name = "intellectual"
-version = "0.3.0"
+version = "0.3.1"
 license = "AGPL-3.0"
 repository = "https://github.com/Insprill/intellectual"
 edition = "2021"
