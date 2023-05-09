@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.x.x:
+## 0.3.0:
 - Added a section for the top 5 songs on the artist page.
 - Added more information to page titles.
 - Added error pages for 400, 404, and 500.
