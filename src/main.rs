@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File, io::BufReader, process::exit};
+use std::{error::Error, fs::File, io::BufReader, process::exit, time::Duration};
 
 use actix_web::{http::StatusCode, middleware, App, HttpServer};
 use clap::{arg, command, Parser};
@@ -36,11 +36,15 @@ struct Args {
     #[arg(short, long, default_value_t = 0)]
     workers: usize,
 
+    /// The Keep-Alive timeout, in seconds. Set to 0 to disable.
+    #[arg(short, long, default_value_t = 15.0)]
+    keep_alive_timeout: f32,
+
     /// Whether TLS should be used
     #[arg(long, default_value = "false")]
     tls: bool,
 
-    /// The path to the PEM file. Required when using TLS.
+    /// The path to the KEY file. Required when using TLS.
     #[arg(long, required_if_eq("tls", "true"))]
     tls_key_file: Option<String>,
 
@@ -111,6 +115,12 @@ async fn main() -> std::io::Result<()> {
             .service(resource::icon)
             .service(resource::font)
     });
+
+    if args.keep_alive_timeout > 0.0 {
+        server = server.keep_alive(Duration::from_secs_f32(args.keep_alive_timeout));
+    } else {
+        server = server.keep_alive(None)
+    }
 
     if args.workers > 0 {
         server = server.workers(args.workers);

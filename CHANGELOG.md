@@ -2,6 +2,7 @@
 
 # 0.x.x:
 - Added support for TLS connections.
+- Added flag for the desired Keep-Alive timeout. The default has been increated to 15 seconds from 5.
 
 
 # 0.3.1:
