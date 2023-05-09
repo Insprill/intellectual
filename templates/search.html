@@ -3,7 +3,9 @@
 {% block title %}Search - {% endblock %}
 
 {% block style %}/style/search.css{% endblock %}
-{% block style2 %}/style/song.css{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/style/song.css?v={{ env!("CARGO_PKG_VERSION") }}">
+{% endblock %}
 
 {% block navright %}
 <div class="nav-item.right">
