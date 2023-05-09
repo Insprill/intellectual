@@ -1,5 +1,9 @@
 # Changelog
 
+# 0.x.x:
+- Fixed image URL on the artist page not being URL encoded.
+
+
 ## 0.3.0:
 - Added a section for the top 5 songs on the artist page.
 - Added more information to page titles.
