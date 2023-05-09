@@ -7,8 +7,6 @@ services:
     restart: always
     ports:
       - 127.0.0.1:8080:8080
-    environment:
-      GENIUS_AUTH_TOKEN: "token"
     healthcheck:
       test: wget -nv --tries=1 --spider http://127.0.0.1:8080 || exit 1
       interval: 5m

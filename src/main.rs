@@ -70,15 +70,7 @@ async fn main() -> std::io::Result<()> {
         .parse::<u16>()
         .unwrap();
 
-    let token = match std::env::var("GENIUS_AUTH_TOKEN") {
-        Ok(token) => token,
-        Err(_) => {
-            error!("GENIUS_AUTH_TOKEN environment variable not set!");
-            exit(1);
-        }
-    };
-
-    GeniusApi { token }.set_global();
+    GeniusApi {}.set_global();
 
     info!(
         "Starting Intellectual v{}, listening on {}:{}!",

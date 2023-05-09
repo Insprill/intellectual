@@ -9,9 +9,7 @@ use urlencoding::encode;
 
 static GLOBAL_API: OnceCell<Arc<GeniusApi>> = OnceCell::new();
 
-pub struct GeniusApi {
-    pub token: String,
-}
+pub struct GeniusApi;
 
 impl GeniusApi {
     pub fn set_global(self) {
@@ -31,8 +29,8 @@ impl GeniusApi {
     pub async fn get_artist(&self, artist_id: u32) -> Result<GeniusArtist> {
         Ok(self
             .get_json::<GeniusArtistRequest>(
-                SubDomain::Api,
-                &format!("artists/{}", artist_id),
+                SubDomain::Root,
+                &format!("api/artists/{artist_id}"),
                 None,
             )
             .await?
@@ -50,7 +48,7 @@ impl GeniusApi {
         Ok(self
             .get_json::<GeniusSongsRequest>(
                 SubDomain::Api,
-                &format!("artists/{}/songs", artist_id),
+                &format!("artists/{artist_id}/songs"),
                 Some(vec![sort_mode.to_query(), ("per_page", &limit.to_string())]),
             )
             .await?
@@ -61,7 +59,7 @@ impl GeniusApi {
     /// https://docs.genius.com/#/songs-show
     pub async fn get_song(&self, song_id: u32) -> Result<GeniusSong> {
         Ok(self
-            .get_json::<GeniusSongRequest>(SubDomain::Api, &format!("songs/{}", song_id), None)
+            .get_json::<GeniusSongRequest>(SubDomain::Api, &format!("songs/{song_id}"), None)
             .await?
             .response
             .song)
@@ -136,18 +134,23 @@ impl GeniusApi {
             "".into()
         };
 
-        let mut client = Client::default().get(format!(
-            "https://{}genius.com/{}?text_format=plain{}",
-            subdomain.value(),
-            path.trim_start_matches('/'),
-            query_str
-        ));
+        // Using the api path lets us drop the requirement for an API key.
+        let path: String = if matches!(subdomain, SubDomain::Api) {
+            format!("api/{}", path)
+        } else {
+            path.to_owned()
+        };
 
-        if matches!(subdomain, SubDomain::Api) {
-            client = client.bearer_auth(self.token.to_owned());
-        }
+        let req = Client::default()
+            .get(format!(
+                "https://{}genius.com/{}?text_format=plain{}",
+                subdomain.value(),
+                path.trim_start_matches('/'),
+                query_str
+            ))
+            .send();
 
-        Ok(client.send())
+        Ok(req)
     }
 }
 
@@ -158,11 +161,11 @@ pub enum SubDomain {
 }
 
 impl SubDomain {
-    fn value(&self) -> &str {
+    fn value(&self) -> &'static str {
         match *self {
-            SubDomain::Api => "api.",
             SubDomain::Images => "images.",
             SubDomain::Root => "",
+            SubDomain::Api => "",
         }
     }
 }

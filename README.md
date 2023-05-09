@@ -75,27 +75,18 @@ This means they have the ability to monitor traffic between you and the server.
 
 ## Deployment
 
-### Getting an API key
-
-To host intellectual, you'll need an API key from Genius.
-Firstly, create a [new API client on Genius](https://genius.com/api-clients/new). You will need to have an account in order to do this.
-The Icon URL and Redirect URL do not need to be set.  
-Under "Client Access Token", click "Generate Access Token", and copy the token provided.
-This will need to be passed in via the `GENIUS_AUTH_TOKEN` environment variable.
-
 ### Deploying
 
 #### Docker
 
-The easiest way to host intellectual is via Docker.  
-First, clone this repo and cd into the directory.
+The easiest way to host intellectual is via Docker, and the included Docker Compose file.
+To create a new direcotry, download the `docker-compose.yml`, and cd into the direcotry, run the following command (Requires cURL 7.10.3 or newer)
+```bash
+curl https://raw.githubusercontent.com/Insprill/intellectual/master/docker-compose.yml --create-dirs -o intellectual/docker-compose.yml && cd intellectual
 ```
-git clone https://github.com/Insprill/intellectual
-cd intellectual
-```
-Next, open the `docker-compose.yml`, find `GENIUS_AUTH_TOKEN: "token"` and replace `token` with the token you copied above.  
-Then you can start the container.
-```
+By default, it'll bind to `127.0.0.1:8080`.
+Once you're satisfied with the container, you can start it with
+```bash
 docker compose up -d
 ```
 

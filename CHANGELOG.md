@@ -3,6 +3,7 @@
 # 0.x.x:
 - Added support for TLS connections.
 - Added flag for the desired Keep-Alive timeout. The default has been increated to 15 seconds from 5.
+- Removed the requirement for a Genius API token.
 
 
 # 0.3.1:
