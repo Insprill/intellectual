@@ -1,5 +1,9 @@
 # Changelog
 
+# 0.x.x:
+- Added support for TLS connections.
+
+
 # 0.3.1:
 - Fixed the artist image taking up the entire backgound on small Safari viewports.
 - Fixed the image URL on the artist page not being URL encoded.

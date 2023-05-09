@@ -83,7 +83,9 @@ The Icon URL and Redirect URL do not need to be set.
 Under "Client Access Token", click "Generate Access Token", and copy the token provided.
 This will need to be passed in via the `GENIUS_AUTH_TOKEN` environment variable.
 
-### Docker
+### Deploying
+
+#### Docker
 
 The easiest way to host intellectual is via Docker.  
 First, clone this repo and cd into the directory.
@@ -97,7 +99,7 @@ Then you can start the container.
 docker compose up -d
 ```
 
-### Native
+#### Native
 
 If you don't want to use Docker, you can download the latest [stable](https://github.com/Insprill/intellectual/releases) or [nightly](https://nightly.link/Insprill/intellectual/workflows/rust/master) build from GitHub actions. Make sure to choose the version for your target operating system.
 
@@ -106,7 +108,10 @@ Now you can start Intellectual. Append `-h` when running it to see all available
 
 ### TLS
 
-Intellectual doesn't nativly support https connections. In order to do this, you'll have to run it behind a reverse proxy like [Nginx](https://www.nginx.com/) or [Caddy](https://caddyserver.com/).
+Intellectual supports TLS connections nativly using [rustls][rustls-repo].
+To enable TLS, provide the `--tls` flag, followed by `--tls-key-file` and `--tls-cert-file` pointing to their respective files on disk.
+
+
 
 
 <!-- ROADMAP -->
@@ -166,3 +171,4 @@ See [LICENSE][license-url] for more information.
 [issues-url]: https://github.com/Insprill/intellectual/issues
 [license-shield]: https://img.shields.io/github/license/Insprill/intellectual.svg?style=for-the-badge
 [license-url]: https://github.com/Insprill/intellectual/blob/master/LICENSE
+[rustls-repo]: https://github.com/rustls/rustls

@@ -1,8 +1,9 @@
-use std::{error::Error, process::exit};
+use std::{error::Error, fs::File, io::BufReader, process::exit};
 
 use actix_web::{http::StatusCode, middleware, App, HttpServer};
 use clap::{arg, command, Parser};
-use log::{error, info, LevelFilter};
+use log::{error, info, warn, LevelFilter};
+use rustls::{Certificate, PrivateKey, ServerConfig as RustlsServerConfig};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 
 use crate::genius::GeniusApi;
@@ -34,6 +35,18 @@ struct Args {
     /// The amount of HTTP workers to use. 0 to equal physical CPU cores
     #[arg(short, long, default_value_t = 0)]
     workers: usize,
+
+    /// Whether TLS should be used
+    #[arg(long, default_value = "false")]
+    tls: bool,
+
+    /// The path to the PEM file. Required when using TLS.
+    #[arg(long, required_if_eq("tls", "true"))]
+    tls_key_file: Option<String>,
+
+    /// The path to the CERT file. Required when using TLS.
+    #[arg(long, required_if_eq("tls", "true"))]
+    tls_cert_file: Option<String>,
 }
 
 #[actix_web::main]
@@ -64,7 +77,7 @@ async fn main() -> std::io::Result<()> {
     GeniusApi { token }.set_global();
 
     info!(
-        "Running Intellectual v{}, listening on {}:{}!",
+        "Starting Intellectual v{}, listening on {}:{}!",
         env!("CARGO_PKG_VERSION"),
         args.address,
         port
@@ -103,5 +116,67 @@ async fn main() -> std::io::Result<()> {
         server = server.workers(args.workers);
     }
 
-    server.bind((args.address, port))?.run().await
+    if args.tls {
+        // To create a self-signed temporary cert for testing:
+        // openssl req -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365 -subj '/CN=localhost'
+        server.bind_rustls((args.address.to_owned(), port), build_tls_config(&args)?)
+    } else {
+        server.bind((args.address, port))
+    }?
+    .run()
+    .await
+}
+
+fn build_tls_config(args: &Args) -> std::io::Result<RustlsServerConfig> {
+    Ok(RustlsServerConfig::builder()
+        .with_safe_defaults()
+        .with_no_client_auth()
+        .with_single_cert(create_cert_chain(args), PrivateKey(create_key(args)))
+        .unwrap())
+}
+
+fn create_cert_chain(args: &Args) -> Vec<Certificate> {
+    let cert_file_path = args.tls_cert_file.as_ref().unwrap();
+    let cert_file = &mut BufReader::new(match File::open(cert_file_path) {
+        Ok(file) => file,
+        Err(err) => {
+            error!("Failed to load cert file '{}': {}", cert_file_path, err);
+            exit(1);
+        }
+    });
+
+    let cert_chain: Vec<Certificate> = rustls_pemfile::certs(cert_file)
+        .unwrap()
+        .into_iter()
+        .map(Certificate)
+        .collect();
+    if cert_chain.is_empty() {
+        error!("Failed to find any certs in '{}'", cert_file_path);
+        exit(1);
+    }
+    cert_chain
+}
+
+fn create_key(args: &Args) -> Vec<u8> {
+    let key_file_path = args.tls_key_file.as_ref().unwrap();
+    let key_file = &mut BufReader::new(match File::open(key_file_path) {
+        Ok(file) => file,
+        Err(err) => {
+            error!("Failed to load key file '{}': {}", key_file_path, err);
+            exit(1);
+        }
+    });
+    let mut keys: Vec<Vec<u8>> = rustls_pemfile::pkcs8_private_keys(key_file).unwrap();
+    if keys.is_empty() {
+        error!("Failed to find any keys in '{}'", key_file_path);
+        exit(1);
+    }
+    if keys.len() > 1 {
+        warn!(
+            "Found multiple keys in '{}'! Only the first will be used.",
+            key_file_path
+        );
+    }
+
+    keys.remove(0)
 }
