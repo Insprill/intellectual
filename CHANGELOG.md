@@ -1,6 +1,7 @@
 # Changelog
 
 # 0.x.x:
+- Fixed the artist image taking up the entire backgound on small Safari viewports.
 - Fixed image URL on the artist page not being URL encoded.
 
 
