@@ -43,7 +43,7 @@ impl GeniusApi {
         &self,
         artist_id: u32,
         sort_mode: SortMode,
-        limit: u32,
+        limit: u8,
     ) -> Result<Vec<GeniusSong>> {
         Ok(self
             .get_json::<GeniusSongsRequest>(

@@ -18,7 +18,7 @@ pub struct ArtistQuery {
     id: u32,
 }
 
-const MAX_SONGS: u32 = 5;
+const MAX_SONGS: u8 = 5;
 
 #[get("/artist")]
 pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
