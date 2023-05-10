@@ -10,12 +10,15 @@
     padding: 8px 16px;
     text-decoration: none;
     border-radius: var(--radius);
+    transition: var(--hover-transition);
 }
 
 .pagination a.active {
+    transform: var(--hover-transform);
     background-color: var(--highlighted);
 }
 
 .pagination a:hover:not(.active) {
+    transform: var(--hover-transform);
     background-color: var(--foreground);
 }
