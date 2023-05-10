@@ -1,4 +1,8 @@
-use actix_web::{get, http::StatusCode, web, HttpResponse, Responder, Result};
+use actix_web::{
+    get,
+    http::{header::ContentEncoding, StatusCode},
+    web, HttpResponse, Responder, Result,
+};
 use serde::Deserialize;
 
 use crate::genius::{GeniusApi, SubDomain};
@@ -22,6 +26,7 @@ pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
 
             Ok(HttpResponse::Ok()
                 .append_header(("Cache-Control", "max-age=604800"))
+                .insert_header(ContentEncoding::Identity)
                 .body(body))
         }
         None => Ok(HttpResponse::BadRequest().finish()),
