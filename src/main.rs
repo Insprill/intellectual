@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use std::{error::Error, fs::File, io::BufReader, process::exit, time::Duration};
 
 use actix_web::{http::StatusCode, middleware, App, HttpServer};
