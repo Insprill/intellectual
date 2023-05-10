@@ -12,7 +12,7 @@
     background: var(--foreground);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    transition: 0.3s all;
+    transition: var(--hover-transition);
     text-decoration: none;
     display: grid;
     padding: 10px;

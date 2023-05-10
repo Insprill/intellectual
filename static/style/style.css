@@ -11,6 +11,7 @@
 	--radius: 5px;
 	--shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     --hover-transform: translate3d(0px, -1px, 0px);
+    --hover-transition: 0.3s all;
 }
 
 @media (prefers-color-scheme: light) {
@@ -27,6 +28,7 @@
         --radius: 10px;
 	    --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         --hover-transform: translate3d(0px, -1px, 0px);
+        --hover-transition: 0.3s all;
     }
 }
 

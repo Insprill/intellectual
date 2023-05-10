@@ -98,7 +98,7 @@
     grid-template-areas: 
       "icon name";
     align-items: center;
-    transition: all .2s ease-in-out;
+    transition: var(--hover-transition);
 }
 
 .social:hover {
