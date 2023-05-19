@@ -3,8 +3,9 @@
 # 0.4.0:
 - Added support for viewing albums.
 - Added support for TLS connections.
-- Added flag for the desired Keep-Alive timeout. The default has been increated to 15 seconds from 5.
+- Added flag for the desired Keep-Alive timeout. The default has been increased to 15 seconds from 5.
 - Added hover animations to pagination buttons.
+- Fixed the lyric page's "View on Genius" button taking the user to an invalid URL.
 - Removed the requirement for a Genius API token.
 
 
