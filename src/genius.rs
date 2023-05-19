@@ -28,11 +28,7 @@ impl GeniusApi {
     /// https://docs.genius.com/#/artists-show
     pub async fn get_artist(&self, artist_id: u32) -> Result<GeniusArtist> {
         Ok(self
-            .get_json::<GeniusArtistRequest>(
-                SubDomain::Root,
-                &format!("api/artists/{artist_id}"),
-                None,
-            )
+            .get_json::<GeniusArtistRequest>(SubDomain::Api, &format!("artists/{artist_id}"), None)
             .await?
             .response
             .artist)
@@ -54,6 +50,29 @@ impl GeniusApi {
             .await?
             .response
             .songs)
+    }
+
+    pub async fn get_album(&self, album_id: u32) -> Result<GeniusAlbum> {
+        Ok(self
+            .get_json::<GeniusAlbumRequest>(SubDomain::Api, &format!("albums/{album_id}"), None)
+            .await?
+            .response
+            .album)
+    }
+
+    pub async fn get_album_tracks(&self, album_id: u32) -> Result<Vec<GeniusSong>> {
+        Ok(self
+            .get_json::<GeniusTracksRequest>(
+                SubDomain::Api,
+                &format!("albums/{album_id}/tracks"),
+                None,
+            )
+            .await?
+            .response
+            .tracks
+            .into_iter()
+            .map(|track| track.song)
+            .collect())
     }
 
     /// https://docs.genius.com/#/songs-show
@@ -136,7 +155,7 @@ impl GeniusApi {
 
         // Using the api path lets us drop the requirement for an API key.
         let path: String = if matches!(subdomain, SubDomain::Api) {
-            format!("api/{}", path)
+            format!("api/{path}")
         } else {
             path.to_owned()
         };
@@ -220,8 +239,39 @@ pub struct GeniusSong {
 }
 
 #[derive(Deserialize)]
+pub struct GeniusAlbumRequest {
+    pub response: GeniusAlbumResponse,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusAlbumResponse {
+    pub album: GeniusAlbum,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusTracksRequest {
+    pub response: GeniusTracksResponse,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusTracksResponse {
+    pub tracks: Vec<GeniusTrack>,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusTrack {
+    pub song: GeniusSong,
+}
+
+#[derive(Deserialize)]
 pub struct GeniusAlbum {
     pub name: String,
+    pub id: u32,
+    pub url: String,
+    pub cover_art_url: String,
+    pub release_date_for_display: Option<String>,
+    pub tracks: Option<Vec<GeniusSong>>,
+    pub artist: GeniusArtist,
 }
 
 #[derive(Deserialize)]

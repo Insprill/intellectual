@@ -13,15 +13,19 @@
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
-        <div class="song">
-            <p class="song-title">{{ song.title|e }}</p>
-            <p class="song-artist">By 
-                <a class="song-artist-link" href="artist?id={{ song.primary_artist.id|urlencode }}">
+        <div class="song-info">
+            <p class="title">{{ song.title|e }}</p>
+            <p class="artist-name">By 
+                <a href="artist?id={{ song.primary_artist.id|urlencode }}">
                     <cite>{{ song.primary_artist.name|e }}</cite>
                 </a>
             </p>
             {% if song.album.is_some() %}
-                <p class="song-album">On <cite>{{ song.album.as_ref().unwrap().name|e }}</cite></p>
+                <p class="album-name">On
+                    <a href="album?id={{ song.album.as_ref().unwrap().id|urlencode }}">
+                        <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
+                    </a>
+                </p>
             {% endif %}
         </div>
         <div class="stats">

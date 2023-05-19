@@ -122,6 +122,7 @@ To enable TLS, provide the `--tls` flag, followed by `--tls-key-file` and `--tls
 - [x] More robust error handling
 - [x] Show artists' work on their page
 - [x] Improve responsiveness
+- [x] View Albums
 - [ ] Theme support
 - [ ] Annotation support
 - [ ] More search types

@@ -28,6 +28,10 @@
     }
 }
 
+a {
+    color: var(--text);
+}
+
 /* region Navigation Bar */
 
 nav {

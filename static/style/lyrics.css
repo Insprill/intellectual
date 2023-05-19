@@ -39,7 +39,7 @@
     border-radius: var(--radius);
 }
 
-.song {
+.song-info {
     display: grid;
     grid-auto-columns: 1fr;
     grid-template-columns: auto;
@@ -53,7 +53,7 @@
     margin-top: 1em;
 }
 
-.song-title {
+.title {
     grid-area: title;
     font-weight: 900;
     font-size: min(6vw, 32px);
@@ -61,27 +61,25 @@
 }
 
 @media only screen and (min-width: 513px) and (max-width: 768px) { 
-    .song-title {
+    .title {
         font-size: min(4vw, 32px);
     }
 }
 
-.song-artist {
+.artist-name {
+    color: var(--text);
     grid-area: artist;
     font-weight: 500;
     font-size: 18px;
     margin: 0;
 }
 
-.song-album {
+.album-name {
+    color: var(--text);
     grid-area: album;
     font-weight: 500;
     font-size: 18px;
     margin: 0;
-}
-
-.song-artist-link {
-    color: var(--text);
 }
 
 .stats {

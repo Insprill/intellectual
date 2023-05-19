@@ -10,6 +10,7 @@ use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 
 use crate::genius::GeniusApi;
 
+mod album;
 mod api;
 mod artist;
 mod errors;
@@ -98,6 +99,7 @@ async fn main() -> std::io::Result<()> {
                     .add(("Content-Security-Policy", "default-src 'self'")),
             )
             // Routes
+            .service(album::album)
             .service(api::image)
             .service(artist::artist)
             .service(home::home)

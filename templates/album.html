@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{album.name}} - {% endblock %}
+
+{% block style %}/style/lyrics.css{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/style/song.css?v={{ env!("CARGO_PKG_VERSION") }}">
+{% endblock %}
+
+{% block navright %}
+<div class="nav-item.right">
+    <a class="external-link" href="{{ album.url }}">View on Genius</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="song-lyrics">
+    <div class="header">
+        <div class="song-info">
+            <p class="title">{{ album.name|e }}</p>
+            <p class="artist-name">By 
+                <a href="artist?id={{ album.artist.id|urlencode }}">
+                    <cite>{{ album.artist.name|e }}</cite>
+                </a>
+            </p>
+        </div>
+        <div class="stats">
+            {% if album.release_date_for_display.is_some() %}
+                <p class="stats-release-date">Released on {{ album.release_date_for_display.as_ref().unwrap()|e }}</p>
+            {% endif %}
+        </div>
+        <img class="header-cover" src="api/image?url={{ album.cover_art_url|urlencode }}" alt="Thumbnail"/>
+    </div>
+    <br/>
+    {% if album.tracks.is_some() %}
+        <div class="song-list">
+            <h1 class="text-centered">Tracks</h1>
+            {% for song in album.tracks.as_ref().unwrap() %}
+                {% include "song.html" %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
