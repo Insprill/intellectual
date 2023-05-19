@@ -1,6 +1,7 @@
 # Changelog
 
-# 0.x.x:
+# 0.4.0:
+- Added support for viewing albums.
 - Added support for TLS connections.
 - Added flag for the desired Keep-Alive timeout. The default has been increated to 15 seconds from 5.
 - Added hover animations to pagination buttons.
