@@ -52,14 +52,6 @@ impl GeniusApi {
             .songs)
     }
 
-    pub async fn get_album(&self, album_id: u32) -> Result<GeniusAlbum> {
-        Ok(self
-            .get_json::<GeniusAlbumRequest>(SubDomain::Api, &format!("albums/{album_id}"), None)
-            .await?
-            .response
-            .album)
-    }
-
     pub async fn get_album_tracks(&self, album_id: u32) -> Result<Vec<GeniusSong>> {
         Ok(self
             .get_json::<GeniusTracksRequest>(
@@ -272,6 +264,13 @@ pub struct GeniusAlbum {
     pub release_date_for_display: Option<String>,
     pub tracks: Option<Vec<GeniusSong>>,
     pub artist: GeniusArtist,
+}
+
+impl GeniusAlbum {
+    pub fn path(&self) -> String {
+        // This is unsafe, but assuming Genius never returns an invalid URL, it's fine.
+        self.url.splitn(4, '/').last().unwrap().to_owned()
+    }
 }
 
 #[derive(Deserialize)]

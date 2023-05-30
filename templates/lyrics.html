@@ -22,7 +22,7 @@
             </p>
             {% if song.album.is_some() %}
                 <p class="album-name">On
-                    <a href="album?id={{ song.album.as_ref().unwrap().id|urlencode }}">
+                    <a href="album?path={{ song.album.as_ref().unwrap().path()|urlencode }}">
                         <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
                     </a>
                 </p>

@@ -5,8 +5,8 @@ use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use serde::Deserialize;
 
+use crate::genius::GeniusApi;
 use crate::genius::GeniusSong;
-use crate::genius::{GeniusApi};
 use crate::templates::template;
 use crate::utils;
 
