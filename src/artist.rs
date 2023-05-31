@@ -23,7 +23,7 @@ const MAX_SONGS: u8 = 5;
 #[get("/artist")]
 pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
     let artist_res = GeniusApi::global()
-        .extract_data::<GeniusArtistResponse>(&info.path)
+        .extract_data::<GeniusArtistResponse>(&utils::ensure_path_prefix("artists", &info.path))
         .await?;
     let mut artist = artist_res.artist;
 

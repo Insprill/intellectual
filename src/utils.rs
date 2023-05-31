@@ -16,3 +16,12 @@ pub fn borrowed_u8_eq(a: &u8, b: &u8) -> bool {
 pub fn path_from_url(url: &str) -> String {
     url.splitn(4, '/').last().unwrap().to_owned()
 }
+
+pub fn ensure_path_prefix(prefix: &'static str, path: &str) -> String {
+    let path = path.trim_start_matches('/');
+    if path.starts_with(prefix) {
+        path.to_string()
+    } else {
+        format!("{}/{}", prefix, path)
+    }
+}

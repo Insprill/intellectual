@@ -22,7 +22,7 @@ pub struct AlbumQuery {
 #[get("/album")]
 pub async fn album(info: web::Query<AlbumQuery>) -> Result<impl Responder> {
     let album_res = GeniusApi::global()
-        .extract_data::<GeniusAlbumResponse>(&info.path)
+        .extract_data::<GeniusAlbumResponse>(&utils::ensure_path_prefix("albums", &info.path))
         .await?;
     let mut album = album_res.album;
 
