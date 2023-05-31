@@ -11,3 +11,8 @@ pub fn pretty_format_num(num: i32) -> String {
 pub fn borrowed_u8_eq(a: &u8, b: &u8) -> bool {
     *a == *b
 }
+
+/// Gets the path part from a URL. Will panic if the URL doesn't have any '/'.
+pub fn path_from_url(url: &str) -> String {
+    url.splitn(4, '/').last().unwrap().to_owned()
+}

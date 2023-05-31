@@ -37,7 +37,7 @@
         {% endfor %}
     </div>
     {% if artist.description.is_some() %}
-        <div class="artist-description">{{ artist.description.as_ref().unwrap().plain|e|paragraphbreaks|safe }}</div>
+        <div class="artist-description">{{ artist.description.as_ref().unwrap().html|safe|paragraphbreaks|safe }}</div>
     {% endif %}
 
     {% if artist.popular_songs.is_some() %}

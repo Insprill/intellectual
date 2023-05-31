@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.x.x:
+- Added the ability to go to artists/albums via path.
+- Fixed the lyric page's "View on Genius" button taking the user to an invalid URL.
+- Removed the ability to go to artists/albums via ID.
+
+
 # 0.4.0:
 - Added support for viewing albums.
 - Added support for TLS connections.
@@ -10,7 +16,7 @@
 
 
 # 0.3.1:
-- Fixed the artist image taking up the entire backgound on small Safari viewports.
+- Fixed the artist image taking up the entire background on small Safari viewports.
 - Fixed the image URL on the artist page not being URL encoded.
 
 
@@ -45,7 +51,7 @@
 - Updated dependencies.
 - Fixed static files being served from disk instead of being bundled.
 - Fixed page view counts being posted in a separate batch.
-- Fixed genius response being relayed if an image couldn't be fetched.
+- Fixed the genius response being relayed if an image couldn't be fetched.
 
 
 ## 0.1.0:

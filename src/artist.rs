@@ -3,8 +3,8 @@ use actix_web::{get, web, Responder, Result};
 use askama::Template;
 use serde::Deserialize;
 
-use crate::genius::SortMode;
 use crate::genius::{GeniusApi, GeniusArtist};
+use crate::genius::{GeniusArtistResponse, SortMode};
 use crate::templates::template;
 
 #[derive(Template)]
@@ -15,18 +15,21 @@ struct ArtistTemplate {
 
 #[derive(Debug, Deserialize)]
 pub struct ArtistQuery {
-    id: u32,
+    path: String,
 }
 
 const MAX_SONGS: u8 = 5;
 
 #[get("/artist")]
 pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
-    let mut artist: GeniusArtist = GeniusApi::global().get_artist(info.id).await?;
+    let artist_res = GeniusApi::global()
+        .extract_data::<GeniusArtistResponse>(&info.path)
+        .await?;
+    let mut artist = artist_res.artist;
 
     artist.popular_songs = Some(
         GeniusApi::global()
-            .get_artist_songs(info.id, SortMode::Popularity, MAX_SONGS)
+            .get_artist_songs(artist.id, SortMode::Popularity, MAX_SONGS)
             .await?,
     );
 

@@ -16,13 +16,13 @@
         <div class="song-info">
             <p class="title">{{ song.title|e }}</p>
             <p class="artist-name">By 
-                <a href="artist?id={{ song.primary_artist.id|urlencode }}">
+                <a href="artist?path={{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
                     <cite>{{ song.primary_artist.name|e }}</cite>
                 </a>
             </p>
             {% if song.album.is_some() %}
                 <p class="album-name">On
-                    <a href="album?path={{ song.album.as_ref().unwrap().path()|urlencode }}">
+                    <a href="album?path={{ utils::path_from_url(song.album.as_ref().unwrap().url)|urlencode }}">
                         <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
                     </a>
                 </p>

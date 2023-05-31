@@ -3,11 +3,14 @@ use std::sync::Arc;
 use crate::Result;
 use actix_web::{http::StatusCode, web::Bytes};
 use awc::{Client, SendClientRequest};
-use once_cell::sync::OnceCell;
+use once_cell::sync::{Lazy, OnceCell};
+use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize};
 use urlencoding::encode;
 
 static GLOBAL_API: OnceCell<Arc<GeniusApi>> = OnceCell::new();
+static EMBEDDED_INFO_SELECTOR: Lazy<Selector> =
+    Lazy::new(|| Selector::parse("meta[content]").unwrap());
 
 pub struct GeniusApi;
 
@@ -25,13 +28,19 @@ impl GeniusApi {
 }
 
 impl GeniusApi {
-    /// https://docs.genius.com/#/artists-show
-    pub async fn get_artist(&self, artist_id: u32) -> Result<GeniusArtist> {
-        Ok(self
-            .get_json::<GeniusArtistRequest>(SubDomain::Api, &format!("artists/{artist_id}"), None)
-            .await?
-            .response
-            .artist)
+    pub async fn extract_data<Res>(&self, path: &str) -> Result<Res>
+    where
+        Res: DeserializeOwned,
+    {
+        let page = self.get_text(SubDomain::Root, path, None).await?;
+        let document = Html::parse_document(&page);
+
+        Ok(document
+            .select(&EMBEDDED_INFO_SELECTOR)
+            .map(|element| element.value().attr("content").unwrap()) // Selector only matches content
+            .find(|content| content.starts_with("{\"")) // JSON API data
+            .and_then(|content| serde_json::from_str::<Res>(content).ok())
+            .ok_or("Failed to extract JSON data")?)
     }
 
     /// https://docs.genius.com/#/artists-songs
@@ -266,13 +275,6 @@ pub struct GeniusAlbum {
     pub artist: GeniusArtist,
 }
 
-impl GeniusAlbum {
-    pub fn path(&self) -> String {
-        // This is unsafe, but assuming Genius never returns an invalid URL, it's fine.
-        self.url.splitn(4, '/').last().unwrap().to_owned()
-    }
-}
-
 #[derive(Deserialize)]
 pub struct GeniusStats {
     pub pageviews: Option<i32>,
@@ -290,7 +292,6 @@ pub struct GeniusArtistResponse {
 
 #[derive(Deserialize)]
 pub struct GeniusArtist {
-    pub api_path: String,
     pub id: u32,
     pub name: String,
     pub alternate_names: Option<Vec<String>>,
@@ -305,7 +306,7 @@ pub struct GeniusArtist {
 
 #[derive(Deserialize)]
 pub struct GeniusDescription {
-    pub plain: String,
+    pub html: String,
 }
 
 pub struct ArtistSocial<'a> {
