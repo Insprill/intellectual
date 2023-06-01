@@ -25,9 +25,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Toolchain
-        uses: dtolnay/rust-toolchain@stable
-
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
@@ -45,9 +42,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Setup Toolchain
-        uses: dtolnay/rust-toolchain@stable
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
