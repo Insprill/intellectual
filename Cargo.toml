@@ -1,7 +1,7 @@
 [package]
 name = "intellectual"
 description = "Alternate frontend for Genius focused on privacy and simplicity"
-version = "0.4.0"
+version = "0.5.0"
 license = "AGPL-3.0"
 repository = "https://github.com/Insprill/intellectual"
 edition = "2021"

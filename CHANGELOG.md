@@ -1,8 +1,7 @@
 # Changelog
 
-# 0.x.x:
+# 0.5.0:
 - Added the ability to go to artists/albums via path.
-- Fixed the lyric page's "View on Genius" button taking the user to an invalid URL.
 - Removed the ability to go to artists/albums via ID.
 
 
