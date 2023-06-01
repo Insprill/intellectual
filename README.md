@@ -80,7 +80,7 @@ This means they have the ability to monitor traffic between you and the server.
 #### Docker
 
 The easiest way to host intellectual is via Docker, and the included Docker Compose file.
-To create a new direcotry, download the `docker-compose.yml`, and cd into the direcotry, run the following command (Requires cURL 7.10.3 or newer)
+To create a new directory, download the `docker-compose.yml`, and cd into the directory, run the following command (Requires cURL 7.10.3 or newer)
 ```bash
 curl https://raw.githubusercontent.com/Insprill/intellectual/master/docker-compose.yml --create-dirs -o intellectual/docker-compose.yml && cd intellectual
 ```
@@ -99,7 +99,7 @@ Now you can start Intellectual. Append `-h` when running it to see all available
 
 ### TLS
 
-Intellectual supports TLS connections nativly using [rustls][rustls-repo].
+Intellectual supports TLS connections natively using [rustls][rustls-repo].
 To enable TLS, provide the `--tls` flag, followed by `--tls-key-file` and `--tls-cert-file` pointing to their respective files on disk.
 
 
@@ -132,7 +132,7 @@ To enable TLS, provide the `--tls` flag, followed by `--tls-key-file` and `--tls
 - [ ] Better accessibility
 - [ ] Support for more lyric sources
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create.  
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create.  
 Any contributions you make are **greatly appreciated**!  
 If you're new to contributing to open-source projects,
 you can follow [this](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) guide to get up-to-speed.
