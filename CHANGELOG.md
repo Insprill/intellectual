@@ -1,5 +1,9 @@
 # Changelog
 
+# 0.5.1:
+- Fixed lyrics not showing for songs with no verse headers.
+
+
 # 0.5.0:
 - Added the ability to go to artists/albums via path.
 - Removed the ability to go to artists/albums via ID.
