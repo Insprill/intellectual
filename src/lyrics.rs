@@ -16,6 +16,7 @@ static SONG_ID_SELECTOR: Lazy<Selector> =
 static LYRIC_SELECTOR: Lazy<Selector> =
     Lazy::new(|| Selector::parse("div[data-lyrics-container=true]").unwrap());
 
+#[derive(Default)]
 struct Verse {
     title: String,
     lyrics: Vec<String>,
@@ -102,7 +103,8 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse> {
                         title: text.to_string(),
                         lyrics: Vec::new(),
                     });
-                } else if let Some(curr) = current_verse.as_mut() {
+                } else {
+                    let curr: &mut Verse = current_verse.get_or_insert_with(Verse::default);
                     let last = curr.lyrics.last_mut();
                     if new_line || last.is_none() {
                         curr.lyrics.push(text.to_owned());
