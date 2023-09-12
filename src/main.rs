@@ -125,7 +125,7 @@ async fn main() -> std::io::Result<()> {
     if args.tls {
         // To create a self-signed temporary cert for testing:
         // openssl req -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365 -subj '/CN=localhost'
-        server.bind_rustls((args.address.to_owned(), port), build_tls_config(&args)?)
+        server.bind_rustls_021((args.address.to_owned(), port), build_tls_config(&args)?)
     } else {
         server.bind((args.address, port))
     }?
