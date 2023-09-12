@@ -62,7 +62,8 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 
 | URL                               | Country | Cloudflare |
 |-----------------------------------|---------|------------|
-| https://intellectual.insprill.net | 🇺🇸 US | ✔️         |
+| https://intellectual.insprill.net | 🇺🇸 US   | ✔️         |
+| https://in.bloatcat.tk/           | 🇮🇸 IS   |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
