@@ -25,4 +25,3 @@ body:
       description: Is the instance proxied behind Cloudflare? Using Cloudflare as DNS only does not apply.
       options:
         - label: Is the instance proxied behind Cloudflare?
-          required: true
