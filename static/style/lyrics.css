@@ -14,7 +14,7 @@
     display: grid;
     grid-template-columns: 12em auto;
     grid-template-rows: 3em 3em 6em;
-    gap: 0 1em;
+    gap: 0 0.75em;
     grid-template-areas:
     "cover song"
     "cover song"
@@ -43,7 +43,7 @@
     display: grid;
     grid-auto-columns: 1fr;
     grid-template-columns: auto;
-    grid-template-rows: 2.5em 1.75em 1.75em;
+    grid-template-rows: auto;
     gap: 0.25em 0;
     grid-template-areas:
     "title"
@@ -101,4 +101,5 @@
 .stats-views {
     grid-area: views;
     font-size: 14px;
+    text-align: right;
 }
