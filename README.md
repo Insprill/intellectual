@@ -95,8 +95,7 @@ docker compose up -d
 
 If you don't want to use Docker, you can download the latest [stable](https://github.com/Insprill/intellectual/releases) or [nightly](https://nightly.link/Insprill/intellectual/workflows/rust/master) build from GitHub actions. Make sure to choose the version for your target operating system.
 
-Before starting, make sure to set the `GENIUS_AUTH_TOKEN` environment variable to the token you copied above.
-Now you can start Intellectual. Append `-h` when running it to see all available arguments.
+Append the `-h` flag when running to see all available arguments.
 
 ### TLS
 
