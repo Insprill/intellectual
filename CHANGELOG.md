@@ -5,13 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
+
+### Added
+- Pre-built binary for musl libc.
 
 ### Fixed
 - Long titles covering other UI elements ([#15] by [@Ftonans]).
 
 ### Changed
 - Reduced binary size by 20%.
+
+### Removed
+- Pre-built macOS binary. 
 
 
 ## [0.5.1] - 2023-07-07

@@ -7,41 +7,48 @@ env:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: macos-latest
-            suffix: ''
-            name: macOS
-          - os: ubuntu-latest
-            suffix: ''
-            name: Linux
-          - os: windows-latest
-            suffix: .exe
-            name: Windows
+          - target: 'x86_64-unknown-linux-gnu'
+            os: ubuntu
+          - target: 'x86_64-unknown-linux-musl'
+            os: ubuntu
+          - target: 'x86_64-pc-windows-msvc'
+            os: windows
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Install musl Dependencies
+        if: contains(matrix.target, 'musl')
+        run: sudo apt-get update && sudo apt-get install musl-tools
+
+      - name: Install Target
+        run: rustup target add ${{ matrix.target }}
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
       - name: Build
-        run: cargo build --release
+        run: cargo build --release --target=${{ matrix.target }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Intellectual-${{ matrix.name }}
-          path: target/release/intellectual${{ matrix.suffix }}
+          name: Intellectual-${{ matrix.target }}
+          if-no-files-found: ignore
+          path: |
+            target/${{ matrix.target }}/release/intellectual
+            target/${{ matrix.target }}/release/intellectual.exe
 
   code-style:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
