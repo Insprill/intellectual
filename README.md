@@ -60,10 +60,11 @@ Check out the [roadmap](#roadmap) for what features will be coming next!
 Want your own instance listed here? Open an issue for it!  
 Not sure how to host your own instance? View the [deployment](#deployment) instructions.
 
-| URL                               | Country | Cloudflare |
-|-----------------------------------|---------|------------|
-| https://intellectual.insprill.net | 🇺🇸 US   | ✔️         |
-| https://in.bloatcat.tk/           | 🇮🇸 IS   |            |
+| URL                                       | Country | Cloudflare |
+|-------------------------------------------|---------|------------|
+| https://intellectual.insprill.net         | 🇺🇸 US   | ✔️         |
+| https://in.bloatcat.tk/                   | 🇮🇸 IS   |            |
+| https://intellectual.privacyfucking.rocks | 🇩🇪 DE   |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
