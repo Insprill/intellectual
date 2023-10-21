@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - {% endblock %}
+
+{% block style %}/style/settings.css{% endblock %}
+
+{% block content %}
+<div class="settings">
+    <form method="post" action="/settings" autocomplete="off">
+        <label class="theme-title" for="theme">Theme:</label>
+        <select class="theme" id="theme" name="theme" selected="{{ settings.theme }}">
+            {% for theme in themes %}
+                <option value="{{ theme.id }}" {% if theme.id == settings.theme %}selected{% endif %}>{{ theme.name }}</option>
+            {% endfor %}
+        </select>
+        <button class="save" type="submit">
+            Save
+        </button>
+    </form>
+</div>
+{% endblock %}

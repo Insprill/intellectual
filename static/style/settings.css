@@ -1,0 +1,62 @@
+.settings {
+    margin: auto;
+}
+
+.settings > form {
+    display: grid;
+    grid-gap: 12px 4px;
+    grid-template-columns: auto;
+    grid-template-areas:
+        "theme-title theme"
+        "save save";
+    padding: 12px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin: -50px auto auto;
+    background: var(--foreground);
+}
+
+.settings > form label {
+    color: var(--text);
+    font-size: 24px;
+}
+
+.settings > form option {
+    background: var(--background);
+    color: var(--text);
+}
+
+.settings > form button {
+    background: var(--background);
+    color: var(--text);
+    border: 0;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.settings > form input {
+    background: var(--background);
+    color: var(--text);
+    font-size: 24px;
+    width: 100%;
+    border: 0;
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-right: 8px;
+    height: unset;
+}
+
+.theme {
+    grid-area: theme;
+}
+
+.theme-title {
+    grid-area: theme-title;
+}
+
+.save {
+    grid-area: save;
+}
+

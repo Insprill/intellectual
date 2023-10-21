@@ -13,6 +13,11 @@ pub async fn style(path: web::Path<String>) -> impl Responder {
     asset(&format!("style/{}", path.as_str()))
 }
 
+#[get("style/theme/{resource}")]
+pub async fn style_theme(path: web::Path<String>) -> impl Responder {
+    asset(&format!("style/theme/{}", path.as_str()))
+}
+
 #[get("icon/{resource}")]
 pub async fn icon(path: web::Path<String>) -> impl Responder {
     asset(&format!("icon/{}", path.as_str()))

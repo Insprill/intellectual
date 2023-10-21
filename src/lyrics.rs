@@ -1,4 +1,4 @@
-use actix_web::{get, web, Responder, Result};
+use actix_web::{get, web, Responder, Result, HttpRequest};
 use askama::Template;
 use futures::future;
 use once_cell::sync::Lazy;
@@ -8,6 +8,7 @@ use serde::Deserialize;
 
 use crate::genius::GeniusSong;
 use crate::genius::{self, GeniusApi};
+use crate::settings::{Settings, settings_from_req};
 use crate::templates::template;
 use crate::utils;
 
@@ -25,6 +26,7 @@ struct Verse {
 #[derive(Template)]
 #[template(path = "lyrics.html")]
 struct LyricsTemplate {
+    settings: Settings,
     verses: Vec<Verse>,
     query: LyricsQuery,
     song: GeniusSong,
@@ -37,7 +39,7 @@ pub struct LyricsQuery {
 }
 
 #[get("/lyrics")]
-pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
+pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     let document: Html;
     let song: GeniusSong;
 
@@ -61,6 +63,7 @@ pub async fn lyrics(info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     let verses = scrape_lyrics(&document);
 
     Ok(template(LyricsTemplate {
+        settings: settings_from_req(&req),
         verses,
         query: info.0,
         song,

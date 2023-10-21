@@ -1,31 +1,11 @@
-:root, .dark {
-	--yellow: #ffff64;
-	--text: #c9d1d9;
-	--text-dark: #85817b;
-	--foreground: #161b22;
-	--background: #0d1117;
-	--highlighted: #1b2027;
-	--facebook: #4267b2;
-	--instagram: #e1306c;
-	--twitter: #1da1f2;
+:root {
+    --facebook: #4267b2;
+    --instagram: #e1306c;
+    --twitter: #1da1f2;
 	--radius: 5px;
 	--shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     --hover-transform: translate3d(0px, -1px, 0px);
     --hover-transition: 0.3s all;
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-	    --yellow: #d7d741;
-	    --text: #24292f;
-	    --text-dark: #85817b;
-	    --foreground: #f6f8fa;
-	    --background: #ffffff;
-	    --highlighted: #f0f2f4;
-	    --facebook: #4267b2;
-	    --instagram: #e1306c;
-	    --twitter: #1da1f2;
-    }
 }
 
 a {

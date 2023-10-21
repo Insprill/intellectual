@@ -1,0 +1,20 @@
+{
+  "themes": [
+    {
+      "name": "Catppuccin Mocha",
+      "id": "catppuccin-mocha"
+    },
+    {
+      "name": "Github Dark",
+      "id": "github-dark"
+    },
+    {
+      "name": "Github Light",
+      "id": "github-light"
+    },
+    {
+      "name": "Sweet",
+      "id": "sweet"
+    }
+  ]
+}

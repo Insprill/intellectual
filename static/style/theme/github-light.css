@@ -1,0 +1,9 @@
+:root {
+    color-scheme: light;
+    --yellow: #d7d741;
+    --text: #24292f;
+    --text-dark: #85817b;
+    --foreground: #f6f8fa;
+    --background: #ffffff;
+    --highlighted: #f0f2f4;
+}

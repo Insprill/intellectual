@@ -6,6 +6,7 @@ use actix_web::{http::StatusCode, middleware, App, HttpServer};
 use clap::{arg, command, Parser};
 use log::{error, info, warn, LevelFilter};
 use rustls::{Certificate, PrivateKey, ServerConfig as RustlsServerConfig};
+
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 
 use crate::genius::GeniusApi;
@@ -19,6 +20,7 @@ mod home;
 mod lyrics;
 mod resource;
 mod search;
+mod settings;
 mod templates;
 mod utils;
 
@@ -105,9 +107,12 @@ async fn main() -> std::io::Result<()> {
             .service(home::home)
             .service(lyrics::lyrics)
             .service(search::search)
+            .service(settings::settings)
+            .service(settings::settings_form)
             // Static Resources
             .service(resource::resource)
             .service(resource::style)
+            .service(resource::style_theme)
             .service(resource::icon)
             .service(resource::font)
     });

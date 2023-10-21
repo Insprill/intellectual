@@ -1,0 +1,9 @@
+:root {
+    color-scheme: dark;
+    --yellow: #ffff64;
+    --text: #cdd6f4;
+    --text-dark: #7f849c;
+    --foreground: #1e1e2e;
+    --background: #181825;
+    --highlighted: #313244;
+}

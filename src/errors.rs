@@ -4,7 +4,7 @@ use actix_web::{
 use askama::Template;
 use log::error;
 
-use crate::templates::template;
+use crate::{templates::template, settings::{Settings, settings_from_req}};
 
 pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
     let err = get_err_str(&res);
@@ -12,17 +12,18 @@ pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
         error!("{}", str);
     }
 
-    let new_response = template(InternalErrorTemplate { err });
+    let new_response = template(InternalErrorTemplate { settings: settings_from_req(res.request()), err });
     create(res, new_response)
 }
 
 pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let new_response = template(NotFoundTemplate {});
+    let new_response = template(NotFoundTemplate { settings: settings_from_req(res.request())});
     create(res, new_response)
 }
 
 pub fn render_400<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
     let new_response = template(BadRequestTemplate {
+        settings: settings_from_req(res.request()),
         err: get_err_str(&res),
     });
     create(res, new_response)
@@ -44,15 +45,19 @@ fn get_err_str<B>(res: &ServiceResponse<B>) -> Option<String> {
 #[derive(Template)]
 #[template(path = "500.html")]
 struct InternalErrorTemplate {
+    settings: Settings, 
     err: Option<String>,
 }
 
 #[derive(Template)]
 #[template(path = "404.html")]
-struct NotFoundTemplate {}
+struct NotFoundTemplate {
+    settings: Settings
+}
 
 #[derive(Template)]
 #[template(path = "400.html")]
 struct BadRequestTemplate {
+    settings: Settings,
     err: Option<String>,
 }

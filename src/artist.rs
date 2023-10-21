@@ -1,5 +1,6 @@
+use crate::settings::{Settings, settings_from_req};
 use crate::utils;
-use actix_web::{get, web, Responder, Result};
+use actix_web::{get, web, Responder, Result, HttpRequest};
 use askama::Template;
 use serde::Deserialize;
 
@@ -10,6 +11,7 @@ use crate::templates::template;
 #[derive(Template)]
 #[template(path = "artist.html")]
 struct ArtistTemplate {
+    settings: Settings,
     artist: GeniusArtist,
 }
 
@@ -21,7 +23,7 @@ pub struct ArtistQuery {
 const MAX_SONGS: u8 = 5;
 
 #[get("/artist")]
-pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
+pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<impl Responder> {
     let artist_res = GeniusApi::global()
         .extract_data::<GeniusArtistResponse>(&utils::ensure_path_prefix("artists", &info.path))
         .await?;
@@ -33,5 +35,8 @@ pub async fn artist(info: web::Query<ArtistQuery>) -> Result<impl Responder> {
             .await?,
     );
 
-    Ok(template(ArtistTemplate { artist }))
+    Ok(template(ArtistTemplate { 
+        settings: settings_from_req(&req),
+        artist 
+    }))
 }

@@ -7,10 +7,11 @@ repository = "https://github.com/Insprill/intellectual"
 edition = "2021"
 
 [dependencies]
-actix-web = { version = "4.4.0", default-features = false, features = ["macros", "compress-gzip", "rustls-0_21"] }
+actix-web = { version = "4.4.0", default-features = false, features = ["macros", "compress-gzip", "cookies", "rustls-0_21"] }
 askama = { version = "0.12.0", default-features = false, features = ["percent-encoding"] }
 awc = { version = "3.2.0", default-features = false, features = ["compress-gzip", "rustls-0_21"] }
 clap = { version = "4.4.3", features = ["derive"] }
+cookie = "0.16" # Must stay compatible with the version actix-web is using.
 futures = { version = "0.3.28", default-features = false }
 include_dir = "0.7.3"
 log = "0.4.20"

@@ -1,12 +1,13 @@
 use std::cmp::{max, min};
 use std::ops::RangeInclusive;
 
-use actix_web::{get, web, Responder, Result};
+use actix_web::{get, web, Responder, Result, HttpRequest};
 use askama::Template;
 use serde::Deserialize;
 
 use crate::genius::GeniusApi;
 use crate::genius::GeniusSong;
+use crate::settings::{Settings, settings_from_req};
 use crate::templates::template;
 use crate::utils;
 
@@ -15,6 +16,7 @@ const NAV_PAGE_COUNT: u8 = 3;
 #[derive(Template)]
 #[template(path = "search.html")]
 struct SearchTemplate {
+    settings: Settings,
     songs: Vec<GeniusSong>,
     q: String,
     current_page: u8,
@@ -28,7 +30,7 @@ pub struct SearchQuery {
 }
 
 #[get("/search")]
-pub async fn search(info: web::Query<SearchQuery>) -> Result<impl Responder> {
+pub async fn search(req: HttpRequest, info: web::Query<SearchQuery>) -> Result<impl Responder> {
     let current_page = info.page.unwrap_or(1);
 
     let songs = GeniusApi::global()
@@ -40,6 +42,7 @@ pub async fn search(info: web::Query<SearchQuery>) -> Result<impl Responder> {
     let nav_pages = RangeInclusive::new(nav_min, nav_max).collect();
 
     Ok(template(SearchTemplate {
+        settings: settings_from_req(&req),
         q: info.q.to_owned(),
         current_page,
         nav_pages,

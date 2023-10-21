@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- A settings menu to change theme.
 - Pre-built binary for musl libc.
 
 ### Fixed
