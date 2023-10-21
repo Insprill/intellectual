@@ -1,6 +1,18 @@
 {
   "themes": [
     {
+      "name": "Catppuccin Latte",
+      "id": "catppuccin-latte"
+    },
+    {
+      "name": "Catppuccin Frappé",
+      "id": "catppuccin-frappe"
+    },
+    {
+      "name": "Catppuccin Macchiato",
+      "id": "catppuccin-macchiato"
+    },
+    {
       "name": "Catppuccin Mocha",
       "id": "catppuccin-mocha"
     },
@@ -11,6 +23,14 @@
     {
       "name": "Github Light",
       "id": "github-light"
+    },
+    {
+      "name": "Gruvbox Dark",
+      "id": "gruvbox-dark"
+    },
+    {
+      "name": "Gruvbox Light",
+      "id": "gruvbox-light"
     },
     {
       "name": "Sweet",

@@ -1,9 +1,10 @@
+/* https://github.com/catppuccin/catppuccin#-palette */
 :root {
     color-scheme: dark;
-    --yellow: #ffff64;
-    --text: #cdd6f4;
-    --text-dark: #7f849c;
-    --foreground: #1e1e2e;
-    --background: #181825;
-    --highlighted: #313244;
+    --yellow: #f9e2af; /* Yellow */
+    --text: #cdd6f4; /* Text */
+    --text-dark: #7f849c; /* Overlay 1 */
+    --foreground: #1e1e2e; /* Base */
+    --background: #181825; /* Mantle */
+    --highlighted: #313244; /* Surface 0 */
 }

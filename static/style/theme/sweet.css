@@ -1,6 +1,7 @@
+/* https://github.com/EliverLara/Sweet/blob/master/gtk-4.0/_colors.scss */
 :root {
     color-scheme: dark;
-	--yellow: #ffff64;
+	--yellow: #f9dc5c;
 	--text: #c9d1d9;
 	--text-dark: #85817b;
 	--foreground: #191925;

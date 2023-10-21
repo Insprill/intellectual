@@ -4,7 +4,7 @@
 
 .settings > form {
     display: grid;
-    grid-gap: 12px 4px;
+    grid-gap: 12px 8px;
     grid-template-columns: auto;
     grid-template-areas:
         "theme-title theme"
@@ -18,7 +18,7 @@
 
 .settings > form label {
     color: var(--text);
-    font-size: 24px;
+    font-size: 16px;
 }
 
 .settings > form option {

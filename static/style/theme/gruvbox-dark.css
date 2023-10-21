@@ -1,0 +1,10 @@
+/* https://github.com/morhetz/gruvbox?tab=readme-ov-file#dark-mode-1 */
+:root {
+    color-scheme: dark;
+    --yellow: #fabd2f; /* yellow */
+    --text: #ebdbb2; /* fg */
+    --text-dark: #665c53; /* bg3 */
+    --foreground: #3c3836; /* bg1 */
+    --background: #282828; /* bg0 */
+    --highlighted: #504945; /* bg2 */
+}
