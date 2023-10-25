@@ -1,25 +1,25 @@
 [package]
 name = "intellectual"
 description = "Alternate frontend for Genius focused on privacy and simplicity"
-version = "0.5.1"
+version = "0.6.0"
 license = "AGPL-3.0"
 repository = "https://github.com/Insprill/intellectual"
 edition = "2021"
 
 [dependencies]
 actix-web = { version = "4.4.0", default-features = false, features = ["macros", "compress-gzip", "cookies", "rustls-0_21"] }
-askama = { version = "0.12.0", default-features = false, features = ["percent-encoding"] }
+askama = { version = "0.12.1", default-features = false, features = ["percent-encoding"] }
 awc = { version = "3.2.0", default-features = false, features = ["compress-gzip", "rustls-0_21"] }
-clap = { version = "4.4.3", features = ["derive"] }
+clap = { version = "4.4.7", features = ["derive"] }
 cookie = "0.16" # Must stay compatible with the version actix-web is using.
 futures = { version = "0.3.28", default-features = false }
 include_dir = "0.7.3"
 log = "0.4.20"
 once_cell = "1.18.0"
-rustls = "0.21.7" # Must stay compatible with the version actix-web is using.
+rustls = "0.21.8" # Must stay compatible with the version actix-web is using.
 rustls-pemfile = "1.0.3"
 scraper = "0.17.1"
-serde = { version = "1.0.188", features = ["derive"] }
+serde = { version = "1.0.189", features = ["derive"] }
 serde_json = "1.0.107"
 simplelog = "0.12.1"
 urlencoding = "2.1.3"
