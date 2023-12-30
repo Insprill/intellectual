@@ -14,6 +14,7 @@ clap = { version = "4", features = ["derive"] }
 cookie = "0.16" # Must stay compatible with the version actix-web is using.
 futures = { version = "0.3", default-features = false }
 include_dir = "0.7"
+lazy-regex = "3"
 log = "0.4"
 once_cell = "1"
 rustls = "0.21" # Must stay compatible with the version actix-web is using.
