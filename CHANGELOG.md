@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
-- Album cards in artist descriptions not rendering correctly.
+- Album cards in artist descriptions not rendering correctly ([#23] by [@ButteredCats]).
 - Images in artist descriptions not being proxied, causing them not to load.
 - Artist/album/lyric links in artist descriptions pointing to Genius.
 - Artist link in albums directing to an invalid page.
@@ -120,10 +120,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 <!-- Users -->
+[@ButteredCats]: https://github.com/ButteredCats
 [@Ftonans]: https://github.com/Ftonans
 [@SeniorCluckers]: https://github.com/SeniorCluckers
 
 <!-- Pull Requests -->
+[#23]: https://github.com/Insprill/intellectual/pull/23
 [#15]: https://github.com/Insprill/intellectual/pull/15
 [#6]: https://github.com/Insprill/intellectual/pull/6
 
