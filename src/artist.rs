@@ -38,7 +38,7 @@ pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<i
     );
 
     if let Some(description) = artist.description.as_mut() {
-        description.html = description.html.replace(GENIUS_IMAGE_URL, &format!("/api/image?url={}", GENIUS_IMAGE_URL));
+        description.html = rewrite_links(&description.html);
     }
 
     Ok(template(ArtistTemplate { 
@@ -46,3 +46,12 @@ pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<i
         artist 
     }))
 }
+
+fn rewrite_links(html: &str) -> String {
+    let mut html = html.replace(GENIUS_IMAGE_URL, &format!("/api/image?url={}", GENIUS_IMAGE_URL)); // Images
+    html = html.replace("https://genius.com/albums/", "/album?path=albums/"); // Albums
+    html = html.replace("https://genius.com/artists/", "/artist?path=artists/"); // Artists
+    html = html.replace("https://genius.com/", "/lyrics?path=/"); // Lyrics
+    html
+}
+
