@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Support for aarch64.
+
 ### Fixed
 - Album cards in artist descriptions not rendering correctly ([#23] by [@ButteredCats]).
 - Images in artist descriptions not being proxied, causing them not to load.
