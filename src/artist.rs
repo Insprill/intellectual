@@ -8,6 +8,8 @@ use crate::genius::{GeniusApi, GeniusArtist};
 use crate::genius::{GeniusArtistResponse, SortMode};
 use crate::templates::template;
 
+const GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
+
 #[derive(Template)]
 #[template(path = "artist.html")]
 struct ArtistTemplate {
@@ -34,6 +36,10 @@ pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<i
             .get_artist_songs(artist.id, SortMode::Popularity, MAX_SONGS)
             .await?,
     );
+
+    if let Some(description) = artist.description.as_mut() {
+        description.html = description.html.replace(GENIUS_IMAGE_URL, &format!("/api/image?url={}", GENIUS_IMAGE_URL));
+    }
 
     Ok(template(ArtistTemplate { 
         settings: settings_from_req(&req),
