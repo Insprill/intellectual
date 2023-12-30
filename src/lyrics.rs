@@ -1,4 +1,4 @@
-use actix_web::{get, web, Responder, Result, HttpRequest};
+use actix_web::{get, web, HttpRequest, Responder, Result};
 use askama::Template;
 use futures::future;
 use once_cell::sync::Lazy;
@@ -8,7 +8,7 @@ use serde::Deserialize;
 
 use crate::genius::GeniusSong;
 use crate::genius::{self, GeniusApi};
-use crate::settings::{Settings, settings_from_req};
+use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
 

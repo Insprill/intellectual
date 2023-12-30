@@ -1,13 +1,13 @@
 use std::cmp::{max, min};
 use std::ops::RangeInclusive;
 
-use actix_web::{get, web, Responder, Result, HttpRequest};
+use actix_web::{get, web, HttpRequest, Responder, Result};
 use askama::Template;
 use serde::Deserialize;
 
 use crate::genius::GeniusApi;
 use crate::genius::GeniusSong;
-use crate::settings::{Settings, settings_from_req};
+use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
 

@@ -1,10 +1,10 @@
-use crate::settings::{Settings, settings_from_req};
+use crate::settings::{settings_from_req, Settings};
 use crate::utils;
-use actix_web::{get, web, Responder, Result, HttpRequest};
+use actix_web::{get, web, HttpRequest, Responder, Result};
 use askama::Template;
+use lazy_regex::*;
 use regex::Regex;
 use serde::Deserialize;
-use lazy_regex::*;
 
 use crate::genius::{GeniusApi, GeniusArtist};
 use crate::genius::{GeniusArtistResponse, SortMode};
@@ -46,17 +46,19 @@ pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<i
         description.html = rewrite_links(&description.html);
     }
 
-    Ok(template(ArtistTemplate { 
+    Ok(template(ArtistTemplate {
         settings: settings_from_req(&req),
-        artist 
+        artist,
     }))
 }
 
 fn rewrite_links(html: &str) -> String {
-    let html = html.replace(GENIUS_IMAGE_URL, &format!("/api/image?url={}", GENIUS_IMAGE_URL)); // Images
+    let html = html.replace(
+        GENIUS_IMAGE_URL,
+        &format!("/api/image?url={}", GENIUS_IMAGE_URL),
+    ); // Images
     let html = GENIUS_ALBUMS_PATTERN.replace_all(&html, "/album?path=albums/"); // Albums
     let html = GENIUS_ARTIST_PATTERN.replace_all(&html, "/artist?path=artists/"); // Artists
     let html = GENIUS_BASE_PATTERN.replace_all(&html, "/lyrics?path=/"); // Lyrics
     html.to_string()
 }
-

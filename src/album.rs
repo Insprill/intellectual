@@ -1,5 +1,5 @@
 use crate::genius::GeniusAlbumResponse;
-use crate::settings::{Settings, settings_from_req};
+use crate::settings::{settings_from_req, Settings};
 use crate::utils;
 use actix_web::HttpRequest;
 use actix_web::{get, web, Responder, Result};
@@ -31,5 +31,8 @@ pub async fn album(req: HttpRequest, info: web::Query<AlbumQuery>) -> Result<imp
 
     album.tracks = Some(GeniusApi::global().get_album_tracks(album.id).await?);
 
-    Ok(template(AlbumTemplate { settings: settings_from_req(&req), album }))
+    Ok(template(AlbumTemplate {
+        settings: settings_from_req(&req),
+        album,
+    }))
 }

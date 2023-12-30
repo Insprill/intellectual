@@ -1,17 +1,17 @@
-use actix_web::{get, Responder, HttpRequest};
+use actix_web::{get, HttpRequest, Responder};
 use askama::Template;
 
-use crate::{templates::template, settings::Settings, settings::settings_from_req};
+use crate::{settings::settings_from_req, settings::Settings, templates::template};
 
 #[derive(Template)]
 #[template(path = "home.html")]
 struct HomeTemplate {
-    settings: Settings
+    settings: Settings,
 }
 
 #[get("/")]
 pub async fn home(req: HttpRequest) -> impl Responder {
     template(HomeTemplate {
-        settings: settings_from_req(&req)
+        settings: settings_from_req(&req),
     })
 }
