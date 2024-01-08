@@ -1,7 +1,12 @@
 use actix_web::{
-    self, dev::ServiceResponse, middleware::ErrorHandlerResponse, HttpResponse, Result,
+    self,
+    dev::ServiceResponse,
+    http::header::{self},
+    middleware::ErrorHandlerResponse,
+    HttpResponse, Result,
 };
 use askama::Template;
+use awc::error::HeaderValue;
 use log::error;
 
 use crate::{
@@ -41,6 +46,10 @@ fn create<B>(
     res: ServiceResponse<B>,
     new_response: HttpResponse,
 ) -> Result<ErrorHandlerResponse<B>> {
+    let mut new_response = new_response;
+    new_response
+        .headers_mut()
+        .append(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
     Ok(ErrorHandlerResponse::Response(
         ServiceResponse::new(res.into_parts().0, new_response).map_into_right_body(),
     ))
