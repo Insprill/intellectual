@@ -3,13 +3,23 @@
 ####################################################################################################
 FROM rust:alpine AS builder
 
-RUN apk add --no-cache musl-dev
+RUN apk add --no-cache musl-dev gcc # GCC needed for aarch64 builds
 
 WORKDIR /intellectual
 
 COPY . .
 
-RUN cargo build --target x86_64-unknown-linux-musl --release
+# Figure out what arch we're on
+RUN BASE_TARGET=-unknown-linux-musl; \
+    case "$(uname -m)" in \
+        x86_64) TARGET=x86_64$BASE_TARGET ;; \
+        aarch64) TARGET=aarch64$BASE_TARGET ;; \
+        *) echo "Unsupported architecture"; exit 1 ;; \
+    esac; \
+# Build the binary
+    cargo build --target ${TARGET} --release; \
+    mkdir --parents ./target/docker/; \
+    mv ./target/${TARGET}/release/intellectual ./target/docker/intellectual
 
 ####################################################################################################
 ## Final image
@@ -17,7 +27,7 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 FROM alpine:latest
 
 # Copy our build
-COPY --from=builder /intellectual/target/x86_64-unknown-linux-musl/release/intellectual /usr/local/bin/intellectual
+COPY --from=builder /intellectual/target/docker/intellectual /usr/local/bin/intellectual
 
 # Use an unprivileged user
 RUN adduser --home /nonexistent --no-create-home --disabled-password intellectual
