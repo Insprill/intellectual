@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" type="text/css" href="/style/theme/{{ settings.theme }}.css?v={{ env!("CARGO_PKG_VERSION") }}">
-    <link rel="stylesheet" type="text/css" href="/font/inter.css?v={{ env!("CARGO_PKG_VERSION") }}">
-    <link rel="stylesheet" type="text/css" href="/style/style.css?v={{ env!("CARGO_PKG_VERSION") }}">
+    <link rel="stylesheet" type="text/css" href="/style/theme/{{ settings.theme }}.css?v={{ env!("IN_VERSION") }}">
+    <link rel="stylesheet" type="text/css" href="/font/inter.css?v={{ env!("IN_VERSION") }}">
+    <link rel="stylesheet" type="text/css" href="/style/style.css?v={{ env!("IN_VERSION") }}">
     <!-- TODO: Find a better way for pages to define multiple styles -->
-    <link rel="stylesheet" type="text/css" href="{% block style %}{% endblock %}?v={{ env!("CARGO_PKG_VERSION") }}">
+    <link rel="stylesheet" type="text/css" href="{% block style %}{% endblock %}?v={{ env!("IN_VERSION") }}">
     {% block head %}
     {% endblock %}
 </head>
@@ -19,7 +19,7 @@
 <nav>
     <div class="inner-nav">
         <div class="nav-item">
-            <a class="site-version" href="{{env!("CARGO_PKG_REPOSITORY")}}">v{{ env!("CARGO_PKG_VERSION") }}</a>
+            <a class="site-version" href="{{env!("IN_VERSION")}}">v{{ env!("IN_VERSION") }}</a>
         </div>
         <a href="/" class="site-name">Intellectual</a>
         <div class="nav-item right">

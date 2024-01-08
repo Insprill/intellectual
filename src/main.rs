@@ -77,7 +77,7 @@ async fn main() -> std::io::Result<()> {
 
     info!(
         "Starting Intellectual v{}, listening on {}:{}!",
-        env!("CARGO_PKG_VERSION"),
+        env!("IN_VERSION"),
         args.address,
         port
     );
