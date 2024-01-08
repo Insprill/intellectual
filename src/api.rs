@@ -23,7 +23,7 @@ pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
             }
 
             Ok(HttpResponse::Ok()
-                .append_header(("Cache-Control", "public, max-age=604800"))
+                .append_header(("Cache-Control", "public, max-age=31536000, immutable"))
                 .insert_header(ContentEncoding::Identity)
                 .body(body))
         }

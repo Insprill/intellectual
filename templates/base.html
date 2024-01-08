@@ -7,11 +7,10 @@
 
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="/style/theme/{{ settings.theme }}.css?v={{ env!("CARGO_PKG_VERSION") }}">
+    <link rel="stylesheet" type="text/css" href="/font/inter.css?v={{ env!("CARGO_PKG_VERSION") }}">
     <link rel="stylesheet" type="text/css" href="/style/style.css?v={{ env!("CARGO_PKG_VERSION") }}">
     <!-- TODO: Find a better way for pages to define multiple styles -->
     <link rel="stylesheet" type="text/css" href="{% block style %}{% endblock %}?v={{ env!("CARGO_PKG_VERSION") }}">
-    <link rel="stylesheet" type="text/css" href="/font/inter.css">
-
     {% block head %}
     {% endblock %}
 </head>
