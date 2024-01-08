@@ -7,7 +7,7 @@ use scraper::{Html, Node, Selector};
 use serde::Deserialize;
 
 use crate::genius::GeniusSong;
-use crate::genius::{self, GeniusApi};
+use crate::genius::{self};
 use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
@@ -45,19 +45,17 @@ pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<i
 
     if let Some(id) = info.id {
         let responses = future::join(
-            GeniusApi::global().get_text(genius::SubDomain::Root, &info.path, None),
-            GeniusApi::global().get_song(id),
+            genius::get_text(genius::SubDomain::Root, &info.path, None),
+            genius::get_song(id),
         )
         .await;
         document = Html::parse_document(&responses.0?);
         song = responses.1?;
     } else {
-        let lyric_page = GeniusApi::global()
-            .get_text(genius::SubDomain::Root, &info.path, None)
-            .await?;
+        let lyric_page = genius::get_text(genius::SubDomain::Root, &info.path, None).await?;
         document = Html::parse_document(&lyric_page);
         let id = get_song_id(&document)?;
-        song = GeniusApi::global().get_song(id).await?;
+        song = genius::get_song(id).await?;
     }
 
     let verses = scrape_lyrics(&document);

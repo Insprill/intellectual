@@ -6,7 +6,7 @@ use lazy_regex::*;
 use regex::Regex;
 use serde::Deserialize;
 
-use crate::genius::{GeniusApi, GeniusArtist};
+use crate::genius::{self, GeniusArtist};
 use crate::genius::{GeniusArtistResponse, SortMode};
 use crate::templates::template;
 
@@ -31,16 +31,14 @@ const MAX_SONGS: u8 = 5;
 
 #[get("/artist")]
 pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<impl Responder> {
-    let artist_res = GeniusApi::global()
-        .extract_data::<GeniusArtistResponse>(&utils::ensure_path_prefix("artists", &info.path))
-        .await?;
+    let artist_res = genius::extract_data::<GeniusArtistResponse>(&utils::ensure_path_prefix(
+        "artists", &info.path,
+    ))
+    .await?;
     let mut artist = artist_res.artist;
 
-    artist.popular_songs = Some(
-        GeniusApi::global()
-            .get_artist_songs(artist.id, SortMode::Popularity, MAX_SONGS)
-            .await?,
-    );
+    artist.popular_songs =
+        Some(genius::get_artist_songs(artist.id, SortMode::Popularity, MAX_SONGS).await?);
 
     if let Some(description) = artist.description.as_mut() {
         description.html = rewrite_links(&description.html);

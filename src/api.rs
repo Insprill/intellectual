@@ -5,7 +5,7 @@ use actix_web::{
 };
 use serde::Deserialize;
 
-use crate::genius::{GeniusApi, SubDomain};
+use crate::genius::{self, SubDomain};
 
 #[derive(Debug, Deserialize)]
 pub struct UrlQuery {
@@ -16,9 +16,7 @@ pub struct UrlQuery {
 pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
     match info.url.split('/').last() {
         Some(img_path) => {
-            let (status, body) = GeniusApi::global()
-                .get_raw(SubDomain::Images, img_path, None)
-                .await?;
+            let (status, body) = genius::get_raw(SubDomain::Images, img_path, None).await?;
 
             if status != StatusCode::OK {
                 return Ok(HttpResponse::build(status).finish());

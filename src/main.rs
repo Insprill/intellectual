@@ -9,8 +9,6 @@ use rustls::{Certificate, PrivateKey, ServerConfig as RustlsServerConfig};
 
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 
-use crate::genius::GeniusApi;
-
 mod album;
 mod api;
 mod artist;
@@ -74,8 +72,6 @@ async fn main() -> std::io::Result<()> {
         .unwrap_or_else(|_| args.port.to_string())
         .parse::<u16>()
         .unwrap();
-
-    GeniusApi {}.set_global();
 
     info!(
         "Starting Intellectual v{}, listening on {}:{}!",

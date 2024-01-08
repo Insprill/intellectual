@@ -5,8 +5,7 @@ use actix_web::{get, web, HttpRequest, Responder, Result};
 use askama::Template;
 use serde::Deserialize;
 
-use crate::genius::GeniusApi;
-use crate::genius::GeniusSong;
+use crate::genius::{self, GeniusSong};
 use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
@@ -33,9 +32,7 @@ pub struct SearchQuery {
 pub async fn search(req: HttpRequest, info: web::Query<SearchQuery>) -> Result<impl Responder> {
     let current_page = info.page.unwrap_or(1);
 
-    let songs = GeniusApi::global()
-        .get_search_results(&info.q, current_page)
-        .await?;
+    let songs = genius::get_search_results(&info.q, current_page).await?;
 
     let nav_min = max(1, current_page.saturating_sub(NAV_PAGE_COUNT));
     let nav_max = min(100, current_page.saturating_add(NAV_PAGE_COUNT));

@@ -1,177 +1,148 @@
-use std::sync::Arc;
+
 
 use crate::Result;
 use actix_web::{http::StatusCode, web::Bytes};
 use awc::{Client, SendClientRequest};
-use once_cell::sync::{Lazy, OnceCell};
+use once_cell::sync::{Lazy};
 use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize};
 use urlencoding::encode;
 
-static GLOBAL_API: OnceCell<Arc<GeniusApi>> = OnceCell::new();
 static EMBEDDED_INFO_SELECTOR: Lazy<Selector> =
     Lazy::new(|| Selector::parse("meta[content]").unwrap());
 
-pub struct GeniusApi;
+pub async fn extract_data<Res>(path: &str) -> Result<Res>
+where
+    Res: DeserializeOwned,
+{
+    let page = get_text(SubDomain::Root, path, None).await?;
+    let document = Html::parse_document(&page);
 
-impl GeniusApi {
-    pub fn set_global(self) {
-        GLOBAL_API
-            .set(Arc::new(self))
-            .map_err(|_| "Cannot install more than once")
-            .unwrap()
-    }
-
-    pub fn global() -> Arc<Self> {
-        GLOBAL_API.get().expect("No global api set").clone()
-    }
+    Ok(document
+        .select(&EMBEDDED_INFO_SELECTOR)
+        .map(|element| element.value().attr("content").unwrap()) // Selector only matches content
+        .find(|content| content.starts_with("{\"")) // JSON API data
+        .and_then(|content| serde_json::from_str::<Res>(content).ok())
+        .ok_or("Failed to extract JSON data")?)
 }
 
-impl GeniusApi {
-    pub async fn extract_data<Res>(&self, path: &str) -> Result<Res>
-    where
-        Res: DeserializeOwned,
-    {
-        let page = self.get_text(SubDomain::Root, path, None).await?;
-        let document = Html::parse_document(&page);
+/// https://docs.genius.com/#/artists-songs
+pub async fn get_artist_songs(
+    artist_id: u32,
+    sort_mode: SortMode,
+    limit: u8,
+) -> Result<Vec<GeniusSong>> {
+    Ok(get_json::<GeniusSongsRequest>(
+        SubDomain::Api,
+        &format!("artists/{artist_id}/songs"),
+        Some(vec![sort_mode.to_query(), ("per_page", &limit.to_string())]),
+    )
+    .await?
+    .response
+    .songs)
+}
 
-        Ok(document
-            .select(&EMBEDDED_INFO_SELECTOR)
-            .map(|element| element.value().attr("content").unwrap()) // Selector only matches content
-            .find(|content| content.starts_with("{\"")) // JSON API data
-            .and_then(|content| serde_json::from_str::<Res>(content).ok())
-            .ok_or("Failed to extract JSON data")?)
-    }
-
-    /// https://docs.genius.com/#/artists-songs
-    pub async fn get_artist_songs(
-        &self,
-        artist_id: u32,
-        sort_mode: SortMode,
-        limit: u8,
-    ) -> Result<Vec<GeniusSong>> {
-        Ok(self
-            .get_json::<GeniusSongsRequest>(
-                SubDomain::Api,
-                &format!("artists/{artist_id}/songs"),
-                Some(vec![sort_mode.to_query(), ("per_page", &limit.to_string())]),
-            )
-            .await?
-            .response
-            .songs)
-    }
-
-    pub async fn get_album_tracks(&self, album_id: u32) -> Result<Vec<GeniusSong>> {
-        Ok(self
-            .get_json::<GeniusTracksRequest>(
-                SubDomain::Api,
-                &format!("albums/{album_id}/tracks"),
-                None,
-            )
+pub async fn get_album_tracks(album_id: u32) -> Result<Vec<GeniusSong>> {
+    Ok(
+        get_json::<GeniusTracksRequest>(SubDomain::Api, &format!("albums/{album_id}/tracks"), None)
             .await?
             .response
             .tracks
             .into_iter()
             .map(|track| track.song)
-            .collect())
-    }
+            .collect(),
+    )
+}
 
-    /// https://docs.genius.com/#/songs-show
-    pub async fn get_song(&self, song_id: u32) -> Result<GeniusSong> {
-        Ok(self
-            .get_json::<GeniusSongRequest>(SubDomain::Api, &format!("songs/{song_id}"), None)
+/// https://docs.genius.com/#/songs-show
+pub async fn get_song(song_id: u32) -> Result<GeniusSong> {
+    Ok(
+        get_json::<GeniusSongRequest>(SubDomain::Api, &format!("songs/{song_id}"), None)
             .await?
             .response
-            .song)
-    }
+            .song,
+    )
+}
 
-    /// https://docs.genius.com/#/search-search
-    pub async fn get_search_results(&self, query: &str, page: u8) -> Result<Vec<GeniusSong>> {
-        Ok(self
-            .get_json::<GeniusSearchRequest>(
-                SubDomain::Api,
-                "search",
-                Some(vec![("q", query), ("page", &page.to_string())]),
-            )
-            .await?
-            .response
-            .hits
-            .into_iter()
-            .map(|x| x.result)
-            .collect())
-    }
+/// https://docs.genius.com/#/search-search
+pub async fn get_search_results(query: &str, page: u8) -> Result<Vec<GeniusSong>> {
+    Ok(get_json::<GeniusSearchRequest>(
+        SubDomain::Api,
+        "search",
+        Some(vec![("q", query), ("page", &page.to_string())]),
+    )
+    .await?
+    .response
+    .hits
+    .into_iter()
+    .map(|x| x.result)
+    .collect())
+}
 
-    pub async fn get_raw(
-        &self,
-        subdomain: SubDomain,
-        path: &str,
-        queries: Option<Vec<(&str, &str)>>,
-    ) -> Result<(StatusCode, Bytes)> {
-        let mut res = self.build_req(subdomain, path, queries)?.await?;
-        Ok((res.status(), res.body().await?))
-    }
+pub async fn get_raw(
+    subdomain: SubDomain,
+    path: &str,
+    queries: Option<Vec<(&str, &str)>>,
+) -> Result<(StatusCode, Bytes)> {
+    let mut res = build_req(subdomain, path, queries)?.await?;
+    Ok((res.status(), res.body().await?))
+}
 
-    pub async fn get_text(
-        &self,
-        subdomain: SubDomain,
-        path: &str,
-        queries: Option<Vec<(&str, &str)>>,
-    ) -> Result<String> {
-        let bytes = self
-            .build_req(subdomain, path, queries)?
-            .await?
-            .body()
-            .await?
-            .to_vec();
-        Ok(String::from_utf8(bytes)?)
-    }
+pub async fn get_text(
+    subdomain: SubDomain,
+    path: &str,
+    queries: Option<Vec<(&str, &str)>>,
+) -> Result<String> {
+    let bytes = build_req(subdomain, path, queries)?
+        .await?
+        .body()
+        .await?
+        .to_vec();
+    Ok(String::from_utf8(bytes)?)
+}
 
-    async fn get_json<T: DeserializeOwned>(
-        &self,
-        subdomain: SubDomain,
-        path: &str,
-        queries: Option<Vec<(&str, &str)>>,
-    ) -> Result<T> {
-        Ok(self
-            .build_req(subdomain, path, queries)?
-            .await?
-            .json::<T>()
-            .await?)
-    }
+async fn get_json<T: DeserializeOwned>(
+    subdomain: SubDomain,
+    path: &str,
+    queries: Option<Vec<(&str, &str)>>,
+) -> Result<T> {
+    Ok(build_req(subdomain, path, queries)?
+        .await?
+        .json::<T>()
+        .await?)
+}
 
-    fn build_req(
-        &self,
-        subdomain: SubDomain,
-        path: &str,
-        queries: Option<Vec<(&str, &str)>>,
-    ) -> Result<SendClientRequest> {
-        let query_str = if let Some(q) = queries {
-            String::from_iter(
-                q.iter()
-                    .map(|query| format!("&{}={}", query.0, encode(query.1).into_owned())),
-            )
-        } else {
-            "".into()
-        };
+fn build_req(
+    subdomain: SubDomain,
+    path: &str,
+    queries: Option<Vec<(&str, &str)>>,
+) -> Result<SendClientRequest> {
+    let query_str = if let Some(q) = queries {
+        String::from_iter(
+            q.iter()
+                .map(|query| format!("&{}={}", query.0, encode(query.1).into_owned())),
+        )
+    } else {
+        "".into()
+    };
 
-        // Using the api path lets us drop the requirement for an API key.
-        let path: String = if matches!(subdomain, SubDomain::Api) {
-            format!("api/{path}")
-        } else {
-            path.to_owned()
-        };
+    // Using the api path lets us drop the requirement for an API key.
+    let path: String = if matches!(subdomain, SubDomain::Api) {
+        format!("api/{path}")
+    } else {
+        path.to_owned()
+    };
 
-        let req = Client::default()
-            .get(format!(
-                "https://{}genius.com/{}?text_format=plain{}",
-                subdomain.value(),
-                path.trim_start_matches('/'),
-                query_str
-            ))
-            .send();
+    let req = Client::default()
+        .get(format!(
+            "https://{}genius.com/{}?text_format=plain{}",
+            subdomain.value(),
+            path.trim_start_matches('/'),
+            query_str
+        ))
+        .send();
 
-        Ok(req)
-    }
+    Ok(req)
 }
 
 pub enum SubDomain {
