@@ -68,6 +68,8 @@ async fn main() -> std::io::Result<()> {
 
     let args = Args::parse();
 
+
+
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| args.port.to_string())
         .parse::<u16>()
@@ -91,7 +93,6 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Compress::default())
             .wrap(
                 middleware::DefaultHeaders::new()
-                    .add(("Cache-Control", "private, max-age=604800"))
                     .add(("Referrer-Policy", "no-referrer"))
                     .add(("X-Frame-Options", "DENY"))
                     .add(("X-Content-Type-Options", "nosniff"))
