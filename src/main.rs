@@ -68,8 +68,6 @@ async fn main() -> std::io::Result<()> {
 
     let args = Args::parse();
 
-
-
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| args.port.to_string())
         .parse::<u16>()

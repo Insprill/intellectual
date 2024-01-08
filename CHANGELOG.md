@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Static assets not being stored in shared caches (e.g. Cloudflare).
 - Pages not being stored in local (browser) caches.
 
+### Changed
+- The Git hash is now included in versions that aren't built against a release tag.
+
 
 ## [0.6.0] - 2023-10-25
 
