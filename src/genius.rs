@@ -1,5 +1,8 @@
 use crate::Result;
-use actix_web::{http::{StatusCode, header::HeaderMap}, web::Bytes};
+use actix_web::{
+    http::{header::HeaderMap, StatusCode},
+    web::Bytes,
+};
 use awc::{Client, SendClientRequest};
 use once_cell::sync::Lazy;
 use scraper::{Html, Selector};
