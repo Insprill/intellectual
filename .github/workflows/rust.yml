@@ -62,5 +62,8 @@ jobs:
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Check Code Style
+      - name: Check rustfmt
+        run: cargo fmt --all -- --check
+
+      - name: Check Clippy
         run: cargo clippy -- -D warnings

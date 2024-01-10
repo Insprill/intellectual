@@ -1,9 +1,7 @@
-
-
 use crate::Result;
 use actix_web::{http::StatusCode, web::Bytes};
 use awc::{Client, SendClientRequest};
-use once_cell::sync::{Lazy};
+use once_cell::sync::Lazy;
 use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize};
 use urlencoding::encode;
