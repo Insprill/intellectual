@@ -30,6 +30,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: insprill/intellectual
+          enable-url-completion: true
 
       - name: Build & Push (Release)
         uses: docker/build-push-action@v5
