@@ -10,7 +10,7 @@ fn main() {
         let is_repo_dirty = is_repo_dirty();
         if !is_git_tagged() || is_repo_dirty {
             version.push_str("+rev.");
-            version.push_str(&get_git_hash()[..7]);
+            version.push_str(&get_git_hash());
 
             // Add some randomness if dirty to avoid the browser caching resources while iterating.
             if is_repo_dirty {
@@ -26,12 +26,19 @@ fn main() {
 }
 
 fn is_git_repo() -> bool {
+    if let Ok(var) = env::var("IN_IS_GIT") {
+        return var == "true";
+    }
     Command::new("git").args(["status"]).status().is_ok()
 }
 
 fn get_git_hash() -> String {
+    if let Ok(var) = env::var("IN_GIT_HASH") {
+        return var;
+    }
+
     let output = Command::new("git")
-        .args(["rev-parse", "HEAD"])
+        .args(["rev-parse", "--short", "HEAD"])
         .output()
         .expect("Failed to execute git command");
 
@@ -39,6 +46,10 @@ fn get_git_hash() -> String {
 }
 
 fn is_repo_dirty() -> bool {
+    if let Ok(var) = env::var("IN_GIT_DIRTY") {
+        return var == "true";
+    }
+
     let status_output = Command::new("git")
         .args(["status", "--porcelain"])
         .output()
@@ -48,6 +59,10 @@ fn is_repo_dirty() -> bool {
 }
 
 fn is_git_tagged() -> bool {
+    if let Ok(var) = env::var("IN_GIT_TAGGED") {
+        return var == "true";
+    }
+
     let output = Command::new("git")
         .args(["describe", "--tags", "--exact-match"])
         .output()
