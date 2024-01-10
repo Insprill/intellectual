@@ -10,12 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Support for aarch64.
+- A new docker tag for development versions (`develop`).
 
 ### Fixed
 - Album cards in artist descriptions not rendering correctly ([#23] by [@ButteredCats]).
 - Images in artist descriptions not being proxied, causing them not to load.
 - Artist/album/lyric links in artist descriptions pointing to Genius.
 - Artist link in albums directing to an invalid page.
+- Proxied images not sending a Content-Type header.
 - Static assets not being stored in shared caches (e.g. Cloudflare).
 - Pages not being stored in local (browser) caches.
 

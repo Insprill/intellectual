@@ -3,6 +3,7 @@ use actix_web::{
     http::{header::ContentEncoding, StatusCode},
     web, HttpResponse, Responder, Result,
 };
+use awc::{http::header, error::HeaderValue};
 use serde::Deserialize;
 
 use crate::genius::{self, SubDomain};
@@ -16,7 +17,7 @@ pub struct UrlQuery {
 pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
     match info.url.split('/').last() {
         Some(img_path) => {
-            let (status, body) = genius::get_raw(SubDomain::Images, img_path, None).await?;
+            let (status, body, headers) = genius::get_raw(SubDomain::Images, img_path, None).await?;
 
             if status != StatusCode::OK {
                 return Ok(HttpResponse::build(status).finish());
@@ -24,6 +25,7 @@ pub async fn image(info: web::Query<UrlQuery>) -> Result<impl Responder> {
 
             Ok(HttpResponse::Ok()
                 .append_header(("Cache-Control", "public, max-age=31536000, immutable"))
+                .append_header(("Content-Type", headers.get(header::CONTENT_TYPE).unwrap_or(&HeaderValue::from_static("application/octet-stream"))))
                 .insert_header(ContentEncoding::Identity)
                 .body(body))
         }

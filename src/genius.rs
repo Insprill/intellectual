@@ -1,5 +1,5 @@
 use crate::Result;
-use actix_web::{http::StatusCode, web::Bytes};
+use actix_web::{http::{StatusCode, header::HeaderMap}, web::Bytes};
 use awc::{Client, SendClientRequest};
 use once_cell::sync::Lazy;
 use scraper::{Html, Selector};
@@ -81,9 +81,9 @@ pub async fn get_raw(
     subdomain: SubDomain,
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
-) -> Result<(StatusCode, Bytes)> {
+) -> Result<(StatusCode, Bytes, HeaderMap)> {
     let mut res = build_req(subdomain, path, queries)?.await?;
-    Ok((res.status(), res.body().await?))
+    Ok((res.status(), res.body().await?, res.headers().clone()))
 }
 
 pub async fn get_text(
