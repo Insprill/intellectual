@@ -5,12 +5,20 @@ on:
     tags: ["v*"]
     branches: ["master"]
 
+env:
+  DOCKER_IMAGE: insprill/intellectual
+  DOCKER_PLATFORMS: linux/amd64,linux/arm64
+
 jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Setup act
+        run: "sudo chown runner:docker /var/run/docker.sock"
+        if: ${{ env.ACT }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -29,25 +37,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: insprill/intellectual
+          repository: ${{ env.DOCKER_IMAGE }}
           enable-url-completion: true
 
-      - name: Build & Push (Release)
+      - name: Build & Push
         uses: docker/build-push-action@v5
-        if: "startsWith(github.ref, 'refs/tags/v')"
         with:
+          context: . # Required for running with act
           push: true
-          tags: insprill/intellectual:latest
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build & Push (Develop)
-        uses: docker/build-push-action@v5
-        if: "!startsWith(github.ref, 'refs/tags/v')"
-        with:
-          push: true
-          tags: insprill/intellectual:develop
-          platforms: linux/amd64,linux/arm64
+          tags: ${{ env.DOCKER_IMAGE }}:${{ startsWith(github.ref, 'refs/tags/v') && 'latest' || 'develop' }}
+          platforms: ${{ env.DOCKER_PLATFORMS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
