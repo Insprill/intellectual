@@ -36,7 +36,7 @@
                 <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
             {% endif %}
         </div>
-        <img class="header-cover" src="api/image?url={{ song.header_image_url|urlencode }}" alt="Thumbnail"/>
+        <img loading="lazy" class="header-cover" src="api/image?url={{ song.header_image_url|urlencode }}" alt="Thumbnail"/>
     </div>
     <br/>
     {% for verse in verses %}

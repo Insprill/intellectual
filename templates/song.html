@@ -1,5 +1,5 @@
 <a class="song" href="lyrics?path={{ song.path|urlencode }}&id={{ song.id|urlencode }}">
-    <img class="song-thumbnail" 
+    <img loading="lazy" class="song-thumbnail" 
         src="api/image?url={{ song.song_art_image_thumbnail_url|urlencode }}"
         alt="Thumbnail"
     />
