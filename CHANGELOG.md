@@ -24,7 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Version link in navbar not working.
 
 ### Changed
-- Images are now lazy loaded.
 - The Git hash is now included in versions that aren't built against a release tag.
 
 

@@ -29,7 +29,7 @@
                 <p class="stats-release-date">Released on {{ album.release_date_for_display.as_ref().unwrap()|e }}</p>
             {% endif %}
         </div>
-        <img loading="lazy" class="header-cover" src="api/image?url={{ album.cover_art_url|urlencode }}" alt="Thumbnail"/>
+        <img class="header-cover" src="api/image?url={{ album.cover_art_url|urlencode }}" alt="Thumbnail"/>
     </div>
     <br/>
     {% if album.tracks.is_some() %}

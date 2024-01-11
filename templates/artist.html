@@ -16,7 +16,7 @@
 
 {% block content %}
 <div class="artist">
-    <img loading="lazy" class="artist-image" src="api/image?url={{ artist.image_url|urlencode }}" alt="Thumbnail"/>
+    <img class="artist-image" src="api/image?url={{ artist.image_url|urlencode }}" alt="Thumbnail"/>
     <div class="artist-info">
         <p class="artist-name">{{ artist.name|e }}</p>
         {% if artist.alternate_names.is_some() && !artist.alternate_names.as_ref().unwrap().is_empty() %}
@@ -31,7 +31,7 @@
     <div class="artist-socials">
         {% for social in artist.socials() %}
             <a class="social {{social.brand|e}}" href="https://{{social.brand}}.com/{{social.name_raw|urlencode}}">
-                <img loading="lazy" class="social-icon" src="icon/{{social.brand}}.svg"/>
+                <img class="social-icon" src="icon/{{social.brand}}.svg"/>
                 <p class="social-name">{{ social.name_formatted|e }}</p>
             </a>
         {% endfor %}
