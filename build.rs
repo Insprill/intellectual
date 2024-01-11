@@ -1,3 +1,4 @@
+use random_string::charsets::ALPHANUMERIC;
 use random_string::generate;
 use std::env;
 use std::process::Command;
@@ -15,7 +16,7 @@ fn main() {
             // Add some randomness if dirty to avoid the browser caching resources while iterating.
             if is_repo_dirty {
                 version.push_str("-dirty-");
-                version.push_str(&generate(4, "abcdefghijklmnopqrstuvwxyz0123456789"));
+                version.push_str(&generate(4, ALPHANUMERIC));
             }
         }
     } else {
