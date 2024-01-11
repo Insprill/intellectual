@@ -2,6 +2,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
+[![Docker Pulls][docker-pulls-shield]][docker-pulls-url]
 [![AGPLv3 License][license-shield]][license-url]
 
 
@@ -171,4 +172,6 @@ See [LICENSE][license-url] for more information.
 [issues-url]: https://github.com/Insprill/intellectual/issues
 [license-shield]: https://img.shields.io/github/license/Insprill/intellectual.svg?style=for-the-badge
 [license-url]: https://github.com/Insprill/intellectual/blob/master/LICENSE
+[docker-pulls-shield]: https://img.shields.io/docker/pulls/insprill/intellectual?style=for-the-badge
+[docker-pulls-url]: https://hub.docker.com/r/insprill/intellectual
 [rustls-repo]: https://github.com/rustls/rustls
