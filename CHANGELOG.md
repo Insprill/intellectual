@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Support for aarch64.
-- Support for Brotli/Zstd compression.
+- Support for Brotli compression.
 - A new docker tag for development versions (`develop`).
 
 ### Fixed
