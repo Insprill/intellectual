@@ -42,10 +42,10 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "IN_IS_GIT=true" >> $GITHUB_ENV
-          echo "IN_GIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "IN_GIT_DIRTY=$(git status --porcelain > /dev/null 2>&1; [ $? -eq 0 ] && echo "true" || echo "false")" >> $GITHUB_ENV
-          echo "IN_GIT_TAGGED=$(git describe --tags --exact-match > /dev/null 2>&1; [ $? -eq 0 ] && echo "true" || echo "false")" >> $GITHUB_ENV
+          echo "IN_IS_GIT=true" >> .env
+          echo "IN_GIT_HASH=$(git rev-parse --short HEAD)" >> .env
+          echo "IN_GIT_DIRTY=$(git status --porcelain > /dev/null 2>&1; [ $? -eq 0 ] && echo "true" || echo "false")" >> .env
+          echo "IN_GIT_TAGGED=$(git describe --tags --exact-match > /dev/null 2>&1; [ $? -eq 0 ] && echo "true" || echo "false")" >> .env
 
       - name: Build & Push
         uses: docker/build-push-action@v5

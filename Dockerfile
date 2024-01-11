@@ -16,8 +16,11 @@ RUN BASE_TARGET=-unknown-linux-musl; \
         aarch64) TARGET=aarch64$BASE_TARGET ;; \
         *) echo "Unsupported architecture"; exit 1 ;; \
     esac; \
+# Set environment variables so the build has git info
+    export $(cat .env | xargs); \
 # Build the binary
     cargo build --target ${TARGET} --release; \
+# Move the binary to a common location so we don't need the arch when creating the final image
     mkdir --parents ./target/docker/; \
     mv ./target/${TARGET}/release/intellectual ./target/docker/intellectual
 
