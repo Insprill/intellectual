@@ -119,4 +119,7 @@ Temporary Items
 *.secrets
 
 ### Misc
+# Local env vars
 *.env
+# Cert files
+*.pem

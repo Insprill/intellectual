@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Support for aarch64.
+- Support for Brotli/Zstd compression.
 - A new docker tag for development versions (`develop`).
 
 ### Fixed
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Proxied images not sending a Content-Type header.
 - Static assets not being stored in shared caches (e.g. Cloudflare).
 - Pages not being stored in local (browser) caches.
+- Version link in navbar not working.
 
 ### Changed
 - The Git hash is now included in versions that aren't built against a release tag.
