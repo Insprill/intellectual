@@ -16,7 +16,7 @@
 
 {% block content %}
 <div class="artist">
-    <img class="artist-image" src="api/image?url={{ artist.image_url|urlencode }}" alt="Thumbnail"/>
+    <img class="artist-image" src="api/image?url={{ artist.image_url|urlencode }}&size=500" alt="Thumbnail"/>
     <div class="artist-info">
         <p class="artist-name">{{ artist.name|e }}</p>
         {% if artist.alternate_names.is_some() && !artist.alternate_names.as_ref().unwrap().is_empty() %}

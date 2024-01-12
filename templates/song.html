@@ -1,6 +1,6 @@
 <a class="song" href="lyrics?path={{ song.path|urlencode }}&id={{ song.id|urlencode }}">
     <img class="song-thumbnail" 
-        src="api/image?url={{ song.song_art_image_thumbnail_url|urlencode }}"
+        src="api/image?url={{ song.song_art_image_thumbnail_url|urlencode }}&size=150"
         alt="Thumbnail"
     />
     <h2 class="song-title">{{ song.title|e }}</h2>

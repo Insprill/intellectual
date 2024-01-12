@@ -13,6 +13,7 @@ awc = { version = "3", default-features = false, features = ["compress-gzip", "r
 clap = { version = "4", features = ["derive"] }
 cookie = "0.16" # Must stay compatible with the version actix-web is using.
 futures = { version = "0.3", default-features = false }
+image = { version = "0.24", default-features = false, features = ["jpeg", "png", "webp-encoder"]}
 include_dir = "0.7"
 lazy-regex = "3"
 log = "0.4"
@@ -27,6 +28,9 @@ urlencoding = "2"
 
 [build-dependencies]
 random-string = "1"
+
+[profile.dev.package.image]
+opt-level = 1
 
 [profile.release]
 panic = "abort"
