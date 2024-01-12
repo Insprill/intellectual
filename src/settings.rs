@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::templates::template;
 
+pub const SETTINGS_KEY: &str = "settings";
+
 static THEME_CONFIG: Lazy<ThemeConfig> =
     Lazy::new(|| serde_json::from_str(include_str!("../static/style/theme/themes.json")).unwrap());
 
@@ -18,17 +20,20 @@ struct SettingsTemplate {
 
 #[get("/settings")]
 pub async fn settings(req: HttpRequest) -> impl Responder {
-    template(SettingsTemplate {
-        settings: settings_from_req(&req),
-        themes: THEME_CONFIG.themes.clone(),
-    })
+    template(
+        &req,
+        SettingsTemplate {
+            settings: settings_from_req(&req),
+            themes: THEME_CONFIG.themes.clone(),
+        },
+    )
 }
 
 #[post("/settings")]
 pub async fn settings_form(form: Form<Settings>) -> impl Responder {
     match serde_json::to_string(&form) {
         Ok(str) => HttpResponse::SeeOther()
-            .cookie(Cookie::new("settings", str))
+            .cookie(Cookie::new(SETTINGS_KEY, str))
             .append_header(("Location", "/settings"))
             .finish(),
         Err(_) => HttpResponse::BadRequest().finish(),
@@ -55,7 +60,7 @@ impl Settings {
 }
 
 pub fn settings_from_req(req: &HttpRequest) -> Settings {
-    req.cookie("settings")
+    req.cookie(SETTINGS_KEY)
         .and_then(|cookie| serde_json::from_str::<Settings>(cookie.value()).ok())
         .filter(|s| s.is_valid())
         .unwrap_or_default()

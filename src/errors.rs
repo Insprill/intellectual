@@ -20,25 +20,34 @@ pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
         error!("{}", str);
     }
 
-    let new_response = template(InternalErrorTemplate {
-        settings: settings_from_req(res.request()),
-        err,
-    });
+    let new_response = template(
+        res.request(),
+        InternalErrorTemplate {
+            settings: settings_from_req(res.request()),
+            err,
+        },
+    );
     create(res, new_response)
 }
 
 pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let new_response = template(NotFoundTemplate {
-        settings: settings_from_req(res.request()),
-    });
+    let new_response = template(
+        res.request(),
+        NotFoundTemplate {
+            settings: settings_from_req(res.request()),
+        },
+    );
     create(res, new_response)
 }
 
 pub fn render_400<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let new_response = template(BadRequestTemplate {
-        settings: settings_from_req(res.request()),
-        err: get_err_str(&res),
-    });
+    let new_response = template(
+        res.request(),
+        BadRequestTemplate {
+            settings: settings_from_req(res.request()),
+            err: get_err_str(&res),
+        },
+    );
     create(res, new_response)
 }
 

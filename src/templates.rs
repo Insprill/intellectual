@@ -1,8 +1,11 @@
-use actix_web::HttpResponse;
+use actix_web::{HttpRequest, HttpResponse};
 use askama::Template;
 
-pub fn template(t: impl Template) -> HttpResponse {
-    HttpResponse::Ok()
+use crate::settings::SETTINGS_KEY;
+
+pub fn template(req: &HttpRequest, t: impl Template) -> HttpResponse {
+    let mut res = HttpResponse::Ok();
+    let res = res // rust moment
         .append_header(("Content-Type", "text/html; charset=utf-8"))
         // Caching Setup
         // Since Cloudflare ignores Vary headers, we can't publically cache all pages since only
@@ -11,6 +14,12 @@ pub fn template(t: impl Template) -> HttpResponse {
         // when a user changes themes, it won't be applied to previously visited pages (e.g. the
         // home page) until the browser requests the page from the server again.
         .append_header(("Vary", "Cookie"))
-        .append_header(("Cache-Control", "private, max-age=604800"))
-        .body(t.render().unwrap_or_default())
+        .append_header(("Cache-Control", "private, max-age=604800"));
+
+    // To allow the browser to properly discard old pages, we must send back the settings cookie.
+    if let Some(cookie) = req.cookie(SETTINGS_KEY) {
+        res.cookie(cookie);
+    }
+
+    res.body(t.render().unwrap_or_default())
 }

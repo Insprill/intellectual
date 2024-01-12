@@ -38,11 +38,14 @@ pub async fn search(req: HttpRequest, info: web::Query<SearchQuery>) -> Result<i
     let nav_max = min(100, current_page.saturating_add(NAV_PAGE_COUNT));
     let nav_pages = RangeInclusive::new(nav_min, nav_max).collect();
 
-    Ok(template(SearchTemplate {
-        settings: settings_from_req(&req),
-        q: info.q.to_owned(),
-        current_page,
-        nav_pages,
-        songs,
-    }))
+    Ok(template(
+        &req,
+        SearchTemplate {
+            settings: settings_from_req(&req),
+            q: info.q.to_owned(),
+            current_page,
+            nav_pages,
+            songs,
+        },
+    ))
 }

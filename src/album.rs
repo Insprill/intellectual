@@ -31,8 +31,11 @@ pub async fn album(req: HttpRequest, info: web::Query<AlbumQuery>) -> Result<imp
 
     album.tracks = Some(genius::get_album_tracks(album.id).await?);
 
-    Ok(template(AlbumTemplate {
-        settings: settings_from_req(&req),
-        album,
-    }))
+    Ok(template(
+        &req,
+        AlbumTemplate {
+            settings: settings_from_req(&req),
+            album,
+        },
+    ))
 }

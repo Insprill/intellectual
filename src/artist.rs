@@ -44,10 +44,13 @@ pub async fn artist(req: HttpRequest, info: web::Query<ArtistQuery>) -> Result<i
         description.html = rewrite_links(&description.html);
     }
 
-    Ok(template(ArtistTemplate {
-        settings: settings_from_req(&req),
-        artist,
-    }))
+    Ok(template(
+        &req,
+        ArtistTemplate {
+            settings: settings_from_req(&req),
+            artist,
+        },
+    ))
 }
 
 fn rewrite_links(html: &str) -> String {
