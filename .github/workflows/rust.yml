@@ -35,6 +35,13 @@ jobs:
         if: contains(matrix.target, 'aarch64')
         run: sudo apt-get update && sudo apt-get install gcc-aarch64-linux-gnu
 
+      - name: Setup aarch64 musl compiler
+        if: contains(matrix.target, 'aarch64') && contains(matrix.target, 'musl')
+        run: |
+          wget https://musl.cc/aarch64-linux-musl-cross.tgz
+          tar -xvzf aarch64-linux-musl-cross.tgz
+          echo "CC=$(pwd)/aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc" >> "$GITHUB_ENV"
+
       - name: Install Target
         run: rustup target add ${{ matrix.target }}
 
