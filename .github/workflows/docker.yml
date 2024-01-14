@@ -1,10 +1,6 @@
 name: Docker Build
 
-on:
-  pull_request:
-  push:
-    tags: ["v*"]
-    branches: ["master"]
+on: [ push, pull_request ]
 
 env:
   DOCKER_IMAGE: insprill/intellectual
