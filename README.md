@@ -78,8 +78,7 @@ This means they have the ability to monitor traffic between you and the server.
 |------------------------------------------------------------------------------------|---------|---------------------------|
 | http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion | 🇺🇸 US   | intellectual.catsarch.com |
 
-
-
+Instances list in JSON format can be found in [instances.json](instances.json) file.
 
 <!-- DEPLOYMENT -->
 
