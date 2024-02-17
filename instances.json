@@ -1,0 +1,23 @@
+[
+    {
+        "clearnet": "https://intellectual.insprill.net/",
+        "country": "US",
+        "cdn": true
+    },
+    {
+        "clearnet": "https://in.bloat.cat/",
+        "country": "RO",
+        "cdn": false
+    },
+    {
+        "clearnet": "https://intellectual.catsarch.com/",
+        "tor": "http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion/",
+        "country": "US",
+        "cdn": false
+    },
+    {
+        "clearnet": "https://intellectual.privacyfucking.rocks/",
+        "country": "DE",
+        "cdn": false
+    }
+]
