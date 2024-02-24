@@ -62,23 +62,20 @@ Want your own instance listed here? Open an issue for it!
 Not sure how to host your own instance? View the [deployment](#deployment) instructions.
 
 ### Clearnet
-| URL                                        | Country | Cloudflare |
-|--------------------------------------------|---------|------------|
-| https://intellectual.insprill.net/         | 🇺🇸 US   | ✔️         |
-| https://in.bloat.cat/                      | 🇷🇴 RO   |            |
-| https://intellectual.catsarch.com/         | 🇺🇸 US   |            |
-| https://intellectual.privacyfucking.rocks/ | 🇩🇪 DE   |            |
+| URL                                        | Tor                                                                                       | Country | Cloudflare |
+|--------------------------------------------|-------------------------------------------------------------------------------------------|---------|------------|
+| https://intellectual.insprill.net/         | No                                                                                        | 🇺🇸 US   | ✔️         |
+| https://in.bloat.cat/                      | No                                                                                        | 🇷🇴 RO   |            |
+| https://intellectual.catsarch.com/         | [Yes](http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion) | 🇺🇸 US   |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
 This means they have the ability to monitor traffic between you and the server.
 
-### Tor
-| URL                                                                                | Country | Onion Of                  |
-|------------------------------------------------------------------------------------|---------|---------------------------|
-| http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion | 🇺🇸 US   | intellectual.catsarch.com |
+The instances list in JSON format can be found in the [instances.json](instances.json) file.
 
-Instances list in JSON format can be found in [instances.json](instances.json) file.
+
+
 
 <!-- DEPLOYMENT -->
 
