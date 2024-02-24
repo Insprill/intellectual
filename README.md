@@ -72,6 +72,8 @@ If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
 This means they have the ability to monitor traffic between you and the server.
 
+The instances list in JSON format can be found in the [instances.json](instances.json) file.
+
 
 
 
