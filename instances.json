@@ -14,10 +14,5 @@
         "tor": "http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion/",
         "country": "US",
         "cdn": false
-    },
-    {
-        "clearnet": "https://intellectual.privacyfucking.rocks/",
-        "country": "DE",
-        "cdn": false
     }
 ]
