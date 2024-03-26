@@ -44,7 +44,9 @@ jobs:
           echo "IN_IS_GIT=true" >> .env
           echo "IN_GIT_HASH=$(git rev-parse --short HEAD)" >> .env
           echo "IN_GIT_DIRTY=$([[ -n $(git status --porcelain) ]] && echo true || echo false)" >> .env
+          echo "IN_GIT_TAG=$(git describe --tags --exact-match)" >> .env
           echo "IN_GIT_TAGGED=$(git describe --tags --exact-match > /dev/null 2>&1; [ $? -eq 0 ] && echo "true" || echo "false")" >> .env
+          echo "IN_GIT_REMOTE_URL=$(git remote get-url origin)" >> .env
 
       - name: Build & Push
         uses: docker/build-push-action@v5
