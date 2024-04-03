@@ -16,7 +16,7 @@
         <div class="song-info">
             <p class="title">{{ song.title|e }}</p>
             <p class="artist-name">By 
-                <a href="artist?path={{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
+                <a href="/{{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
                     <cite>{{ song.primary_artist.name|e }}</cite>
                 </a>
             </p>
