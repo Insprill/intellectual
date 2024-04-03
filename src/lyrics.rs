@@ -25,34 +25,40 @@ struct Verse {
 
 #[derive(Template)]
 #[template(path = "lyrics.html")]
-struct LyricsTemplate {
+struct LyricsTemplate<'a> {
     settings: Settings,
     verses: Vec<Verse>,
-    query: LyricsQuery,
+    path: &'a str,
     song: GeniusSong,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct LyricsQuery {
     id: Option<u32>,
-    path: String,
 }
 
-#[get("/lyrics")]
+#[get("/{path}-lyrics")]
 pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     let document: Html;
     let song: GeniusSong;
 
+    // The '-lyrics' bit of the path gets cut off since we match for it explicitly,
+    // so we need to add it back here otherwise the path will be incorrect.
+    let path = &format!(
+        "{}-lyrics",
+        req.match_info().query("path").trim_end_matches('?')
+    );
+
     if let Some(id) = info.id {
         let responses = future::join(
-            genius::get_text(genius::SubDomain::Root, &info.path, None),
+            genius::get_text(genius::SubDomain::Root, path, None),
             genius::get_song(id),
         )
         .await;
         document = Html::parse_document(&responses.0?);
         song = responses.1?;
     } else {
-        let lyric_page = genius::get_text(genius::SubDomain::Root, &info.path, None).await?;
+        let lyric_page = genius::get_text(genius::SubDomain::Root, path, None).await?;
         document = Html::parse_document(&lyric_page);
         let id = get_song_id(&document)?;
         song = genius::get_song(id).await?;
@@ -65,7 +71,7 @@ pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<i
         LyricsTemplate {
             settings: settings_from_req(&req),
             verses,
-            query: info.0,
+            path,
             song,
         },
     ))

@@ -11,8 +11,6 @@ use crate::templates::template;
 
 static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
 static GENIUS_BASE_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
-static GENIUS_ALBUMS_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
-static GENIUS_ARTIST_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
 
 #[derive(Template)]
 #[template(path = "artist.html")]
@@ -50,8 +48,6 @@ fn rewrite_links(html: &str) -> String {
         GENIUS_IMAGE_URL,
         &format!("/api/image?url={}", GENIUS_IMAGE_URL),
     ); // Images
-    let html = GENIUS_ALBUMS_PATTERN.replace_all(&html, ""); // Albums
-    let html = GENIUS_ARTIST_PATTERN.replace_all(&html, ""); // Artists
-    let html = GENIUS_BASE_PATTERN.replace_all(&html, "/lyrics?path=/"); // Lyrics
+    let html = GENIUS_BASE_PATTERN.replace_all(&html, ""); // We follow Genius' schema
     html.to_string()
 }

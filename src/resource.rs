@@ -3,7 +3,7 @@ use include_dir::{include_dir, Dir};
 
 const STATIC_RESOURCES: Dir = include_dir!("$CARGO_MANIFEST_DIR/static");
 
-#[get("{resource}")]
+#[get("{resource}.{ext}")]
 pub async fn resource(path: web::Path<String>) -> impl Responder {
     asset(path.as_str())
 }
