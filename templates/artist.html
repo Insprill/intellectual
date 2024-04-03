@@ -31,7 +31,7 @@
     <div class="artist-socials">
         {% for social in artist.socials() %}
             <a class="social {{social.brand|e}}" href="https://{{social.brand}}.com/{{social.name_raw|urlencode}}">
-                <img class="social-icon" src="icon/{{social.brand}}.svg"/>
+                <img class="social-icon" src="/icon/{{social.brand}}.svg"/>
                 <p class="social-name">{{ social.name_formatted|e }}</p>
             </a>
         {% endfor %}
@@ -46,7 +46,7 @@
             {% for song in artist.popular_songs.as_ref().unwrap() %}
                 {% include "song.html" %}
             {% endfor %}
-            <a class="artist-search-songs text-centered" href="search?q={{ artist.name|urlencode }}">Search for songs</a>
+            <a class="artist-search-songs text-centered" href="/search?q={{ artist.name|urlencode }}">Search for songs</a>
         </div>
     {% endif %}
 </div>

@@ -19,7 +19,7 @@
         <div class="song-info">
             <p class="title">{{ album.name|e }}</p>
             <p class="artist-name">By 
-                <a href="artist?path={{ utils::path_from_url(album.artist.url)|urlencode }}">
+                <a href="/{{ utils::path_from_url(album.artist.url)|urlencode }}">
                     <cite>{{ album.artist.name|e }}</cite>
                 </a>
             </p>
