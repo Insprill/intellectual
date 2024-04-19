@@ -18,8 +18,8 @@ static LYRIC_SELECTOR: Lazy<Selector> =
     Lazy::new(|| Selector::parse("div[data-lyrics-container=true]").unwrap());
 
 #[derive(Default)]
-struct Verse {
-    title: String,
+struct Verse<'a> {
+    title: &'a str,
     lyrics: Vec<String>,
 }
 
@@ -27,7 +27,7 @@ struct Verse {
 #[template(path = "lyrics.html")]
 struct LyricsTemplate<'a> {
     settings: Settings,
-    verses: Vec<Verse>,
+    verses: Vec<Verse<'a>>,
     path: &'a str,
     song: GeniusSong,
 }
@@ -110,7 +110,7 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse> {
                         verses.push(curr);
                     }
                     current_verse = Some(Verse {
-                        title: text.to_string(),
+                        title: text,
                         lyrics: Vec::new(),
                     });
                 } else {
@@ -132,7 +132,7 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse> {
         verses.push(curr);
     } else {
         verses.push(Verse {
-            title: String::new(),
+            title: "",
             lyrics: vec!["This song has no lyrics.".to_owned()],
         })
     }
