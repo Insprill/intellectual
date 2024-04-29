@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.8.1] - 2024-04-29
+
+### Fixed
+- The 'View on Genius' button not working for lyrics.
+- Being able to submit an empty search, leading to a blank results page.
+- The seach input not being properly marked as such.
+
+
 ## [0.8.0] - 2024-04-19
 
 ### Changed
@@ -151,7 +159,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#6]: https://github.com/Insprill/intellectual/pull/6
 
 <!-- Diffs -->
-[Unreleased]: https://github.com/Insprill/intellectual/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/Insprill/intellectual/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/Insprill/intellectual/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/Insprill/intellectual/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Insprill/intellectual/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Insprill/intellectual/compare/v0.5.1...v0.6.0
