@@ -6,12 +6,12 @@ use actix_web::{
     HttpResponse, Result,
 };
 use askama::Template;
-use awc::{error::HeaderValue};
+use awc::error::HeaderValue;
 use log::error;
 
 use crate::{
     settings::{settings_from_req, Settings},
-    templates::{template_with_res},
+    templates::template_with_res,
 };
 
 pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
