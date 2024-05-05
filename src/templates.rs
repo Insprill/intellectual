@@ -1,12 +1,18 @@
-use actix_web::{HttpRequest, HttpResponse};
+use actix_web::{HttpRequest, HttpResponse, HttpResponseBuilder};
 use askama::Template;
 
 use crate::settings::SETTINGS_KEY;
 
 pub fn template(req: &HttpRequest, t: impl Template) -> HttpResponse {
-    let mut res = HttpResponse::Ok();
-    let res = res // rust moment
-        .append_header(("Content-Type", "text/html; charset=utf-8"))
+    template_with_res(req, HttpResponse::Ok(), t)
+}
+
+pub fn template_with_res(
+    req: &HttpRequest,
+    mut res: HttpResponseBuilder,
+    t: impl Template,
+) -> HttpResponse {
+    res.append_header(("Content-Type", "text/html; charset=utf-8"))
         // Caching Setup
         // Since Cloudflare ignores Vary headers, we can't publically cache all pages since only
         // the last-cached theme would be shown to users. Instead, we privately cache all pages in the

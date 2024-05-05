@@ -6,12 +6,12 @@ use actix_web::{
     HttpResponse, Result,
 };
 use askama::Template;
-use awc::error::HeaderValue;
+use awc::{error::HeaderValue};
 use log::error;
 
 use crate::{
     settings::{settings_from_req, Settings},
-    templates::template,
+    templates::{template_with_res},
 };
 
 pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
@@ -20,8 +20,9 @@ pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
         error!("{}", str);
     }
 
-    let new_response = template(
+    let new_response = template_with_res(
         res.request(),
+        HttpResponse::InternalServerError(),
         InternalErrorTemplate {
             settings: settings_from_req(res.request()),
             err,
@@ -31,8 +32,9 @@ pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
 }
 
 pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let new_response = template(
+    let new_response = template_with_res(
         res.request(),
+        HttpResponse::NotFound(),
         NotFoundTemplate {
             settings: settings_from_req(res.request()),
         },
@@ -41,8 +43,9 @@ pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
 }
 
 pub fn render_400<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
-    let new_response = template(
+    let new_response = template_with_res(
         res.request(),
+        HttpResponse::BadRequest(),
         BadRequestTemplate {
             settings: settings_from_req(res.request()),
             err: get_err_str(&res),
@@ -53,9 +56,8 @@ pub fn render_400<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
 
 fn create<B>(
     res: ServiceResponse<B>,
-    new_response: HttpResponse,
+    mut new_response: HttpResponse,
 ) -> Result<ErrorHandlerResponse<B>> {
-    let mut new_response = new_response;
     new_response
         .headers_mut()
         .append(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
