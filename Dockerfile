@@ -9,15 +9,8 @@ WORKDIR /intellectual
 
 COPY . .
 
-# Figure out what arch we're on
-RUN TARGET=$(uname -m)-unknown-linux-musl; \
 # Set environment variables so the build has git info
-    export $(cat .env | xargs); \
-# Build the binary
-    cargo build --target ${TARGET} --release; \
-# Move the binary to a common location so we don't need the arch when creating the final image
-    mkdir --parents ./target/docker/; \
-    mv ./target/${TARGET}/release/intellectual ./target/docker/intellectual
+RUN export $(cat .env | xargs) && cargo build --release
 
 ####################################################################################################
 ## Final image
@@ -25,7 +18,7 @@ RUN TARGET=$(uname -m)-unknown-linux-musl; \
 FROM alpine:latest
 
 # Copy our build
-COPY --from=builder /intellectual/target/docker/intellectual /usr/local/bin/intellectual
+COPY --from=builder /intellectual/target/release/intellectual /usr/local/bin/intellectual
 
 # Use an unprivileged user
 RUN adduser --home /nonexistent --no-create-home --disabled-password intellectual
