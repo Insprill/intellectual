@@ -3,19 +3,14 @@
 ####################################################################################################
 FROM rust:alpine AS builder
 
-RUN apk add --no-cache musl-dev gcc # GCC needed for aarch64 builds
+RUN apk add --no-cache musl-dev
 
 WORKDIR /intellectual
 
 COPY . .
 
 # Figure out what arch we're on
-RUN BASE_TARGET=-unknown-linux-musl; \
-    case "$(uname -m)" in \
-        x86_64) TARGET=x86_64$BASE_TARGET ;; \
-        aarch64) TARGET=aarch64$BASE_TARGET ;; \
-        *) echo "Unsupported architecture"; exit 1 ;; \
-    esac; \
+RUN TARGET=$(uname -m)-unknown-linux-musl; \
 # Set environment variables so the build has git info
     export $(cat .env | xargs); \
 # Build the binary
