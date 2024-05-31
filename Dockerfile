@@ -18,7 +18,7 @@ RUN export $(cat .env | xargs) && cargo build --release
 FROM alpine:latest
 
 # Copy our build
-COPY --from=builder /intellectual/target/docker/intellectual /usr/local/bin/intellectual
+COPY --from=builder /intellectual/target/release/intellectual /usr/local/bin/intellectual
 
 # Use an unprivileged user
 RUN adduser --home /nonexistent --no-create-home --disabled-password intellectual
