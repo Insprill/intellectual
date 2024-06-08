@@ -65,8 +65,9 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | URL                                        | Tor                                                                                       | Country | Cloudflare |
 |--------------------------------------------|-------------------------------------------------------------------------------------------|---------|------------|
 | https://intellectual.insprill.net/         | No                                                                                        | 🇺🇸 US   | ✔️         |
-| https://in.bloat.cat/                      | No                                                                                        | 🇷🇴 RO   |            |
 | https://intellectual.catsarch.com/         | [Yes](http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion) | 🇺🇸 US   |            |
+| https://intellectual.frontendfriendly.xyz/ | No                                                                                        | 🇺🇸 US   |            |
+| https://in.bloat.cat/                      | No                                                                                        | 🇷🇴 RO   |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
