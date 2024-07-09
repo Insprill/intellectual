@@ -25,5 +25,10 @@
         "clearnet": "https://in.bloat.cat/",
         "country": "RO",
         "cdn": false
+    },
+    {
+        "clearnet": "https://in2.bloat.cat/",
+        "country": "DE",
+        "cdn": false
     }
 ]

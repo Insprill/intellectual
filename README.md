@@ -69,6 +69,7 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | https://intellectual.frontendfriendly.xyz/ | No                                                                                        | No                                                                         | 🇺🇸 US   |            |
 | https://intellectual.lumaeris.com/         | No                                                                                        | No                                                                         | 🇺🇸 US   |            |
 | https://in.bloat.cat/                      | No                                                                                        | No                                                                         | 🇷🇴 RO   |            |
+| https://in2.bloat.cat/                     | No                                                                                        | No                                                                         | 🇩🇪 DE   |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
