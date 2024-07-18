@@ -205,15 +205,9 @@ pub struct GeniusSong {
     pub header_image_url: String,
     pub release_date_for_display: Option<String>,
     pub song_art_image_thumbnail_url: String,
-    pub api_path: String,
     pub album: Option<GeniusAlbum>,
     pub stats: GeniusStats,
     pub primary_artist: GeniusArtist,
-}
-
-#[derive(Deserialize)]
-pub struct GeniusAlbumRequest {
-    pub response: GeniusAlbumResponse,
 }
 
 #[derive(Deserialize)]
@@ -250,11 +244,6 @@ pub struct GeniusAlbum {
 #[derive(Deserialize)]
 pub struct GeniusStats {
     pub pageviews: Option<i32>,
-}
-
-#[derive(Deserialize)]
-pub struct GeniusArtistRequest {
-    pub response: GeniusArtistResponse,
 }
 
 #[derive(Deserialize)]
