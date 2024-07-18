@@ -67,6 +67,7 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | https://intellectual.insprill.net/         | No                                                                                        | No                                                                         | 🇺🇸 US   | ✔️          |
 | https://intellectual.catsarch.com/         | [Yes](http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion) | [Yes](http://ahysxi4w2wl7vf7ghy3hbqibvdg4e7je3s2lrsrb6xpukklevrka.b32.i2p) | 🇺🇸 US   |            |
 | https://intellectual.frontendfriendly.xyz/ | No                                                                                        | No                                                                         | 🇺🇸 US   |            |
+| https://intellectual.lumaeris.com/         | No                                                                                        | No                                                                         | 🇺🇸 US   |            |
 | https://in.bloat.cat/                      | No                                                                                        | No                                                                         | 🇷🇴 RO   |            |
 
 If there is a checkmark under "Cloudflare", that means the site
