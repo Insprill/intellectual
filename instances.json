@@ -20,7 +20,7 @@
         "clearnet": "https://intellectual.lumaeris.com/",
         "country": "US",
         "cdn": false
-    }
+    },
     {
         "clearnet": "https://in.bloat.cat/",
         "country": "RO",
@@ -28,6 +28,12 @@
     },
     {
         "clearnet": "https://in2.bloat.cat/",
+        "country": "DE",
+        "cdn": false
+    },
+    {
+        "clearnet": "https://intellectual.ducks.party/",
+        "tor": "http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion/",
         "country": "DE",
         "cdn": false
     }

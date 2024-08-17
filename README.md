@@ -64,13 +64,13 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 ### Clearnet
 | URL                                        | Tor                                                                                       | I2P                                                                        | Country   | Cloudflare |
 |--------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|-----------|------------|
-| https://intellectual.insprill.net/         | No                                                                                        | No                                                                         | 🇺🇸 US   | ✔️          |
-| https://intellectual.catsarch.com/         | [Yes](http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion) | [Yes](http://ahysxi4w2wl7vf7ghy3hbqibvdg4e7je3s2lrsrb6xpukklevrka.b32.i2p) | 🇺🇸 US   |            |
-| https://intellectual.frontendfriendly.xyz/ | No                                                                                        | No                                                                         | 🇺🇸 US   |            |
-| https://intellectual.lumaeris.com/         | No                                                                                        | No                                                                         | 🇺🇸 US   |            |
-| https://in.bloat.cat/                      | No                                                                                        | No                                                                         | 🇷🇴 RO   |            |
-| https://in2.bloat.cat/                     | No                                                                                        | No                                                                         | 🇩🇪 DE   |            |
-
+| https://intellectual.insprill.net/         | No                                                                                        | No                                                                         | 🇺🇸 US     | ✔️          |
+| https://intellectual.catsarch.com/         | [Yes](http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion) | [Yes](http://ahysxi4w2wl7vf7ghy3hbqibvdg4e7je3s2lrsrb6xpukklevrka.b32.i2p) | 🇺🇸 US     |            |
+| https://intellectual.frontendfriendly.xyz/ | No                                                                                        | No                                                                         | 🇺🇸 US     |            |
+| https://intellectual.lumaeris.com/         | No                                                                                        | No                                                                         | 🇺🇸 US     |            |
+| https://in.bloat.cat/                      | No                                                                                        | No                                                                         | 🇷🇴 RO     |            |
+| https://in2.bloat.cat/                     | No                                                                                        | No                                                                         | 🇩🇪 DE     |            |
+| https://intellectual.ducks.party/          | [Yes](http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion)              | No                                                                         | 🇩🇪 DE     |            |
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
 This means they have the ability to monitor traffic between you and the server.
