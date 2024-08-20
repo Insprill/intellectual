@@ -61,7 +61,6 @@ Check out the [roadmap](#roadmap) for what features will be coming next!
 Want your own instance listed here? Open an issue for it!  
 Not sure how to host your own instance? View the [deployment](#deployment) instructions.
 
-### Clearnet
 | URL                                        | Tor                                                                                       | I2P                                                                        | Country   | Cloudflare |
 |--------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|-----------|------------|
 | https://intellectual.insprill.net/         | No                                                                                        | No                                                                         | 🇺🇸 US     | ✔️          |
@@ -71,6 +70,7 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | https://in.bloat.cat/                      | No                                                                                        | No                                                                         | 🇷🇴 RO     |            |
 | https://in2.bloat.cat/                     | No                                                                                        | No                                                                         | 🇩🇪 DE     |            |
 | https://intellectual.ducks.party/          | [Yes](http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion)              | No                                                                         | 🇩🇪 DE     |            |
+
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
 This means they have the ability to monitor traffic between you and the server.
