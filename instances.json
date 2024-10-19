@@ -36,5 +36,10 @@
         "tor": "http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion/",
         "country": "DE",
         "cdn": false
+    },
+    {
+        "clearnet": "https://intellectual.bunk.lol/",
+        "country": "IS",
+        "cdn": false
     }
 ]
