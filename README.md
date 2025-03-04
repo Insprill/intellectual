@@ -71,6 +71,7 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | https://in2.bloat.cat/                     | No                                                                                        | No                                                                         | 🇩🇪 DE     |            |
 | https://intellectual.ducks.party/          | [Yes](http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion)              | No                                                                         | 🇩🇪 DE     |            |
 | https://intellectual.bunk.lol/             | No                                                                                        | No                                                                         | 🇮🇸 IS     |            |
+| https://genius.blitzw.in/                  | No                                                                                        | No                                                                         | 🇩🇰 DK     |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  

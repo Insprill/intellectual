@@ -41,5 +41,10 @@
         "clearnet": "https://intellectual.bunk.lol/",
         "country": "IS",
         "cdn": false
+    },
+    {
+        "clearnet": "https://genius.blitzw.in/",
+        "country": "DK",
+        "cdn": false
     }
 ]
