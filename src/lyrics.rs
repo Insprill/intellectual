@@ -1,7 +1,8 @@
+use std::sync::LazyLock;
+
 use actix_web::{get, web, HttpRequest, Responder, Result};
 use askama::Template;
 use futures::future;
-use once_cell::sync::Lazy;
 
 use scraper::{Html, Node, Selector};
 use serde::Deserialize;
@@ -12,10 +13,10 @@ use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
 
-static SONG_ID_SELECTOR: Lazy<Selector> =
-    Lazy::new(|| Selector::parse("meta[property='twitter:app:url:iphone']").unwrap());
-static LYRIC_SELECTOR: Lazy<Selector> =
-    Lazy::new(|| Selector::parse("div[data-lyrics-container=true]").unwrap());
+static SONG_ID_SELECTOR: LazyLock<Selector> =
+    LazyLock::new(|| Selector::parse("meta[property='twitter:app:url:iphone']").unwrap());
+static LYRIC_SELECTOR: LazyLock<Selector> =
+    LazyLock::new(|| Selector::parse("div[data-lyrics-container=true]").unwrap());
 
 #[derive(Default)]
 struct Verse<'a> {

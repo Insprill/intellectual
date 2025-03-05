@@ -1,16 +1,17 @@
+use std::sync::LazyLock;
+
 use crate::Result;
 use actix_web::{
     http::{header::HeaderMap, StatusCode},
     web::Bytes,
 };
 use awc::{Client, SendClientRequest};
-use once_cell::sync::Lazy;
 use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize};
 use urlencoding::encode;
 
-static EMBEDDED_INFO_SELECTOR: Lazy<Selector> =
-    Lazy::new(|| Selector::parse("meta[content]").unwrap());
+static EMBEDDED_INFO_SELECTOR: LazyLock<Selector> =
+    LazyLock::new(|| Selector::parse("meta[content]").unwrap());
 
 pub async fn extract_data<Res>(path: &str) -> Result<Res>
 where

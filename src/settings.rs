@@ -1,15 +1,17 @@
+use std::sync::LazyLock;
+
 use actix_web::{get, post, web::Form, HttpRequest, HttpResponse, Responder};
 use askama::Template;
 use cookie::Cookie;
-use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 
 use crate::templates::template;
 
 pub const SETTINGS_KEY: &str = "settings";
 
-static THEME_CONFIG: Lazy<ThemeConfig> =
-    Lazy::new(|| serde_json::from_str(include_str!("../static/style/theme/themes.json")).unwrap());
+static THEME_CONFIG: LazyLock<ThemeConfig> = LazyLock::new(|| {
+    serde_json::from_str(include_str!("../static/style/theme/themes.json")).unwrap()
+});
 
 #[derive(Template)]
 #[template(path = "settings.html")]
