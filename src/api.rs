@@ -15,7 +15,7 @@ pub struct UrlQuery {
 
 #[get("/api/image")]
 pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl Responder> {
-    let img_path = match info.url.split('/').last() {
+    let img_path = match info.url.split('/').next_back() {
         Some(path) => path,
         None => return Ok(HttpResponse::BadRequest().finish()),
     };

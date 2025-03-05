@@ -40,11 +40,11 @@ fn asset(path: &str) -> impl Responder {
 }
 
 fn content_type(path: &str) -> &str {
-    return match path.split('.').last().unwrap_or_default() {
+    match path.split('.').next_back().unwrap_or_default() {
         "css" => "text/css",
         "svg" => "image/svg+xml",
         "woff2" => "font/woff2",
         "json" => "application/json",
         _ => "text/plain",
-    };
+    }
 }
