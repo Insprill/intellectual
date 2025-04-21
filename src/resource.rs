@@ -3,29 +3,9 @@ use include_dir::{include_dir, Dir};
 
 const STATIC_RESOURCES: Dir = include_dir!("$CARGO_MANIFEST_DIR/static");
 
-#[get("{resource}.{ext}")]
+#[get("{filename:.*}")]
 pub async fn resource(path: web::Path<String>) -> impl Responder {
     asset(path.as_str())
-}
-
-#[get("style/{resource}")]
-pub async fn style(path: web::Path<String>) -> impl Responder {
-    asset(&format!("style/{}", path.as_str()))
-}
-
-#[get("style/theme/{resource}")]
-pub async fn style_theme(path: web::Path<String>) -> impl Responder {
-    asset(&format!("style/theme/{}", path.as_str()))
-}
-
-#[get("icon/{resource}")]
-pub async fn icon(path: web::Path<String>) -> impl Responder {
-    asset(&format!("icon/{}", path.as_str()))
-}
-
-#[get("font/{resource}")]
-pub async fn font(path: web::Path<String>) -> impl Responder {
-    asset(&format!("font/{}", path.as_str()))
 }
 
 fn asset(path: &str) -> impl Responder {

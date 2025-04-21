@@ -107,10 +107,6 @@ async fn main() -> std::io::Result<()> {
             .service(settings::settings_form)
             // Static Resources
             .service(resource::resource)
-            .service(resource::style)
-            .service(resource::style_theme)
-            .service(resource::icon)
-            .service(resource::font)
     });
 
     if args.keep_alive_timeout > 0.0 {
