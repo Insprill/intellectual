@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.8.2] - 2025-05-23
+
+### Fixed
+- Song summary and contributor information being present at the beginning of all lyrics.
+- `manifest.json` being unretreivable.
+- All error pages returning a `200` status code.
+
 ## [0.8.1] - 2024-04-29
 
 ### Fixed
@@ -17,7 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0] - 2024-04-19
 
 ### Changed
-
 - All paths have been updated to match Genius to make redirecting easier. If you have any redirects, you'll need to update them to only modify the host.
 - Clicking on the version in the navbar will now take you to the exact commit/tag the version was built from.
 
@@ -159,7 +165,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#6]: https://github.com/Insprill/intellectual/pull/6
 
 <!-- Diffs -->
-[Unreleased]: https://github.com/Insprill/intellectual/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/Insprill/intellectual/compare/v0.8.2...HEAD
+[0.8.2]: https://github.com/Insprill/intellectual/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/Insprill/intellectual/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/Insprill/intellectual/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Insprill/intellectual/compare/v0.6.0...v0.7.0
