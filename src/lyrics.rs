@@ -17,6 +17,9 @@ static SONG_ID_SELECTOR: LazyLock<Selector> =
     LazyLock::new(|| Selector::parse("meta[property='twitter:app:url:iphone']").unwrap());
 static LYRIC_SELECTOR: LazyLock<Selector> =
     LazyLock::new(|| Selector::parse("div[data-lyrics-container=true]").unwrap());
+// The summary that used to be in the page header is now part of the lyrics container in this div
+static LYRIC_EXCLUDES_SELECTOR: LazyLock<Selector> =
+    LazyLock::new(|| Selector::parse("div[data-exclude-from-selection]").unwrap());
 
 #[derive(Default)]
 struct Verse<'a> {
@@ -95,9 +98,16 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse> {
     let mut current_verse: Option<Verse> = None;
     let mut new_line = false;
 
+    let excluded_elements: std::collections::HashSet<_> = document
+        .select(&LYRIC_EXCLUDES_SELECTOR)
+        .flat_map(|e| e.descendants())
+        .map(|node| node.id())
+        .collect();
+
     for child in document
         .select(&LYRIC_SELECTOR)
         .flat_map(|e| e.descendants())
+        .filter(|node| !excluded_elements.contains(&node.id()))
     {
         match child.value() {
             Node::Element(e) if e.name() == "br" => {
