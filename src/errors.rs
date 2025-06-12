@@ -17,7 +17,7 @@ use crate::{
 pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
     let err = get_err_str(&res);
     if let Some(str) = &err {
-        error!("{}", str);
+        error!("{str}");
     }
 
     let new_response = template_with_res(

@@ -30,7 +30,7 @@ fn set_repo_url() {
         println!("Not a Git repo! Skipping repo URL metadata");
     }
 
-    println!("cargo:rustc-env=IN_REPO_URL={}", repo_url);
+    println!("cargo:rustc-env=IN_REPO_URL={repo_url}");
 }
 
 fn set_version() {
@@ -53,7 +53,7 @@ fn set_version() {
         println!("Not a Git repo! Skipping version metadata");
     }
 
-    println!("cargo:rustc-env=IN_VERSION={}", version);
+    println!("cargo:rustc-env=IN_VERSION={version}");
 }
 
 fn is_git_repo() -> bool {

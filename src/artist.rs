@@ -46,7 +46,7 @@ pub async fn artist(req: HttpRequest) -> Result<impl Responder> {
 fn rewrite_links(html: &str) -> String {
     let html = html.replace(
         GENIUS_IMAGE_URL,
-        &format!("/api/image?url={}", GENIUS_IMAGE_URL),
+        &format!("/api/image?url={GENIUS_IMAGE_URL}"),
     ); // Images
     let html = GENIUS_BASE_PATTERN.replace_all(&html, ""); // We follow Genius' schema
     html.to_string()

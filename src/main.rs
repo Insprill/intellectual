@@ -143,7 +143,7 @@ fn create_cert_chain(args: &Args) -> Vec<Certificate> {
     let cert_file = &mut BufReader::new(match File::open(cert_file_path) {
         Ok(file) => file,
         Err(err) => {
-            error!("Failed to load cert file '{}': {}", cert_file_path, err);
+            error!("Failed to load cert file '{cert_file_path}': {err}");
             exit(1);
         }
     });
@@ -154,7 +154,7 @@ fn create_cert_chain(args: &Args) -> Vec<Certificate> {
         .map(Certificate)
         .collect();
     if cert_chain.is_empty() {
-        error!("Failed to find any certs in '{}'", cert_file_path);
+        error!("Failed to find any certs in '{cert_file_path}'");
         exit(1);
     }
     cert_chain
@@ -165,20 +165,17 @@ fn create_key(args: &Args) -> Vec<u8> {
     let key_file = &mut BufReader::new(match File::open(key_file_path) {
         Ok(file) => file,
         Err(err) => {
-            error!("Failed to load key file '{}': {}", key_file_path, err);
+            error!("Failed to load key file '{key_file_path}': {err}");
             exit(1);
         }
     });
     let mut keys: Vec<Vec<u8>> = rustls_pemfile::pkcs8_private_keys(key_file).unwrap();
     if keys.is_empty() {
-        error!("Failed to find any keys in '{}'", key_file_path);
+        error!("Failed to find any keys in '{key_file_path}'");
         exit(1);
     }
     if keys.len() > 1 {
-        warn!(
-            "Found multiple keys in '{}'! Only the first will be used.",
-            key_file_path
-        );
+        warn!("Found multiple keys in '{key_file_path}'! Only the first will be used.");
     }
 
     keys.remove(0)
