@@ -93,7 +93,7 @@ fn get_song_id(document: &Html) -> crate::Result<u32> {
         .parse::<u32>()?)
 }
 
-fn scrape_lyrics(document: &Html) -> Vec<Verse> {
+fn scrape_lyrics(document: &Html) -> Vec<Verse<'_>> {
     let mut verses = Vec::new();
     let mut current_verse: Option<Verse> = None;
     let mut new_line = false;

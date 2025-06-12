@@ -278,7 +278,7 @@ pub struct ArtistSocial<'a> {
 }
 
 impl GeniusArtist {
-    pub fn socials(&self) -> Vec<ArtistSocial> {
+    pub fn socials(&self) -> Vec<ArtistSocial<'_>> {
         let mut socials = Vec::with_capacity(3);
 
         if let Some(name) = self.facebook_name.as_ref() {
