@@ -109,14 +109,19 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse<'_>> {
         .flat_map(|e| e.descendants())
         .filter(|node| !excluded_elements.contains(&node.id()))
     {
+        let curr: &mut Verse = current_verse.get_or_insert_with(Verse::default);
         match child.value() {
             Node::Element(e) if e.name() == "br" => {
+                if new_line {
+                    curr.lyrics.push(String::new());
+                }
                 new_line = true;
             }
             Node::Text(text) => {
                 let text: &str = text;
                 let is_title = text.starts_with('[') && text.ends_with(']');
                 if is_title {
+                    new_line = false;
                     if let Some(curr) = current_verse {
                         verses.push(curr);
                     }
@@ -125,7 +130,6 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse<'_>> {
                         lyrics: Vec::new(),
                     });
                 } else {
-                    let curr: &mut Verse = current_verse.get_or_insert_with(Verse::default);
                     let last = curr.lyrics.last_mut();
                     if new_line || last.is_none() {
                         curr.lyrics.push(text.to_owned());

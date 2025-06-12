@@ -42,7 +42,11 @@
     {% for verse in verses %}
         <h2 class="song-lyric">{{ verse.title|e }}</h2>
         {% for lyric in verse.lyrics %}
-            <p class="song-lyric">{{ lyric|e }}</p>
+            {% if lyric.is_empty() %}
+                <br/>
+            {% else %}
+                <p class="song-lyric">{{ lyric|e }}</p>
+            {% endif %}
         {% endfor %}
         {% if !loop.last %}
         <br>
