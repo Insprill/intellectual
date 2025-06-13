@@ -28,6 +28,6 @@ USER intellectual
 EXPOSE 8080/tcp
 
 # Run a healthcheck every 5 minutes
-HEALTHCHECK --interval=5m --timeout=5s CMD wget --tries=1 --spider http://localhost:8080 || exit 1
+HEALTHCHECK --interval=1m --timeout=3s --start-period=3s CMD wget --spider -q http://localhost:8080 || exit 1
 
 CMD ["intellectual"]
