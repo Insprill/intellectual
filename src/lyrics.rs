@@ -122,7 +122,11 @@ fn scrape_lyrics(document: &Html) -> Vec<Verse<'_>> {
                 let is_title = text.starts_with('[') && text.ends_with(']');
                 if is_title {
                     new_line = false;
-                    if let Some(curr) = current_verse {
+                    if let Some(mut curr) = current_verse {
+                        // Remove trailing blank lines
+                        while matches!(curr.lyrics.last(), Some(s) if s.is_empty()) {
+                            curr.lyrics.pop();
+                        }
                         verses.push(curr);
                     }
                     current_verse = Some(Verse {
