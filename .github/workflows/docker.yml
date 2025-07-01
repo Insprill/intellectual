@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
+        uses: peter-evans/dockerhub-description@v4
         if: ${{ env.DOCKER_PUSH == 'true' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -52,7 +52,7 @@ jobs:
           echo "IN_GIT_REMOTE_URL=$(git remote get-url origin)" >> .env
 
       - name: Build & Push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: . # Required for running with act
           push: ${{ env.DOCKER_PUSH == 'true' }}
