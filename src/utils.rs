@@ -12,7 +12,35 @@ pub fn borrowed_u8_eq(a: &u8, b: &u8) -> bool {
     *a == *b
 }
 
-/// Gets the path part from a URL. Will panic if the URL doesn't have any '/'.
+/// Gets the path part from a full URL.
+/// Will return an empty string if invalid.
+///
+/// `https://github.com/Insprill` -> `Insprill`
+/// `https://github.com/Insprill/` -> `Insprill/`
+/// `https://github.com/` -> ` `
+/// `github.com/Insprill` -> ` `
 pub fn path_from_url(url: &str) -> String {
-    url.splitn(4, '/').last().unwrap().to_owned()
+    let mut matches: u8 = 0;
+    url.trim_start_matches(|c| {
+        if matches == 3 {
+            return false;
+        } else if c == '/' {
+            matches += 1;
+        }
+        true
+    })
+    .to_owned()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn path_from_url_correct_paths() {
+        assert_eq!(path_from_url("https://github.com/Insprill"), "Insprill");
+        assert_eq!(path_from_url("https://github.com/Insprill/"), "Insprill/");
+        assert_eq!(path_from_url("https://github.com/"), String::new());
+        assert_eq!(path_from_url("github.com/Insprill"), String::new());
+    }
 }
