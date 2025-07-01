@@ -76,3 +76,15 @@ jobs:
 
       - name: Check Clippy
         run: cargo clippy -- -D warnings
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run Tests
+        run: cargo test
