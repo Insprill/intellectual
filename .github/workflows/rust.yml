@@ -38,12 +38,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+
       - name: Install Cross
         if: matrix.os == 'ubuntu'
         run: cargo install --git https://github.com/cross-rs/cross cross
-
-      - name: Setup Cache
-        uses: Swatinem/rust-cache@v2
 
       # cross doesn't support msvc toolchains out-of-the-box (https://github.com/cross-rs/cross-toolchains)
       - name: Build (Windows)
