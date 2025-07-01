@@ -39,6 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Cross
+        if: matrix.os == 'ubuntu'
         run: cargo install --git https://github.com/cross-rs/cross cross
 
       - name: Setup Cache
