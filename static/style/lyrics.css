@@ -103,6 +103,55 @@
     text-align: right;
 }
 
+.modal {
+display: none;
+position: fixed;
+inset: 0;                   /* top/right/bottom/left: 0 */
+background: rgba(0,0,0,0.6);/* dark backdrop */
+z-index: 999;
+overflow-y: auto;          /* scroll if content is big */
+padding: 2vh 1em;          /* gives breathing room on small screens */
+}
+
+/* 2) :target shows it as a flex container, centering its inner box */
+.modal:target {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* 3) Prevent body scrolling while open — browser support permitting */
+html:has(.modal:target) {
+overflow: hidden;
+}
+
+/* 4) Inner box auto-sizes */
+.modal__inner {
+position: relative;
+background: var(--highlighted);
+border-radius: var(--radius);
+padding: 1em;
+max-width: 90vw;           /* never wider than viewport */
+max-height: 80vh;          /* never taller than viewport */
+overflow: auto;            /* scroll inside if needed */
+box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* 5) Close button in corner */
+.modal__close {
+position: absolute;
+top: 0.25em;
+right: 0.5em;
+font-size: 1.25rem;
+line-height: 1;
+text-decoration: none;
+color: inherit;
+padding: 0 .25em;
+cursor: pointer;
+}
+
+/* 6) Your annotation styling is untouched */
 .annotation {
-    color: red;
+/* whatever styles you like here —
+   no fixed width/height needed! */
 }

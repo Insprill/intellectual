@@ -84,12 +84,14 @@ pub async fn get_search_results(query: &str, page: u8) -> Result<Vec<GeniusSong>
 }
 
 pub async fn get_annotation(id: i32) -> Result<GeniusAnnotation> {
-    Ok(
-        get_json::<GeniusAnnotationRequest>(SubDomain::Api, &format!("annotations/{id}"), None)
-            .await?
-            .response
-            .annotation,
+    Ok(get_json::<GeniusAnnotationRequest>(
+        SubDomain::Api,
+        &format!("annotations/{id}"),
+        Some(vec![("text_format", "html")]),
     )
+    .await?
+    .response
+    .annotation)
 }
 
 pub async fn get_raw(

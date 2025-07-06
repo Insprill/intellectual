@@ -48,6 +48,7 @@ struct LyricPart {
 struct LyricsTemplate<'a> {
     settings: Settings,
     verses: Vec<Verse<'a>>,
+    annotations: Vec<GeniusAnnotation>,
     path: &'a str,
     song: GeniusSong,
 }
@@ -84,13 +85,14 @@ pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<i
         song = genius::get_song(id).await?;
     }
 
-    let verses = scrape_lyrics(&document).await?;
+    let (verses, annotations) = scrape_lyrics(&document).await?;
 
     Ok(template(
         &req,
         LyricsTemplate {
             settings: settings_from_req(&req),
             verses,
+            annotations,
             path,
             song,
         },
@@ -109,7 +111,7 @@ fn get_song_id(document: &Html) -> crate::Result<u32> {
         .parse::<u32>()?)
 }
 
-async fn scrape_lyrics(document: &Html) -> crate::Result<Vec<Verse<'_>>> {
+async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<GeniusAnnotation>)> {
     let mut verses = Vec::new();
     let mut current_verse: Option<Verse> = None;
     let mut new_line = false;
@@ -142,7 +144,7 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<Vec<Verse<'_>>> {
                         curr_annotation = Option::Some(GeniusAnnotation {
                             id: annotation_id.parse::<i32>()?,
                             body: GeniusAnnotationBody {
-                                plain: String::new(),
+                                html: String::new(),
                             },
                         });
                         annotations.insert(annotation_id);
@@ -240,6 +242,6 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<Vec<Verse<'_>>> {
             }
         }
     }
-
-    Ok(verses)
+    
+    Ok((verses, annotations.into_values().collect()))
 }
