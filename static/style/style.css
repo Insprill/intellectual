@@ -2,8 +2,8 @@
     --facebook: #4267b2;
     --instagram: #e1306c;
     --twitter: #1da1f2;
-	--radius: 5px;
-	--shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    --radius: 5px;
+    --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     --hover-transform: translate3d(0px, -1px, 0px);
     --hover-transition: 0.3s all;
 }
@@ -82,10 +82,13 @@ nav {
     min-height: 100vh;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
-    font-family: Inter var, sans-serif;
+    font-family:
+        Inter var,
+        sans-serif;
     background-color: var(--background);
 }
 

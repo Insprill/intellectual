@@ -3,11 +3,11 @@
     grid-template-columns: 15em 25em;
     grid-template-rows: 6.5em 8.5em 1fr;
     gap: 1em 1em;
-    grid-template-areas: 
-      "image name"
-      "image social"
-      "description description"
-      "songs songs";
+    grid-template-areas:
+        "image name"
+        "image social"
+        "description description"
+        "songs songs";
     padding: 0.75rem;
     margin: 2rem auto;
     border-radius: var(--radius);
@@ -23,7 +23,7 @@
     border-radius: var(--radius);
 }
 
-@media only screen and (min-width: 513px) { 
+@media only screen and (min-width: 513px) {
     .artist-image {
         height: 100%;
     }
@@ -37,8 +37,8 @@
     gap: 0 0;
     grid-auto-flow: row;
     grid-template-areas:
-    "artist-name"
-    "artist-nicknames";
+        "artist-name"
+        "artist-nicknames";
 }
 
 .artist-name {
@@ -95,8 +95,7 @@
     grid-template-columns: 2em 1fr;
     grid-template-rows: 1fr;
     gap: 5px 0;
-    grid-template-areas: 
-      "icon name";
+    grid-template-areas: "icon name";
     align-items: center;
     transition: var(--hover-transition);
 }
@@ -135,20 +134,20 @@
     background-color: var(--twitter);
 }
 
-@media only screen and (max-width: 512px) { 
+@media only screen and (max-width: 512px) {
     .artist {
         grid-template-columns: auto;
         grid-template-rows: auto;
-        grid-template-areas: 
-            "image" 
-            "name" 
-            "social" 
+        grid-template-areas:
+            "image"
+            "name"
+            "social"
             "description"
             "songs";
     }
 }
 
-@media only screen and (min-width: 513px) and (max-width: 768px) { 
+@media only screen and (min-width: 513px) and (max-width: 768px) {
     .artist {
         grid-template-columns: auto auto auto;
         grid-template-rows: auto;
@@ -159,8 +158,6 @@
             "songs songs";
     }
 }
-
-
 
 /* Genius Styling */
 
@@ -200,7 +197,8 @@
     font-weight: 900;
 }
 
-.embedly_preview-dash, .embedly_preview-provider {
+.embedly_preview-dash,
+.embedly_preview-provider {
     display: none;
 }
 

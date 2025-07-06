@@ -16,19 +16,19 @@
     grid-template-rows: 3em 3em 6em;
     gap: 0 0.75em;
     grid-template-areas:
-    "cover song"
-    "cover song"
-    "cover stats";
+        "cover song"
+        "cover song"
+        "cover stats";
 }
 
-@media only screen and (max-width: 512px) { 
+@media only screen and (max-width: 512px) {
     .header {
         grid-template-columns: auto;
         grid-template-rows: auto;
         grid-template-areas:
-        "cover"
-        "song"
-        "stats";
+            "cover"
+            "song"
+            "stats";
     }
 }
 
@@ -46,9 +46,9 @@
     grid-template-rows: auto;
     gap: 0.25em 0;
     grid-template-areas:
-    "title"
-    "artist"
-    "album";
+        "title"
+        "artist"
+        "album";
     grid-area: song;
     margin-top: 1em;
 }
@@ -60,7 +60,7 @@
     margin: 0;
 }
 
-@media only screen and (min-width: 513px) and (max-width: 768px) { 
+@media only screen and (min-width: 513px) and (max-width: 768px) {
     .title {
         font-size: min(4vw, 32px);
     }
@@ -87,8 +87,7 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     gap: 0 1.5em;
-    grid-template-areas:
-    "release-date views";
+    grid-template-areas: "release-date views";
     grid-area: stats;
     margin-top: auto;
 }
