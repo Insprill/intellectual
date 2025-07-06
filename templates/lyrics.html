@@ -49,10 +49,12 @@
                     <p class="song-lyric">
                         {% for part in text_lyric.parts %}
                             {% if part.annotation.is_some() %}
-                                <span class="annotation" id="{{ part.annotation.as_ref().unwrap().id }}">
+                                <span>
+                                    <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
                             {% endif %}
-                            {{ part.text|e }}
+                                {{ part.text|e }}
                             {% if part.annotation.is_some() %}
+                                    </a>
                                 </span>
                             {% endif %}
                         {% endfor %}
@@ -64,4 +66,14 @@
         {% endif %}
     {% endfor %}
 </div>
+{% for annotation in annotations %}
+  <div id="annotation-{{ annotation.id }}" class="modal">
+    <div class="modal__inner">
+      <a href="#" class="modal__close" aria-label="Close">×</a>
+      <div class="annotation">
+        {{ annotation.body.html|safe }}
+      </div>
+    </div>
+  </div>
+{% endfor %}
 {% endblock %}
