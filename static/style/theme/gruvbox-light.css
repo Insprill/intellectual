@@ -7,4 +7,5 @@
     --foreground: #ebdbb2; /* bg1 */
     --background: #fbf1c7; /* bg0 */
     --highlighted: #d5c4a1; /* bg2 */
+    --text-highlight: #d5c4a1; /* bg2 */
 }

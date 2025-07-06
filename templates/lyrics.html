@@ -67,12 +67,24 @@
     {% endfor %}
 </div>
 {% for annotation in annotations %}
-  <div id="annotation-{{ annotation.id }}" class="modal">
-    <div class="modal__inner">
-      <a href="#" class="modal__close" aria-label="Close">×</a>
-      <div class="annotation">
-        {{ annotation.body.html|safe }}
-      </div>
+  <div id="annotation-{{ annotation.id }}" class="annotation">
+    <a href="#!" class="annotation__backdrop" aria-label="Close Annotation"></a>
+    <div class="annotation__inner">
+        <div class="annotation__header">
+          <div class="annotation__quote">
+            “{{ annotation.quote }}”
+          </div>
+          <div class="annotation__actions">
+            <div class="annotation__votes">
+              👍 {{ annotation.votes }}
+            </div>
+            <a href="#!" class="annotation__close" aria-label="Close">&times;</a>
+          </div>
+        </div>
+
+        <div class="annotation__content">
+            {{ annotation.body|safe }}
+        </div>
     </div>
   </div>
 {% endfor %}

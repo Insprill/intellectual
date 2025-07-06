@@ -83,15 +83,14 @@ pub async fn get_search_results(query: &str, page: u8) -> Result<Vec<GeniusSong>
     .collect())
 }
 
-pub async fn get_annotation(id: i32) -> Result<GeniusAnnotation> {
+pub async fn get_annotation(id: i32) -> Result<GeniusAnnotationResponse> {
     Ok(get_json::<GeniusAnnotationRequest>(
         SubDomain::Api,
         &format!("annotations/{id}"),
         Some(vec![("text_format", "html")]),
     )
     .await?
-    .response
-    .annotation)
+    .response)
 }
 
 pub async fn get_raw(
@@ -217,6 +216,7 @@ pub struct GeniusAnnotationResponse {
 pub struct GeniusAnnotation {
     pub id: i32,
     pub body: GeniusAnnotationBody,
+    pub votes_total: i32,
 }
 
 #[derive(Deserialize, Clone)]
