@@ -6,8 +6,10 @@ use actix_web::{
     web::Bytes,
 };
 use awc::{Client, SendClientRequest};
+use lazy_regex::*;
+use regex::Regex;
 use scraper::{Html, Selector};
-use serde::{de::DeserializeOwned, Deserialize};
+use serde::{de::DeserializeOwned, Deserialize, Deserializer};
 use urlencoding::encode;
 
 static EMBEDDED_INFO_SELECTOR: LazyLock<Selector> =
@@ -147,6 +149,22 @@ fn build_req(
     Ok(req)
 }
 
+static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
+static GENIUS_BASE_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
+
+pub fn rewrite_links<'de, D>(deserializer: D) -> std::result::Result<String, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let html = String::deserialize(deserializer)?;
+    let html = html.replace(
+        GENIUS_IMAGE_URL,
+        &format!("/api/image?url={GENIUS_IMAGE_URL}"),
+    ); // Images
+    let html = GENIUS_BASE_PATTERN.replace_all(&html, ""); // We follow Genius' schema
+    Ok(html.to_string())
+}
+
 pub enum SubDomain {
     Api,
     Images,
@@ -268,6 +286,7 @@ pub struct GeniusArtist {
 
 #[derive(Deserialize)]
 pub struct GeniusDescription {
+    #[serde(deserialize_with = "rewrite_links")]
     pub html: String,
 }
 
