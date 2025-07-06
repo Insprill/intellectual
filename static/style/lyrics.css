@@ -103,55 +103,91 @@
     text-align: right;
 }
 
-.modal {
-display: none;
-position: fixed;
-inset: 0;                   /* top/right/bottom/left: 0 */
-background: rgba(0,0,0,0.6);/* dark backdrop */
-z-index: 999;
-overflow-y: auto;          /* scroll if content is big */
-padding: 2vh 1em;          /* gives breathing room on small screens */
+.annotation-link {
+    background-color: var(--text-highlight);
+    text-decoration: none;
 }
 
-/* 2) :target shows it as a flex container, centering its inner box */
-.modal:target {
-display: flex;
-align-items: center;
-justify-content: center;
+/* Prevent scrolling the main page while an annotation is open */
+html:has(.annotation:target) {
+    overflow: hidden;
 }
 
-/* 3) Prevent body scrolling while open — browser support permitting */
-html:has(.modal:target) {
-overflow: hidden;
-}
-
-/* 4) Inner box auto-sizes */
-.modal__inner {
-position: relative;
-background: var(--highlighted);
-border-radius: var(--radius);
-padding: 1em;
-max-width: 90vw;           /* never wider than viewport */
-max-height: 80vh;          /* never taller than viewport */
-overflow: auto;            /* scroll inside if needed */
-box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-/* 5) Close button in corner */
-.modal__close {
-position: absolute;
-top: 0.25em;
-right: 0.5em;
-font-size: 1.25rem;
-line-height: 1;
-text-decoration: none;
-color: inherit;
-padding: 0 .25em;
-cursor: pointer;
-}
-
-/* 6) Your annotation styling is untouched */
 .annotation {
-/* whatever styles you like here —
-   no fixed width/height needed! */
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    padding: 2vh 1em;
+}
+
+.annotation:target {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.annotation__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    cursor: default;
+}
+
+.annotation__inner {
+    position: relative;
+    background: var(--foreground);
+    border-radius: var(--radius);
+    max-width: min(90vw, 750px);
+    max-height: 80vh;
+    box-shadow: var(--shadow);
+}
+
+.annotation__quote {
+    flex: 1;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: var(--text);
+}
+
+.annotation__content {
+    padding: 0 1em;
+    color: var(--text);
+    max-height: calc(80vh - 3.5em);
+    overflow-y: scroll;
+}
+
+.annotation__content img {
+    border-radius: var(--radius);
+    max-width: 100%;
+    height: auto;
+}
+
+.annotation__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.annotation__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    margin-left: 5px;
+}
+
+.annotation__votes {
+    cursor: default;
+    color: var(--text);
+}
+
+.annotation__close {
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
 }

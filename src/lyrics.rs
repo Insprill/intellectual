@@ -9,8 +9,7 @@ use futures::stream::FuturesUnordered;
 use scraper::{Html, Node, Selector};
 use serde::Deserialize;
 
-use crate::genius::{self, GeniusAnnotationBody};
-use crate::genius::{GeniusAnnotation, GeniusSong};
+use crate::genius::{self, GeniusAnnotationResponse, GeniusSong};
 use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
@@ -40,7 +39,26 @@ struct TextLyric {
 
 struct LyricPart {
     text: String,
-    annotation: Option<GeniusAnnotation>,
+    annotation: Option<Annotation>,
+}
+
+#[derive(Default, Clone)]
+struct Annotation {
+    pub id: i32,
+    pub quote: String,
+    pub body: String,
+    pub votes: i32,
+}
+
+impl From<&GeniusAnnotationResponse> for Annotation {
+    fn from(value: &GeniusAnnotationResponse) -> Self {
+        Annotation {
+            id: value.annotation.id,
+            quote: value.referent.fragment.clone(),
+            body: value.annotation.body.html.clone(),
+            votes: value.annotation.votes_total,
+        }
+    }
 }
 
 #[derive(Template)]
@@ -48,7 +66,7 @@ struct LyricPart {
 struct LyricsTemplate<'a> {
     settings: Settings,
     verses: Vec<Verse<'a>>,
-    annotations: Vec<GeniusAnnotation>,
+    annotations: Vec<Annotation>,
     path: &'a str,
     song: GeniusSong,
 }
@@ -111,11 +129,11 @@ fn get_song_id(document: &Html) -> crate::Result<u32> {
         .parse::<u32>()?)
 }
 
-async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<GeniusAnnotation>)> {
+async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<Annotation>)> {
     let mut verses = Vec::new();
     let mut current_verse: Option<Verse> = None;
     let mut new_line = false;
-    let mut curr_annotation: Option<GeniusAnnotation> = None;
+    let mut curr_annotation: Option<Annotation> = None;
 
     let excluded_elements: std::collections::HashSet<_> = document
         .select(&LYRIC_EXCLUDES_SELECTOR)
@@ -141,18 +159,23 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<Ge
             Node::Element(e) if e.name() == "a" => {
                 if let Some(href) = e.attr("href") {
                     if let Some((annotation_id, _)) = href.trim_start_matches('/').split_once('/') {
-                        curr_annotation = Option::Some(GeniusAnnotation {
+                        curr_annotation = Option::Some(Annotation {
                             id: annotation_id.parse::<i32>()?,
-                            body: GeniusAnnotationBody {
-                                html: String::new(),
-                            },
+                            ..Default::default()
                         });
                         annotations.insert(annotation_id);
                     }
                 }
             }
+            // Empty span with `tabindex="0"` always follows annotations.
+            Node::Element(e)
+                if e.name() == "span"
+                    && e.attr("tabindex") == Some("0")
+                    && curr_annotation.is_some() =>
+            {
+                curr_annotation = None;
+            }
             Node::Text(text) => {
-                let text: &str = text;
                 let is_title = text.starts_with('[') && text.ends_with(']');
                 if is_title {
                     new_line = false;
@@ -172,20 +195,17 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<Ge
                     if new_line || last.is_none() {
                         curr.lyrics.push(Lyric::Text(TextLyric {
                             parts: vec![LyricPart {
-                                text: text.to_owned(),
-                                annotation: curr_annotation,
+                                text: text.to_string(),
+                                annotation: curr_annotation.clone(),
                             }],
                         }));
                         new_line = false;
-                    } else if let Some(lyric) = last {
-                        if let Lyric::Text(text_lyric) = lyric {
-                            text_lyric.parts.push(LyricPart {
-                                text: text.to_string(),
-                                annotation: curr_annotation,
-                            });
-                        }
+                    } else if let Some(Lyric::Text(text_lyric)) = last {
+                        text_lyric.parts.push(LyricPart {
+                            text: text.to_string(),
+                            annotation: curr_annotation.clone(),
+                        });
                     }
-                    curr_annotation = None;
                 }
             }
             _ => {}
@@ -206,7 +226,7 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<Ge
         })
     }
 
-    let annotations: HashMap<i32, GeniusAnnotation> = verses
+    let annotations: HashMap<i32, GeniusAnnotationResponse> = verses
         .iter()
         .flat_map(|v| {
             v.lyrics
@@ -222,26 +242,34 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<Ge
                         .filter_map(|p| p.annotation.as_ref().map(|a| a.id))
                 })
         })
-        .map(|id| genius::get_annotation(id))
+        .map(genius::get_annotation)
         .collect::<FuturesUnordered<_>>()
         .collect::<Vec<_>>()
         .await
         .into_iter()
         .filter_map(|f| f.ok())
-        .map(|a| (a.id, a))
+        .map(|a| (a.annotation.id, a))
         .collect();
 
-    for v in &mut verses {
-        for l in &mut v.lyrics {
-            if let Lyric::Text(tl) = l {
-                for p in &mut tl.parts {
-                    if let Some(a) = &p.annotation {
-                        p.annotation = annotations.get(&a.id).cloned();
-                    }
-                }
+    verses
+        .iter_mut()
+        .flat_map(|v| v.lyrics.iter_mut())
+        .filter_map(|l| match l {
+            Lyric::Text(tl) => Some(tl),
+            _ => None,
+        })
+        .flat_map(|tl| tl.parts.iter_mut())
+        .filter_map(|p| p.annotation.as_mut())
+        .for_each(|annotation| {
+            if let Some(res) = annotations.get(&annotation.id) {
+                *annotation = Annotation::from(res);
             }
-        }
-    }
-    
-    Ok((verses, annotations.into_values().collect()))
+        });
+
+    let annotations = annotations
+        .into_values()
+        .map(|res| Annotation::from(&res))
+        .collect();
+
+    Ok((verses, annotations))
 }

@@ -7,4 +7,5 @@
     --foreground: #303446; /* Base */
     --background: #292c3c; /* Mantle */
     --highlighted: #414559; /* Surface 0 */
+    --text-highlight: #414559; /* Surface 0 */
 }
