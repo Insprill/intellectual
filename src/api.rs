@@ -10,7 +10,7 @@ use crate::Result;
 #[derive(Debug, Deserialize)]
 pub struct UrlQuery {
     url: String,
-    size: Option<u16>,
+    size: Option<u32>,
 }
 
 #[get("/api/image")]
@@ -32,9 +32,12 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
         .map(|value| value.to_str().unwrap_or_default().contains("webp"))
         .unwrap_or(false);
 
-    let size = info.size.unwrap_or(150).clamp(1, 500).into();
-
     if let Ok(abstract_image) = load_from_memory(body.as_bytes()) {
+        let size = info
+            .size
+            .unwrap_or(abstract_image.height())
+            .clamp(1, abstract_image.height().max(1000));
+
         // Images typically aren't smaller than 2kb
         let mut buf = BufWriter::new(Cursor::new(Vec::with_capacity(2048)));
         let resized = abstract_image.resize_exact(size, size, FilterType::Nearest);
