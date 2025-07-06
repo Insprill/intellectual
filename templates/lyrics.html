@@ -42,11 +42,22 @@
     {% for verse in verses %}
         <h2 class="song-lyric">{{ verse.title|e }}</h2>
         {% for lyric in verse.lyrics %}
-            {% if lyric.is_empty() %}
-                <br/>
-            {% else %}
-                <p class="song-lyric">{{ lyric|e }}</p>
-            {% endif %}
+            {% match lyric %}
+                {% when Lyric::Blank %}
+                    <br/>
+                {% when Lyric::Text(text_lyric) %}
+                    <p class="song-lyric">
+                        {% for part in text_lyric.parts %}
+                            {% if part.annotation.is_some() %}
+                                <span class="annotation" id="{{ part.annotation.as_ref().unwrap().id }}">
+                            {% endif %}
+                            {{ part.text|e }}
+                            {% if part.annotation.is_some() %}
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+            {% endmatch %}
         {% endfor %}
         {% if !loop.last %}
         <br>

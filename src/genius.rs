@@ -83,6 +83,15 @@ pub async fn get_search_results(query: &str, page: u8) -> Result<Vec<GeniusSong>
     .collect())
 }
 
+pub async fn get_annotation(id: i32) -> Result<GeniusAnnotation> {
+    Ok(
+        get_json::<GeniusAnnotationRequest>(SubDomain::Api, &format!("annotations/{id}"), None)
+            .await?
+            .response
+            .annotation,
+    )
+}
+
 pub async fn get_raw(
     subdomain: SubDomain,
     path: &str,
@@ -189,6 +198,34 @@ pub struct GeniusSearchRequest {
 #[derive(Deserialize)]
 pub struct GeniusSearchResponse {
     pub hits: Vec<GeniusHit>,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusAnnotationRequest {
+    pub response: GeniusAnnotationResponse,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusAnnotationResponse {
+    pub annotation: GeniusAnnotation,
+    pub referent: GeniusAnnotationReferent,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct GeniusAnnotation {
+    pub id: i32,
+    pub body: GeniusAnnotationBody,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct GeniusAnnotationBody {
+    #[serde(deserialize_with = "rewrite_links")]
+    pub html: String,
+}
+
+#[derive(Deserialize)]
+pub struct GeniusAnnotationReferent {
+    pub fragment: String,
 }
 
 #[derive(Deserialize)]
