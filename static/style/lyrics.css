@@ -192,3 +192,14 @@ html:has(.annotation:target) {
     cursor: pointer;
     text-decoration: none;
 }
+
+/* Genius styles */
+.embedly_preview {
+    padding-bottom: 56.25%;
+}
+
+.embedly_preview--video {
+    position: relative;
+    width: 100%;
+    height: 0px;
+}

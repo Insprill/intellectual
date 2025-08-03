@@ -161,6 +161,8 @@ fn build_req(
 
 static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
 static GENIUS_BASE_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
+static YOUTUBE_URL: &str = "youtube.com/";
+static YOUTUBE_NOCOOKIE_URL: &str = "youtube-nocookie.com/";
 
 pub fn rewrite_links<'de, D>(deserializer: D) -> std::result::Result<String, D::Error>
 where
@@ -171,6 +173,7 @@ where
         GENIUS_IMAGE_URL,
         &format!("/api/image?url={GENIUS_IMAGE_URL}"),
     ); // Images
+    let html = html.replace(YOUTUBE_URL, YOUTUBE_NOCOOKIE_URL); // YouTube no cookie
     let html = GENIUS_BASE_PATTERN.replace_all(&html, ""); // We follow Genius' schema
     Ok(html.to_string())
 }

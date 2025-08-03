@@ -94,7 +94,10 @@ async fn main() -> std::io::Result<()> {
                     .add(("Referrer-Policy", "no-referrer"))
                     .add(("X-Frame-Options", "DENY"))
                     .add(("X-Content-Type-Options", "nosniff"))
-                    .add(("Content-Security-Policy", "default-src 'self'")),
+                    .add((
+                        "Content-Security-Policy",
+                        "default-src 'self'; frame-src https://www.youtube-nocookie.com/embed/",
+                    )),
             )
             // Routes
             .service(album::album)
