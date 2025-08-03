@@ -20,13 +20,20 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
         None => return Ok(HttpResponse::BadRequest().finish()),
     };
 
-    let (status, body, _) = genius::get_raw(SubDomain::Images, img_path, None).await?;
+    let (status, body, headers) = genius::get_raw(SubDomain::Images, img_path, None).await?;
 
     if status != StatusCode::OK {
         return Ok(HttpResponse::build(status).finish());
     }
 
-    let webp = req
+    // Directly pass through GIFs
+    if let Some(content_type) = headers.get("Content-Type") {
+        if content_type.to_str()? == "image/gif" {
+            return send_image(body.as_bytes().to_vec(), "image/gif");
+        }
+    }
+
+    let supports_webp = req
         .headers()
         .get(header::ACCEPT)
         .map(|value| value.to_str().unwrap_or_default().contains("webp"))
@@ -42,7 +49,7 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
         let mut buf = BufWriter::new(Cursor::new(Vec::with_capacity(2048)));
         let resized = abstract_image.resize_exact(size, size, FilterType::Nearest);
 
-        let image_format = if webp {
+        let image_format = if supports_webp {
             ImageFormat::WebP
         } else {
             ImageFormat::Jpeg
@@ -50,15 +57,23 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
 
         if resized.write_to(&mut buf, image_format).is_ok() {
             let bytes = buf.into_inner().unwrap().into_inner(); // Should never error
-            return Ok(HttpResponse::Ok()
-                .append_header(("Cache-Control", "public, max-age=31536000, immutable"))
-                .append_header((
-                    "Content-Type",
-                    if webp { "image/webp" } else { "image/jpeg" },
-                ))
-                .body(bytes));
+            return send_image(
+                bytes,
+                if supports_webp {
+                    "image/webp"
+                } else {
+                    "image/jpeg"
+                },
+            );
         }
     }
 
     Ok(HttpResponse::InternalServerError().finish())
+}
+
+fn send_image(bytes: Vec<u8>, content_type: &'static str) -> Result<HttpResponse> {
+    Ok(HttpResponse::Ok()
+        .append_header(("Cache-Control", "public, max-age=31536000, immutable"))
+        .append_header(("Content-Type", content_type))
+        .body(bytes))
 }

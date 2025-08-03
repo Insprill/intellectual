@@ -93,13 +93,21 @@ pub async fn get_annotation(id: i32) -> Result<GeniusAnnotationResponse> {
     .response)
 }
 
+// AWC default limit is 2MB.
+// For some ungodly reason, some annotation descriptions have 13MB+ GIFs in them :|
+const BODY_LIMIT: usize = 16 * 1024 * 1024;
+
 pub async fn get_raw(
     subdomain: SubDomain,
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
 ) -> Result<(StatusCode, Bytes, HeaderMap)> {
     let mut res = build_req(subdomain, path, queries)?.await?;
-    Ok((res.status(), res.body().await?, res.headers().clone()))
+    Ok((
+        res.status(),
+        res.body().limit(BODY_LIMIT).await?,
+        res.headers().clone(),
+    ))
 }
 
 pub async fn get_text(
@@ -160,6 +168,7 @@ fn build_req(
 }
 
 static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
+static GENIUS_IMAGE_ALT_URL: &str = "https://images.rapgenius.com/";
 static GENIUS_BASE_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
 static YOUTUBE_URL: &str = "youtube.com/";
 static YOUTUBE_NOCOOKIE_URL: &str = "youtube-nocookie.com/";
@@ -171,6 +180,10 @@ where
     let html = String::deserialize(deserializer)?;
     let html = html.replace(
         GENIUS_IMAGE_URL,
+        &format!("/api/image?url={GENIUS_IMAGE_URL}"),
+    ); // Images
+    let html = html.replace(
+        GENIUS_IMAGE_ALT_URL,
         &format!("/api/image?url={GENIUS_IMAGE_URL}"),
     ); // Images
     let html = html.replace(YOUTUBE_URL, YOUTUBE_NOCOOKIE_URL); // YouTube no cookie
