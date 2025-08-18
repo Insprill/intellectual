@@ -169,7 +169,7 @@ fn build_req(
 
 static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
 static GENIUS_IMAGE_ALT_URL: &str = "https://images.rapgenius.com/";
-static GENIUS_BASE_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com/"#);
+static GENIUS_BASE_PATTERN: Lazy<Regex> = lazy_regex!(r#"https?://\w*.?genius\.com"#);
 static YOUTUBE_URL: &str = "youtube.com/";
 static YOUTUBE_NOCOOKIE_URL: &str = "youtube-nocookie.com/";
 
