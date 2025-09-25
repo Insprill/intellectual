@@ -105,16 +105,13 @@ pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<i
 
     let (verses, annotations) = scrape_lyrics(&document).await?;
 
-    Ok(template(
-        &req,
-        LyricsTemplate {
-            settings: settings_from_req(&req),
-            verses,
-            annotations,
-            path,
-            song,
-        },
-    ))
+    Ok(template(LyricsTemplate {
+        settings: settings_from_req(&req),
+        verses,
+        annotations,
+        path,
+        song,
+    }))
 }
 
 fn get_song_id(document: &Html) -> crate::Result<u32> {

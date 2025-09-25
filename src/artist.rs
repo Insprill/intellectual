@@ -25,11 +25,8 @@ pub async fn artist(req: HttpRequest) -> Result<impl Responder> {
     artist.popular_songs =
         Some(genius::get_artist_songs(artist.id, SortMode::Popularity, MAX_SONGS).await?);
 
-    Ok(template(
-        &req,
-        ArtistTemplate {
-            settings: settings_from_req(&req),
-            artist,
-        },
-    ))
+    Ok(template(ArtistTemplate {
+        settings: settings_from_req(&req),
+        artist,
+    }))
 }

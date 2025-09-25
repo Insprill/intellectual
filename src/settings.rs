@@ -22,13 +22,10 @@ struct SettingsTemplate {
 
 #[get("/settings")]
 pub async fn settings(req: HttpRequest) -> impl Responder {
-    template(
-        &req,
-        SettingsTemplate {
-            settings: settings_from_req(&req),
-            themes: THEME_CONFIG.themes.clone(),
-        },
-    )
+    template(SettingsTemplate {
+        settings: settings_from_req(&req),
+        themes: THEME_CONFIG.themes.clone(),
+    })
 }
 
 #[post("/settings")]

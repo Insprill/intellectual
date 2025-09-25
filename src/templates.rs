@@ -1,17 +1,11 @@
-use actix_web::{HttpRequest, HttpResponse, HttpResponseBuilder};
+use actix_web::{HttpResponse, HttpResponseBuilder};
 use askama::Template;
 
-use crate::settings::SETTINGS_KEY;
-
-pub fn template(req: &HttpRequest, t: impl Template) -> HttpResponse {
-    template_with_res(req, HttpResponse::Ok(), t)
+pub fn template(t: impl Template) -> HttpResponse {
+    template_with_res(HttpResponse::Ok(), t)
 }
 
-pub fn template_with_res(
-    req: &HttpRequest,
-    mut res: HttpResponseBuilder,
-    t: impl Template,
-) -> HttpResponse {
+pub fn template_with_res(mut res: HttpResponseBuilder, t: impl Template) -> HttpResponse {
     res.append_header(("Content-Type", "text/html; charset=utf-8"))
         // Caching Setup
         // Since Cloudflare ignores Vary headers, we can't publically cache all pages since only
@@ -21,11 +15,6 @@ pub fn template_with_res(
         // home page) until the browser requests the page from the server again.
         .append_header(("Vary", "Cookie"))
         .append_header(("Cache-Control", "private, max-age=604800"));
-
-    // To allow the browser to properly discard old pages, we must send back the settings cookie.
-    if let Some(cookie) = req.cookie(SETTINGS_KEY) {
-        res.cookie(cookie);
-    }
 
     res.body(t.render().unwrap_or_default())
 }

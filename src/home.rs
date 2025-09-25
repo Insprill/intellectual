@@ -11,10 +11,7 @@ struct HomeTemplate {
 
 #[get("/")]
 pub async fn home(req: HttpRequest) -> impl Responder {
-    template(
-        &req,
-        HomeTemplate {
-            settings: settings_from_req(&req),
-        },
-    )
+    template(HomeTemplate {
+        settings: settings_from_req(&req),
+    })
 }

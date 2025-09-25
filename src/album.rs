@@ -23,11 +23,8 @@ pub async fn album(req: HttpRequest) -> Result<impl Responder> {
 
     album.tracks = Some(genius::get_album_tracks(album.id).await?);
 
-    Ok(template(
-        &req,
-        AlbumTemplate {
-            settings: settings_from_req(&req),
-            album,
-        },
-    ))
+    Ok(template(AlbumTemplate {
+        settings: settings_from_req(&req),
+        album,
+    }))
 }

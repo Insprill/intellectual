@@ -21,7 +21,6 @@ pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
     }
 
     let new_response = template_with_res(
-        res.request(),
         HttpResponse::InternalServerError(),
         InternalErrorTemplate {
             settings: settings_from_req(res.request()),
@@ -33,7 +32,6 @@ pub fn render_500<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
 
 pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
     let new_response = template_with_res(
-        res.request(),
         HttpResponse::NotFound(),
         NotFoundTemplate {
             settings: settings_from_req(res.request()),
@@ -44,7 +42,6 @@ pub fn render_404<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>>
 
 pub fn render_400<B>(res: ServiceResponse<B>) -> Result<ErrorHandlerResponse<B>> {
     let new_response = template_with_res(
-        res.request(),
         HttpResponse::BadRequest(),
         BadRequestTemplate {
             settings: settings_from_req(res.request()),
