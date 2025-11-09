@@ -9,7 +9,7 @@ use futures::stream::FuturesUnordered;
 use scraper::{Html, Node, Selector};
 use serde::Deserialize;
 
-use crate::genius::{self, GeniusAnnotationResponse, GeniusSong};
+use crate::genius::{self, GeniusReferentResponse, GeniusSong};
 use crate::settings::{settings_from_req, Settings};
 use crate::templates::template;
 use crate::utils;
@@ -50,13 +50,13 @@ struct Annotation {
     pub votes: i32,
 }
 
-impl From<&GeniusAnnotationResponse> for Annotation {
-    fn from(value: &GeniusAnnotationResponse) -> Self {
+impl From<&GeniusReferentResponse> for Annotation {
+    fn from(value: &GeniusReferentResponse) -> Self {
         Annotation {
-            id: value.annotation.id,
+            id: value.referent.id,
             quote: value.referent.fragment.clone(),
-            body: value.annotation.body.html.clone(),
-            votes: value.annotation.votes_total,
+            body: value.referent.annotations[0].body.html.clone(),
+            votes: value.referent.annotations[0].votes_total,
         }
     }
 }
@@ -223,7 +223,7 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<An
         })
     }
 
-    let annotations: HashMap<i32, GeniusAnnotationResponse> = verses
+    let annotations: HashMap<i32, GeniusReferentResponse> = verses
         .iter()
         .flat_map(|v| {
             v.lyrics
@@ -245,7 +245,8 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<An
         .await
         .into_iter()
         .filter_map(|f| f.ok())
-        .map(|a| (a.annotation.id, a))
+        .filter(|a| !a.referent.annotations.is_empty())
+        .map(|a| (a.referent.annotations[0].id, a))
         .collect();
 
     verses

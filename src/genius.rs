@@ -83,10 +83,10 @@ pub async fn get_search_results(query: &str, page: u8) -> Result<Vec<GeniusSong>
     .collect())
 }
 
-pub async fn get_annotation(id: i32) -> Result<GeniusAnnotationResponse> {
-    Ok(get_json::<GeniusAnnotationRequest>(
+pub async fn get_annotation(id: i32) -> Result<GeniusReferentResponse> {
+    Ok(get_json::<GeniusReferentRequest>(
         SubDomain::Api,
-        &format!("annotations/{id}"),
+        &format!("referents/{id}"),
         Some(vec![("text_format", "html")]),
     )
     .await?
@@ -102,7 +102,7 @@ pub async fn get_raw(
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
 ) -> Result<(StatusCode, Bytes, HeaderMap)> {
-    let mut res = build_req(subdomain, path, queries)?.await?;
+    let mut res = build_req(subdomain, path, queries).await?;
     Ok((
         res.status(),
         res.body().limit(BODY_LIMIT).await?,
@@ -115,7 +115,7 @@ pub async fn get_text(
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
 ) -> Result<String> {
-    let bytes = build_req(subdomain, path, queries)?
+    let bytes = build_req(subdomain, path, queries)
         .await?
         .body()
         .await?
@@ -128,7 +128,7 @@ async fn get_json<T: DeserializeOwned>(
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
 ) -> Result<T> {
-    Ok(build_req(subdomain, path, queries)?
+    Ok(build_req(subdomain, path, queries)
         .await?
         .json::<T>()
         .await?)
@@ -138,7 +138,7 @@ fn build_req(
     subdomain: SubDomain,
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
-) -> Result<SendClientRequest> {
+) -> SendClientRequest {
     let query_str = if let Some(q) = queries {
         String::from_iter(
             q.iter()
@@ -164,7 +164,7 @@ fn build_req(
         ))
         .send();
 
-    Ok(req)
+    req
 }
 
 static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
@@ -218,14 +218,13 @@ pub struct GeniusSearchResponse {
 }
 
 #[derive(Deserialize)]
-pub struct GeniusAnnotationRequest {
-    pub response: GeniusAnnotationResponse,
+pub struct GeniusReferentRequest {
+    pub response: GeniusReferentResponse,
 }
 
 #[derive(Deserialize)]
-pub struct GeniusAnnotationResponse {
-    pub annotation: GeniusAnnotation,
-    pub referent: GeniusAnnotationReferent,
+pub struct GeniusReferentResponse {
+    pub referent: GeniusReferent,
 }
 
 #[derive(Deserialize, Clone)]
@@ -233,6 +232,7 @@ pub struct GeniusAnnotation {
     pub id: i32,
     pub body: GeniusAnnotationBody,
     pub votes_total: i32,
+    // pub verified: bool, // TODO: indicate this in the UI
 }
 
 #[derive(Deserialize, Clone)]
@@ -242,8 +242,10 @@ pub struct GeniusAnnotationBody {
 }
 
 #[derive(Deserialize)]
-pub struct GeniusAnnotationReferent {
+pub struct GeniusReferent {
+    pub id: i32,
     pub fragment: String,
+    pub annotations: Vec<GeniusAnnotation>,
 }
 
 #[derive(Deserialize)]
