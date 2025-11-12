@@ -4,10 +4,9 @@ use std::{error::Error, fs::File, io::BufReader, process::exit, time::Duration};
 
 use actix_web::{http::StatusCode, middleware, App, HttpServer};
 use clap::{arg, command, Parser};
-use log::{error, info, warn, LevelFilter};
+use env_logger::Env;
+use log::{error, info, warn};
 use rustls::{Certificate, PrivateKey, ServerConfig as RustlsServerConfig};
-
-use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 
 mod album;
 mod api;
@@ -58,13 +57,11 @@ struct Args {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    CombinedLogger::init(vec![TermLogger::new(
-        LevelFilter::Info,
-        Config::default(),
-        TerminalMode::Mixed,
-        ColorChoice::Auto,
-    )])
-    .unwrap();
+    let env = Env::default().filter_or("LOG_LEVEL", "info");
+    env_logger::builder()
+        .parse_env(env)
+        .format_target(false)
+        .init();
 
     let args = Args::parse();
 
