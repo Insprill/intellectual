@@ -2,12 +2,13 @@ use std::sync::LazyLock;
 
 use crate::Result;
 use actix_web::{
+    dev::{Decompress, Payload},
     http::{header::HeaderMap, StatusCode},
     web::Bytes,
 };
-use awc::{Client, SendClientRequest};
+use awc::{error::SendRequestError, Client, ClientResponse};
 use lazy_regex::*;
-use log::debug;
+use log::{debug, error};
 use regex::Regex;
 use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize, Deserializer};
@@ -135,11 +136,11 @@ async fn get_json<T: DeserializeOwned>(
         .await?)
 }
 
-fn build_req(
+async fn build_req(
     subdomain: SubDomain,
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
-) -> SendClientRequest {
+) -> Result<ClientResponse<Decompress<Payload>>> {
     let query_str = if let Some(q) = queries {
         String::from_iter(
             q.iter()
@@ -164,9 +165,14 @@ fn build_req(
     );
     debug!("Sending request to {url}");
 
-    let req = Client::default().get(url).send();
+    let res = Client::default().get(url).send().await?;
+    let status = res.status();
 
-    req
+    if status.is_client_error() || status.is_server_error() {
+        Err(format!("Got response {status}").into())
+    } else {
+        Ok(res)
+    }
 }
 
 static GENIUS_IMAGE_URL: &str = "https://images.genius.com/";
