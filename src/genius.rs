@@ -6,9 +6,9 @@ use actix_web::{
     http::{header::HeaderMap, StatusCode},
     web::Bytes,
 };
-use awc::{error::SendRequestError, Client, ClientResponse};
+use awc::{Client, ClientResponse};
 use lazy_regex::*;
-use log::{debug, error};
+use log::debug;
 use regex::Regex;
 use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize, Deserializer};
