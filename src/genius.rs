@@ -7,6 +7,7 @@ use actix_web::{
 };
 use awc::{Client, SendClientRequest};
 use lazy_regex::*;
+use log::debug;
 use regex::Regex;
 use scraper::{Html, Selector};
 use serde::{de::DeserializeOwned, Deserialize, Deserializer};
@@ -155,14 +156,15 @@ fn build_req(
         path.to_owned()
     };
 
-    let req = Client::default()
-        .get(format!(
-            "https://{}genius.com/{}?text_format=plain{}",
-            subdomain.value(),
-            path.trim_start_matches('/'),
-            query_str
-        ))
-        .send();
+    let url = format!(
+        "https://{}genius.com/{}?text_format=plain{}",
+        subdomain.value(),
+        path.trim_start_matches('/'),
+        query_str
+    );
+    debug!("Sending request to {url}");
+
+    let req = Client::default().get(url).send();
 
     req
 }
