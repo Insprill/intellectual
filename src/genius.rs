@@ -207,27 +207,27 @@ impl SubDomain {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSearchRequest {
     pub response: GeniusSearchResponse,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSearchResponse {
     pub hits: Vec<GeniusHit>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusReferentRequest {
     pub response: GeniusReferentResponse,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusReferentResponse {
     pub referent: GeniusReferent,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusAnnotation {
     pub id: i32,
     pub body: GeniusAnnotationBody,
@@ -235,45 +235,45 @@ pub struct GeniusAnnotation {
     // pub verified: bool, // TODO: indicate this in the UI
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusAnnotationBody {
     #[serde(deserialize_with = "rewrite_links")]
     pub html: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusReferent {
     pub id: i32,
     pub fragment: String,
     pub annotations: Vec<GeniusAnnotation>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusHit {
     pub result: GeniusSong,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSongRequest {
     pub response: GeniusSongResponse,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSongResponse {
     pub song: GeniusSong,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSongsRequest {
     pub response: GeniusSongsResponse,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSongsResponse {
     pub songs: Vec<GeniusSong>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusSong {
     pub id: u32,
     pub title: String,
@@ -286,27 +286,27 @@ pub struct GeniusSong {
     pub primary_artist: GeniusArtist,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusAlbumResponse {
     pub album: GeniusAlbum,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusTracksRequest {
     pub response: GeniusTracksResponse,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusTracksResponse {
     pub tracks: Vec<GeniusTrack>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusTrack {
     pub song: GeniusSong,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusAlbum {
     pub name: String,
     pub id: u32,
@@ -317,17 +317,17 @@ pub struct GeniusAlbum {
     pub artist: GeniusArtist,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusStats {
     pub pageviews: Option<i32>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusArtistResponse {
     pub artist: GeniusArtist,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusArtist {
     pub id: u32,
     pub name: String,
@@ -341,7 +341,7 @@ pub struct GeniusArtist {
     pub twitter_name: Option<String>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct GeniusDescription {
     #[serde(deserialize_with = "rewrite_links")]
     pub html: String,
