@@ -8,7 +8,7 @@
         "clearnet": "https://intellectual.catsarch.com/",
         "tor": "http://intellectual.catsarchywsyuss6jdxlypsw5dc7owd5u5tr6bujxb7o6xw2hipqehyd.onion/",
         "i2p": "http://ahysxi4w2wl7vf7ghy3hbqibvdg4e7je3s2lrsrb6xpukklevrka.b32.i2p",
-        "country": "US",
+        "country": "US|DE",
         "cdn": false
     },
     {
