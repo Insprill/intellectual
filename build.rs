@@ -129,5 +129,6 @@ fn get_remote_url() -> String {
 
     String::from_utf8_lossy(&remote_url.stdout)
         .trim()
+        .trim_end_matches(".git")
         .to_string()
 }
