@@ -2,6 +2,7 @@
 :root {
     color-scheme: dark;
     --yellow: #fabd2f; /* yellow */
+    --red: #cc241d; /* red */
     --text: #ebdbb2; /* fg */
     --text-dark: #665c53; /* bg3 */
     --foreground: #3c3836; /* bg1 */
