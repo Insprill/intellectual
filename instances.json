@@ -12,8 +12,9 @@
         "cdn": false
     },
     {
-        "clearnet": "https://in.bloat.cat/",
-        "country": "RO",
+        "clearnet": "https://intellectual.ducks.party/",
+        "tor": "http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion/",
+        "country": "DE",
         "cdn": false
     },
     {
@@ -22,14 +23,13 @@
         "cdn": false
     },
     {
-        "clearnet": "https://intellectual.ducks.party/",
-        "tor": "http://pgsivdkc7p5qyxp7leorxk32mkomepxsmrqhpzqqi2zf2nc6urzodfad.onion/",
-        "country": "DE",
+        "clearnet": "https://genius.blitzw.in/",
+        "country": "DK",
         "cdn": false
     },
     {
-        "clearnet": "https://genius.blitzw.in/",
-        "country": "DK",
+        "clearnet": "https://in.bloat.cat/",
+        "country": "RO",
         "cdn": false
     },
     {
