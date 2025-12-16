@@ -123,3 +123,6 @@ Temporary Items
 *.env
 # Cert files
 *.pem
+# catsarch.com has the repo in the home directory, so ignore .cargo to avoid it marking the build as dirty.
+# See https://github.com/Insprill/intellectual/discussions/51 for context.
+.cargo/
