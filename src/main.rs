@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use std::{error::Error, fs::File, io::BufReader, process::exit, time::Duration};
+use std::{env, error::Error, fs::File, io::BufReader, process::exit, time::Duration};
 
 use actix_web::{App, HttpServer, http::StatusCode, middleware};
 use clap::Parser;
@@ -60,7 +60,7 @@ async fn main() -> std::io::Result<()> {
     let env = Env::default().filter_or("LOG_LEVEL", "info");
     env_logger::builder()
         .parse_env(env)
-        .format_target(false)
+        .format_target(!env::var("LOG_TARGET").unwrap_or_default().is_empty())
         .init();
 
     let args = Args::parse();
