@@ -19,7 +19,14 @@
 <nav>
     <div class="inner-nav">
         <div class="nav-item">
-            <a class="site-version" href="{{env!("IN_REPO_URL")}}">v{{ env!("IN_VERSION") }}</a>
+            <a class="site-version 
+                {% if env!("IN_VERSION").contains("dirty") %}
+                    site-version-dirty-color
+                {% endif %}
+                " href="{{env!("IN_REPO_URL")}}"
+            >
+                v{{ env!("IN_VERSION") }}
+            </a>
         </div>
         <a href="/" class="site-name">Intellectual</a>
         <div class="nav-item right">

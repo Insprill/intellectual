@@ -69,6 +69,10 @@ nav {
     text-decoration: unset;
 }
 
+.site-version-dirty-color {
+    color: var(--red);
+}
+
 /* endregion */
 
 .container {
