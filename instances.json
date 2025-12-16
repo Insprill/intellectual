@@ -12,11 +12,6 @@
         "cdn": false
     },
     {
-        "clearnet": "https://intellectual.lumaeris.com/",
-        "country": "US",
-        "cdn": false
-    },
-    {
         "clearnet": "https://in.bloat.cat/",
         "country": "RO",
         "cdn": false
