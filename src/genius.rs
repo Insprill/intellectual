@@ -150,7 +150,7 @@ async fn build_req(
         "".into()
     };
 
-    // Using the api path lets us drop the requirement for an API key.
+    // Using the API path lets us drop the requirement for an API key.
     let path: String = if matches!(subdomain, SubDomain::Api) {
         format!("api/{path}")
     } else {

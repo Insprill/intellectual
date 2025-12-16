@@ -3,7 +3,7 @@
 use std::{error::Error, fs::File, io::BufReader, process::exit, time::Duration};
 
 use actix_web::{http::StatusCode, middleware, App, HttpServer};
-use clap::{arg, command, Parser};
+use clap::Parser;
 use env_logger::Env;
 use log::{error, info, warn};
 use rustls::{Certificate, PrivateKey, ServerConfig as RustlsServerConfig};
@@ -30,7 +30,7 @@ struct Args {
     #[arg(short, long, default_value = "0.0.0.0")]
     address: String,
 
-    /// Sets the port to listen on. Will be overriden by the PORT env var if present
+    /// Sets the port to listen on. Will be overridden by the PORT env var if present
     #[arg(short, long, default_value_t = 8080)]
     port: u16,
 
