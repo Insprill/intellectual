@@ -1,4 +1,4 @@
-use std::sync::LazyLock;
+use std::{sync::LazyLock, time::Duration};
 
 use crate::Result;
 use actix_web::{
@@ -136,6 +136,9 @@ async fn get_json<T: DeserializeOwned>(
         .await?)
 }
 
+// Default AWC timeout is 5 seconds (as of 9c70a88) which causes frequent timeouts.
+const TIMEOUT_SECS: u64 = 30;
+
 async fn build_req(
     subdomain: SubDomain,
     path: &str,
@@ -165,7 +168,12 @@ async fn build_req(
     );
     debug!("Sending request to {url}");
 
-    let res = Client::default().get(url).send().await?;
+    let res = Client::builder()
+        .timeout(Duration::from_secs(TIMEOUT_SECS))
+        .finish()
+        .get(url)
+        .send()
+        .await?;
     let status = res.status();
 
     if status.is_client_error() || status.is_server_error() {
