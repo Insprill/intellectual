@@ -36,5 +36,10 @@
         "clearnet": "https://genius.blitzw.in/",
         "country": "DK",
         "cdn": false
+    },
+    {
+        "clearnet": "https://int.dc09.ru/",
+        "country": "RU",
+        "cdn": false
     }
 ]
