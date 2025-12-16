@@ -2,7 +2,7 @@
 
 use std::{error::Error, fs::File, io::BufReader, process::exit, time::Duration};
 
-use actix_web::{http::StatusCode, middleware, App, HttpServer};
+use actix_web::{App, HttpServer, http::StatusCode, middleware};
 use clap::Parser;
 use env_logger::Env;
 use log::{error, info, warn};

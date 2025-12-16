@@ -1,8 +1,8 @@
 use crate::genius::{self, GeniusAlbumResponse};
-use crate::settings::{settings_from_req, Settings};
+use crate::settings::{Settings, settings_from_req};
 use crate::utils;
 use actix_web::HttpRequest;
-use actix_web::{get, Responder, Result};
+use actix_web::{Responder, Result, get};
 use askama::Template;
 
 use crate::genius::GeniusAlbum;

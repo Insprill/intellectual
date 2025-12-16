@@ -1,11 +1,11 @@
 use std::io::{BufWriter, Cursor};
 
-use ::image::{imageops::FilterType, load_from_memory, EncodableLayout, ImageFormat};
-use actix_web::{get, http::header, http::StatusCode, web, HttpRequest, HttpResponse, Responder};
+use ::image::{EncodableLayout, ImageFormat, imageops::FilterType, load_from_memory};
+use actix_web::{HttpRequest, HttpResponse, Responder, get, http::StatusCode, http::header, web};
 use serde::Deserialize;
 
-use crate::genius::{self, SubDomain};
 use crate::Result;
+use crate::genius::{self, SubDomain};
 
 #[derive(Debug, Deserialize)]
 pub struct UrlQuery {
@@ -27,10 +27,10 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
     }
 
     // Directly pass through GIFs
-    if let Some(content_type) = headers.get("Content-Type") {
-        if content_type.to_str()? == "image/gif" {
-            return send_image(body.as_bytes().to_vec(), "image/gif");
-        }
+    if let Some(content_type) = headers.get("Content-Type")
+        && content_type.to_str()? == "image/gif"
+    {
+        return send_image(body.as_bytes().to_vec(), "image/gif");
     }
 
     let supports_webp = req

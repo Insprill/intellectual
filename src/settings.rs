@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use actix_web::{get, post, web::Form, HttpRequest, HttpResponse, Responder};
+use actix_web::{HttpRequest, HttpResponse, Responder, get, post, web::Form};
 use askama::Template;
 use cookie::Cookie;
 use serde::{Deserialize, Serialize};

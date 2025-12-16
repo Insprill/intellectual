@@ -1,7 +1,7 @@
-use actix_web::{get, HttpRequest, Responder};
+use actix_web::{HttpRequest, Responder, get};
 use askama::Template;
 
-use crate::{settings::settings_from_req, settings::Settings, templates::template};
+use crate::{settings::Settings, settings::settings_from_req, templates::template};
 
 #[derive(Template)]
 #[template(path = "home.html")]

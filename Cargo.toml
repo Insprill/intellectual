@@ -4,7 +4,7 @@ description = "Alternate frontend for Genius focused on privacy and simplicity"
 version = "0.8.2"
 license = "AGPL-3.0"
 repository = "https://github.com/Insprill/intellectual"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 actix-web = { version = "4", default-features = false, features = ["macros", "compress-brotli", "compress-gzip", "cookies", "http2", "rustls-0_21"] } # Zstd doesn't compile on aarch64 musl :/

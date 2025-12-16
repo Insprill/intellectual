@@ -3,7 +3,7 @@ use std::sync::LazyLock;
 use crate::Result;
 use actix_web::{
     dev::{Decompress, Payload},
-    http::{header::HeaderMap, StatusCode},
+    http::{StatusCode, header::HeaderMap},
     web::Bytes,
 };
 use awc::{Client, ClientResponse};
@@ -11,7 +11,7 @@ use lazy_regex::*;
 use log::debug;
 use regex::Regex;
 use scraper::{Html, Selector};
-use serde::{de::DeserializeOwned, Deserialize, Deserializer};
+use serde::{Deserialize, Deserializer, de::DeserializeOwned};
 use urlencoding::encode;
 
 static EMBEDDED_INFO_SELECTOR: LazyLock<Selector> =
@@ -365,34 +365,34 @@ impl GeniusArtist {
     pub fn socials(&self) -> Vec<ArtistSocial<'_>> {
         let mut socials = Vec::with_capacity(3);
 
-        if let Some(name) = self.facebook_name.as_ref() {
-            if !name.is_empty() {
-                socials.push(ArtistSocial {
-                    name_raw: name,
-                    name_formatted: name.to_string(),
-                    brand: "facebook",
-                })
-            }
+        if let Some(name) = self.facebook_name.as_ref()
+            && !name.is_empty()
+        {
+            socials.push(ArtistSocial {
+                name_raw: name,
+                name_formatted: name.to_string(),
+                brand: "facebook",
+            })
         }
 
-        if let Some(name) = self.instagram_name.as_ref() {
-            if !name.is_empty() {
-                socials.push(ArtistSocial {
-                    name_raw: name,
-                    name_formatted: format!("@{name}"),
-                    brand: "instagram",
-                })
-            }
+        if let Some(name) = self.instagram_name.as_ref()
+            && !name.is_empty()
+        {
+            socials.push(ArtistSocial {
+                name_raw: name,
+                name_formatted: format!("@{name}"),
+                brand: "instagram",
+            })
         }
 
-        if let Some(name) = self.twitter_name.as_ref() {
-            if !name.is_empty() {
-                socials.push(ArtistSocial {
-                    name_raw: name,
-                    name_formatted: format!("@{name}"),
-                    brand: "twitter",
-                })
-            }
+        if let Some(name) = self.twitter_name.as_ref()
+            && !name.is_empty()
+        {
+            socials.push(ArtistSocial {
+                name_raw: name,
+                name_formatted: format!("@{name}"),
+                brand: "twitter",
+            })
         }
 
         socials

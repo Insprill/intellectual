@@ -1,16 +1,16 @@
 use std::collections::{HashMap, HashSet};
 use std::sync::LazyLock;
 
-use actix_web::{get, web, HttpRequest, Responder, Result};
+use actix_web::{HttpRequest, Responder, Result, get, web};
 use askama::Template;
-use futures::{future, StreamExt};
+use futures::{StreamExt, future};
 
 use futures::stream::FuturesUnordered;
 use scraper::{Html, Node, Selector};
 use serde::Deserialize;
 
 use crate::genius::{self, GeniusReferentResponse, GeniusSong};
-use crate::settings::{settings_from_req, Settings};
+use crate::settings::{Settings, settings_from_req};
 use crate::templates::template;
 use crate::utils;
 
@@ -154,14 +154,14 @@ async fn scrape_lyrics(document: &Html) -> crate::Result<(Vec<Verse<'_>>, Vec<An
                 new_line = true;
             }
             Node::Element(e) if e.name() == "a" => {
-                if let Some(href) = e.attr("href") {
-                    if let Some((annotation_id, _)) = href.trim_start_matches('/').split_once('/') {
-                        curr_annotation = Option::Some(Annotation {
-                            id: annotation_id.parse::<i32>()?,
-                            ..Default::default()
-                        });
-                        annotations.insert(annotation_id);
-                    }
+                if let Some(href) = e.attr("href")
+                    && let Some((annotation_id, _)) = href.trim_start_matches('/').split_once('/')
+                {
+                    curr_annotation = Option::Some(Annotation {
+                        id: annotation_id.parse::<i32>()?,
+                        ..Default::default()
+                    });
+                    annotations.insert(annotation_id);
                 }
             }
             // Empty span with `tabindex="0"` always follows annotations.

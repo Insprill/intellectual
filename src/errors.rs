@@ -1,16 +1,15 @@
 use actix_web::{
-    self,
+    self, HttpResponse, Result,
     dev::ServiceResponse,
     http::header::{self},
     middleware::ErrorHandlerResponse,
-    HttpResponse, Result,
 };
 use askama::Template;
 use awc::error::HeaderValue;
 use log::error;
 
 use crate::{
-    settings::{settings_from_req, Settings},
+    settings::{Settings, settings_from_req},
     templates::template_with_res,
 };
 
