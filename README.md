@@ -69,7 +69,7 @@ Not sure how to host your own instance? View the [deployment](#deployment) instr
 | https://in2.bloat.cat/                     | No                                                                                        | No                                                                         | 🇩🇪 DE        |            |
 | https://genius.blitzw.in/                  | No                                                                                        | No                                                                         | 🇩🇰 DK        |            |
 | https://in.bloat.cat/                      | No                                                                                        | No                                                                         | 🇷🇴 RO        |            |
-| https://int.dc09.ru/                       | No                                                                                        | No                                                                         | 🇷🇺 RU        |            |
+| https://int.dc09.xyz/                      | No                                                                                        | No                                                                         | 🇷🇺 RU        |            |
 
 If there is a checkmark under "Cloudflare", that means the site
 is proxied behind [Cloudflare](https://www.cloudflare.com/).  
