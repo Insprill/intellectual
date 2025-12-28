@@ -162,8 +162,10 @@ html:has(.annotation:target) {
 
 .annotation__content img {
     border-radius: var(--radius);
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
+    display: block;
+    margin: auto;
 }
 
 .annotation__header {
