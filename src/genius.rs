@@ -130,10 +130,13 @@ async fn get_json<T: DeserializeOwned>(
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
 ) -> Result<T> {
-    Ok(build_req(subdomain, path, queries)
-        .await?
-        .json::<T>()
-        .await?)
+    let mut res = build_req(subdomain, path, queries).await?;
+    // We have to do this shit instead of just parsing as JSON since Genius,
+    // at the time of writing, and as their name sarcasticly implies,
+    // gives us a Content-Type of `application/html` for a JSON response!
+    let body = &res.body().await?;
+    let json_str = String::from_utf8_lossy(body);
+    Ok(serde_json::from_str(&json_str)?)
 }
 
 // Default AWC timeout is 5 seconds (as of 9c70a88) which causes frequent timeouts.
