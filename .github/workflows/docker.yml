@@ -3,7 +3,7 @@ name: Docker Build
 on:
   push:
     paths-ignore: &paths-ignore
-      - 'CHANGELOG.md'
+      - '*.md'
       - 'instances.json'
   pull_request:
     paths-ignore: *paths-ignore
