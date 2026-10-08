@@ -2,17 +2,17 @@ name: Docker Build
 
 on:
   push:
-    paths-ignore: &paths-ignore
-      - '*.md'
-      - 'instances.json'
-      - '.gitignore'
-      - '.gitattributes'
-      - '.editorconfig'
-      - 'LICENSE'
-      - 'docker-compose.yml'
-      - '.github/ISSUE_TEMPLATE/**'
+    paths: &paths
+      - 'src/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'build.rs'
+      - 'Dockerfile'
+      - '.github/workflows/docker.yml'
   pull_request:
-    paths-ignore: *paths-ignore
+    paths: *paths
 
 env:
   DOCKER_IMAGE: insprill/intellectual
