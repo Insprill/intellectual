@@ -32,6 +32,22 @@ where
         .ok_or("Failed to extract JSON data")?)
 }
 
+// Artist pages use different data formats; extract only the ID and fetch details from the API.
+pub async fn get_artist(path: &str) -> Result<GeniusArtist> {
+    let page = get_text(SubDomain::Root, path, None).await?;
+    let (_, id) = regex_captures!(r#"artist_?[iI]d(?:\\"|&quot;|"):(\d+)"#, &page)
+        .ok_or("Failed to find artist ID")?;
+
+    Ok(get_json::<GeniusArtistRequest>(
+        SubDomain::Api,
+        &format!("artists/{id}"),
+        Some(vec![("text_format", "html")]),
+    )
+    .await?
+    .response
+    .artist)
+}
+
 /// https://docs.genius.com/#/artists-songs
 pub async fn get_artist_songs(
     artist_id: u32,
@@ -340,6 +356,11 @@ pub struct GeniusAlbum {
 #[derive(Deserialize, Debug)]
 pub struct GeniusStats {
     pub pageviews: Option<i32>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GeniusArtistRequest {
+    pub response: GeniusArtistResponse,
 }
 
 #[derive(Deserialize, Debug)]
