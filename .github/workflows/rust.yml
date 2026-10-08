@@ -10,6 +10,7 @@ on:
       - '.editorconfig'
       - 'LICENSE'
       - 'docker-compose.yml'
+      - '.github/ISSUE_TEMPLATE/**'
   pull_request:
     paths-ignore: *paths-ignore
 
