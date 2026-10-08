@@ -23,13 +23,8 @@
         "cdn": false
     },
     {
-        "clearnet": "https://genius.blitzw.in/",
-        "country": "DK",
-        "cdn": false
-    },
-    {
         "clearnet": "https://int.dc09.xyz/",
-        "country": "RU",
+        "country": "NL",
         "cdn": false
     }
 ]
