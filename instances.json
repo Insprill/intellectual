@@ -18,11 +18,6 @@
         "cdn": false
     },
     {
-        "clearnet": "https://in2.bloat.cat/",
-        "country": "DE",
-        "cdn": false
-    },
-    {
         "clearnet": "https://genius.blitzw.in/",
         "country": "DK",
         "cdn": false
