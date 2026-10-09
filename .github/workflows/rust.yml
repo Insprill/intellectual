@@ -2,11 +2,16 @@ name: Build
 
 on:
   push:
-    paths-ignore: &paths-ignore
-      - '*.md'
-      - 'instances.json'
+    paths: &paths
+      - 'src/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'build.rs'
+      - '.github/workflows/rust.yml'
   pull_request:
-    paths-ignore: *paths-ignore
+    paths: *paths
 
 env:
   CARGO_TERM_COLOR: always

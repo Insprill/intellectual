@@ -2,11 +2,17 @@ name: Docker Build
 
 on:
   push:
-    paths-ignore: &paths-ignore
-      - 'CHANGELOG.md'
-      - 'instances.json'
+    paths: &paths
+      - 'src/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'build.rs'
+      - 'Dockerfile'
+      - '.github/workflows/docker.yml'
   pull_request:
-    paths-ignore: *paths-ignore
+    paths: *paths
 
 env:
   DOCKER_IMAGE: insprill/intellectual
@@ -38,15 +44,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v4
-        if: ${{ env.DOCKER_PUSH == 'true' }}
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ env.DOCKER_IMAGE }}
-          enable-url-completion: true
 
       - name: Set Environment Variables
         run: |
