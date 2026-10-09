@@ -3,8 +3,7 @@ use crate::utils;
 use actix_web::{HttpRequest, Responder, Result, get};
 use askama::Template;
 
-use crate::genius::{self, GeniusArtist};
-use crate::genius::{GeniusArtistResponse, SortMode};
+use crate::genius::{self, GeniusArtist, SortMode};
 use crate::templates::template;
 
 #[derive(Template)]
@@ -18,9 +17,7 @@ const MAX_SONGS: u8 = 5;
 
 #[get("/artists/{name}")]
 pub async fn artist(req: HttpRequest) -> Result<impl Responder> {
-    let mut artist = genius::extract_data::<GeniusArtistResponse>(req.path())
-        .await?
-        .artist;
+    let mut artist = genius::get_artist(req.path()).await?;
 
     artist.popular_songs =
         Some(genius::get_artist_songs(artist.id, SortMode::Popularity, MAX_SONGS).await?);
