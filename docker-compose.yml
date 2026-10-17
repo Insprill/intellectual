@@ -3,7 +3,7 @@ services:
     image: insprill/intellectual:latest # Switch to 'develop' to use the latest git version. May be unstable!
     restart: always
     ports:
-      - 8080:8080 # Use `127.0.0.1:8080:8080` if you're using a reverse proxy on the same machine.
+      - 127.0.0.1:8080:8080 # Use `8080:8080` to make it reachable from other machines.
     read_only: true
     security_opt:
       - no-new-privileges:true

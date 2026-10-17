@@ -117,7 +117,7 @@ To enable TLS, provide the `--tls` flag, followed by `--tls-key-file` and `--tls
 
 - [x] Search for songs
 - [x] View lyrics
-- [x] More song info on the lryics page
+- [x] More song info on the lyrics page
   - Song name
   - Song/album image
   - Album name
@@ -130,7 +130,7 @@ To enable TLS, provide the `--tls` flag, followed by `--tls-key-file` and `--tls
 - [x] Improve responsiveness
 - [x] View Albums
 - [x] Theme support
-- [ ] Annotation support
+- [x] Annotation support
 - [ ] More search types
   - By lyrics
   - For artists
