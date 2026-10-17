@@ -1,14 +1,20 @@
-use std::{sync::LazyLock, time::Duration};
+use std::{
+    sync::{LazyLock, Mutex},
+    time::{Duration, Instant, SystemTime},
+};
 
 use crate::Result;
 use actix_web::{
     dev::{Decompress, Payload},
-    http::{StatusCode, header::HeaderMap},
+    http::{
+        StatusCode,
+        header::{HeaderMap, HttpDate, RETRY_AFTER},
+    },
     web::Bytes,
 };
 use awc::{Client, ClientResponse};
 use lazy_regex::*;
-use log::debug;
+use log::{debug, warn};
 use regex::Regex;
 use scraper::{Html, Selector};
 use serde::{Deserialize, Deserializer, de::DeserializeOwned};
@@ -158,11 +164,35 @@ async fn get_json<T: DeserializeOwned>(
 // Default AWC timeout is 5 seconds (as of 9c70a88) which causes frequent timeouts.
 const TIMEOUT_SECS: u64 = 30;
 
+// Used when a 429 has no usable Retry-After.
+const DEFAULT_RETRY_AFTER_SECS: u64 = 60;
+
+static RATE_LIMITED_UNTIL: Mutex<Option<Instant>> = Mutex::new(None);
+
+/// Retry-After is either delta-seconds ("120") or an HTTP date.
+fn parse_retry_after(headers: &HeaderMap) -> Option<u64> {
+    let value = headers.get(RETRY_AFTER)?.to_str().ok()?.trim();
+    if let Ok(secs) = value.parse() {
+        return Some(secs);
+    }
+    let date: SystemTime = value.parse::<HttpDate>().ok()?.into();
+    Some(
+        date.duration_since(SystemTime::now())
+            .unwrap_or_default()
+            .as_secs(),
+    )
+}
+
 async fn build_req(
     subdomain: SubDomain,
     path: &str,
     queries: Option<Vec<(&str, &str)>>,
 ) -> Result<ClientResponse<Decompress<Payload>>> {
+    let until = *RATE_LIMITED_UNTIL.lock().unwrap();
+    if until.is_some_and(|t| Instant::now() < t) {
+        return Err("Rate limited by Genius".into());
+    }
+
     let query_str = if let Some(q) = queries {
         String::from_iter(
             q.iter()
@@ -195,6 +225,17 @@ async fn build_req(
         .send()
         .await?;
     let status = res.status();
+
+    if status == StatusCode::TOO_MANY_REQUESTS {
+        let retry_after = parse_retry_after(res.headers()).unwrap_or(DEFAULT_RETRY_AFTER_SECS);
+        let until = Instant::now()
+            .checked_add(Duration::from_secs(retry_after))
+            .unwrap_or_else(|| Instant::now() + Duration::from_secs(DEFAULT_RETRY_AFTER_SECS));
+        let mut guard = RATE_LIMITED_UNTIL.lock().unwrap();
+        *guard = Some(guard.map_or(until, |t| t.max(until)));
+        warn!("Rate limited by Genius for {retry_after}s");
+        return Err("Rate limited by Genius".into());
+    }
 
     if status.is_client_error() || status.is_server_error() {
         Err(format!("Got response {status}").into())
