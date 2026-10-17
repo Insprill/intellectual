@@ -12,7 +12,6 @@
     padding: 12px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin: calc(-1 * var(--nav-height)) auto auto;
     background: var(--foreground);
 }
 

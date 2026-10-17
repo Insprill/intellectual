@@ -2,9 +2,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    max-width: 1000px;
-    padding: 10px 20px;
-    margin: 0 auto;
+    width: 100%;
     border-radius: var(--radius);
 }
 

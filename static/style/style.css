@@ -6,7 +6,8 @@
     --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     --hover-transform: translate3d(0px, -1px, 0px);
     --hover-transition: 0.3s all;
-    --nav-height: 90px;
+    --page-width: 920px;
+    --page-gutter: 16px;
 }
 
 a {
@@ -16,51 +17,46 @@ a {
 /* region Navigation Bar */
 
 nav {
-    display: flex;
-    align-items: center;
-    position: fixed;
+    position: sticky;
+    top: 0;
     background-color: var(--foreground);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
-    width: 100%;
-    height: var(--nav-height);
     z-index: 1000;
 }
 
+.inner-nav,
+.container {
+    width: min(100% - 2 * var(--page-gutter), var(--page-width));
+    margin: 0 auto;
+}
+
 .inner-nav {
-    margin: auto;
-    box-sizing: border-box;
-    padding: 0 10px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    align-content: center;
-    flex-basis: 920px;
-    height: var(--nav-height);
+    gap: 16px;
+    min-height: 50px;
 }
 
-.nav-item {
+.nav-brand {
     display: flex;
-    flex: 1;
-    height: 50px;
-    overflow: hidden;
-    flex-wrap: wrap;
-    align-items: center;
+    align-items: baseline;
+    gap: 8px;
 }
 
-.nav-item.right {
-    text-align: right;
-    justify-content: flex-end;
+.nav-links {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+    white-space: nowrap;
 }
 
-.nav-item.right a {
-    padding-left: 4px;
+.nav-links a {
     text-decoration: unset;
 }
 
 .nav-search {
     display: flex;
-    flex-basis: 100%;
-    margin-bottom: 8px;
+    flex: 1;
 }
 
 .nav-search input {
@@ -72,11 +68,29 @@ nav {
     font-size: 14px;
     border: 0;
     border-radius: var(--radius);
-    padding: 4px 8px;
+    padding: 6px 10px;
 }
 
 .nav-search input:focus {
     outline: 2px solid var(--text-dark);
+}
+
+@media only screen and (max-width: 512px) {
+    .inner-nav {
+        flex-wrap: wrap;
+        row-gap: 0;
+    }
+
+    .nav-brand {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .nav-search {
+        order: 1;
+        flex-basis: 100%;
+        padding-bottom: 10px;
+    }
 }
 
 .site-name {
@@ -102,11 +116,9 @@ nav {
 
 .container {
     display: flex;
+    flex: 1;
     flex-wrap: wrap;
-    box-sizing: border-box;
-    padding-top: var(--nav-height);
-    margin: auto;
-    min-height: 100vh;
+    padding: 2rem 0;
 }
 
 html,
@@ -117,6 +129,12 @@ body {
         InterVariable,
         sans-serif;
     background-color: var(--background);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .external-link {

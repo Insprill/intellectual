@@ -1,6 +1,6 @@
 .artist {
     display: grid;
-    grid-template-columns: 15em 25em;
+    grid-template-columns: 15em 1fr;
     grid-template-rows: 6.5em 8.5em 1fr;
     gap: 1em 1em;
     grid-template-areas:
@@ -8,8 +8,9 @@
         "image social"
         "description description"
         "songs songs";
+    box-sizing: border-box;
+    width: 100%;
     padding: 0.75rem;
-    margin: 2rem auto;
     border-radius: var(--radius);
     background: var(--foreground);
     color: var(--text);
