@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" href="/style/song.css?v={{ env!("IN_VERSION") }}">
 {% endblock %}
 
+{% block navsearchvalue %}{{ q }}{% endblock %}
+
 {% block navright %}
 <a class="external-link" href="https://genius.com/search?q={{ q|urlencode }}">Search on Genius</a>
 {% endblock %}

@@ -32,6 +32,11 @@
         <div class="nav-item right">
             {% block navright %}{% endblock %}
         </div>
+        {% block navsearch %}
+        <form class="nav-search" method="get" action="/search" autocomplete="off">
+            <input type="search" required="true" name="q" value="{% block navsearchvalue %}{% endblock %}" placeholder="Search..." aria-label="Search" dir="auto"/>
+        </form>
+        {% endblock %}
     </div>
 </nav>
 

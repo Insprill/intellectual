@@ -6,6 +6,7 @@
     --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     --hover-transform: translate3d(0px, -1px, 0px);
     --hover-transition: 0.3s all;
+    --nav-height: 90px;
 }
 
 a {
@@ -21,7 +22,7 @@ nav {
     background-color: var(--foreground);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
     width: 100%;
-    height: 50px;
+    height: var(--nav-height);
     z-index: 1000;
 }
 
@@ -30,9 +31,11 @@ nav {
     box-sizing: border-box;
     padding: 0 10px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    align-content: center;
     flex-basis: 920px;
-    height: 50px;
+    height: var(--nav-height);
 }
 
 .nav-item {
@@ -52,6 +55,28 @@ nav {
 .nav-item.right a {
     padding-left: 4px;
     text-decoration: unset;
+}
+
+.nav-search {
+    display: flex;
+    flex-basis: 100%;
+    margin-bottom: 8px;
+}
+
+.nav-search input {
+    width: 100%;
+    min-width: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    border: 0;
+    border-radius: var(--radius);
+    padding: 4px 8px;
+}
+
+.nav-search input:focus {
+    outline: 2px solid var(--text-dark);
 }
 
 .site-name {
@@ -79,7 +104,7 @@ nav {
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
-    padding-top: 50px;
+    padding-top: var(--nav-height);
     margin: auto;
     min-height: 100vh;
 }
