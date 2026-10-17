@@ -76,17 +76,13 @@ pub struct LyricsQuery {
     id: Option<u32>,
 }
 
-#[get("/{path}-lyrics")]
+// Non-song texts (speeches, poems, etc.) end in '-annotated' instead of '-lyrics'.
+#[get("/{path:[^/]+-(?:lyrics|annotated)}")]
 pub async fn lyrics(req: HttpRequest, info: web::Query<LyricsQuery>) -> Result<impl Responder> {
     let document: Html;
     let song: GeniusSong;
 
-    // The '-lyrics' bit of the path gets cut off since we match for it explicitly,
-    // so we need to add it back here otherwise the path will be incorrect.
-    let path = &format!(
-        "{}-lyrics",
-        req.match_info().query("path").trim_end_matches('?')
-    );
+    let path = req.match_info().query("path").trim_end_matches('?');
 
     if let Some(id) = info.id {
         let responses = future::join(
