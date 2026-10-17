@@ -33,3 +33,7 @@
     margin-right: 8px;
     height: unset;
 }
+
+.search-bar > form input:focus {
+    outline: 2px solid var(--text-dark);
+}
