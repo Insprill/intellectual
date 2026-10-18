@@ -14,25 +14,29 @@
 
 {% block content %}
 <div class="artist">
-    <img class="artist-image" src="/api/image?url={{ artist.image_url|urlencode }}&size=500" alt="Thumbnail"/>
-    <div class="artist-info">
-        <p class="artist-name">{{ artist.name|e }}</p>
-        {% if artist.alternate_names.is_some() && !artist.alternate_names.as_ref().unwrap().is_empty() %}
-            <p class="artist-nicknames">
-                AKA:
-                {% for nickname in artist.alternate_names.as_ref().unwrap() %}
-                    {{ nickname|e }}{% if !loop.last %},{% endif %}
+    <div class="artist-header">
+        <img class="artist-image" src="/api/image?url={{ artist.image_url|urlencode }}&size=500" alt="Thumbnail"/>
+        <div class="artist-details">
+            <div class="artist-info">
+                <p class="artist-name">{{ artist.name|e }}</p>
+                {% if artist.alternate_names.is_some() && !artist.alternate_names.as_ref().unwrap().is_empty() %}
+                    <p class="artist-nicknames">
+                        AKA:
+                        {% for nickname in artist.alternate_names.as_ref().unwrap() %}
+                            {{ nickname|e }}{% if !loop.last %},{% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+            <div class="artist-socials">
+                {% for social in artist.socials() %}
+                    <a class="social {{social.brand|e}}" href="https://{{social.brand}}.com/{{social.name_raw|urlencode}}">
+                        <img class="social-icon" src="/icon/{{social.brand}}.svg"/>
+                        <p class="social-name">{{ social.name_formatted|e }}</p>
+                    </a>
                 {% endfor %}
-            </p>
-        {% endif %}
-    </div>
-    <div class="artist-socials">
-        {% for social in artist.socials() %}
-            <a class="social {{social.brand|e}}" href="https://{{social.brand}}.com/{{social.name_raw|urlencode}}">
-                <img class="social-icon" src="/icon/{{social.brand}}.svg"/>
-                <p class="social-name">{{ social.name_formatted|e }}</p>
-            </a>
-        {% endfor %}
+            </div>
+        </div>
     </div>
     {% if artist.description.is_some() %}
         <div class="artist-description">{{ artist.description.as_ref().unwrap().html|safe|paragraphbreaks|safe }}</div>
