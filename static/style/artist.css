@@ -67,7 +67,7 @@
 .artist-search-songs {
     padding: 10px 20px;
     border-radius: var(--radius);
-    background-color: var(--background);
+    background-color: var(--foreground);
     color: var(--text);
     border: none;
     cursor: pointer;

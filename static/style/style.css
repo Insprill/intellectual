@@ -120,6 +120,7 @@ button:focus-visible {
     display: flex;
     flex: 1;
     flex-wrap: wrap;
+    row-gap: var(--page-gutter);
     padding: var(--page-gutter) 0;
 }
 
@@ -130,6 +131,7 @@ body {
     font-family:
         InterVariable,
         sans-serif;
+    color: var(--text);
     background-color: var(--background);
 }
 

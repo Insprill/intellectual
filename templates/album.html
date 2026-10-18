@@ -28,13 +28,13 @@
             </div>
         </div>
     </div>
-    {% if album.tracks.is_some() %}
-        <div class="song-list">
-            <h1 class="text-centered">Tracks</h1>
-            {% for song in album.tracks.as_ref().unwrap() %}
-                {% include "song.html" %}
-            {% endfor %}
-        </div>
-    {% endif %}
 </div>
+{% if album.tracks.is_some() %}
+    <div class="song-list">
+        <h1 class="text-centered">Tracks</h1>
+        {% for song in album.tracks.as_ref().unwrap() %}
+            {% include "song.html" %}
+        {% endfor %}
+    </div>
+{% endif %}
 {% endblock %}

@@ -38,15 +38,14 @@
     {% if artist.description.is_some() %}
         <div class="artist-description">{{ artist.description.as_ref().unwrap().html|safe|paragraphbreaks|safe }}</div>
     {% endif %}
-
-    {% if artist.popular_songs.is_some() %}
-        <div class="artist-songs song-list">
-            <h1 class="text-centered">Popular Songs</h1>
-            {% for song in artist.popular_songs.as_ref().unwrap() %}
-                {% include "song.html" %}
-            {% endfor %}
-            <a class="artist-search-songs text-centered" href="/search?q={{ artist.name|urlencode }}">Search for songs</a>
-        </div>
-    {% endif %}
 </div>
+{% if artist.popular_songs.is_some() %}
+    <div class="artist-songs song-list">
+        <h1 class="text-centered">Popular Songs</h1>
+        {% for song in artist.popular_songs.as_ref().unwrap() %}
+            {% include "song.html" %}
+        {% endfor %}
+        <a class="artist-search-songs text-centered" href="/search?q={{ artist.name|urlencode }}">Search for songs</a>
+    </div>
+{% endif %}
 {% endblock %}
