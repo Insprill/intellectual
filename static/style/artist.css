@@ -78,7 +78,6 @@
 
 .artist-search-songs:hover {
     background: var(--highlighted);
-    transform: var(--hover-transform);
 }
 
 .artist-socials {
@@ -102,7 +101,6 @@
 
 .social:hover {
     box-shadow: var(--shadow);
-    transform: var(--hover-transform);
 }
 
 .social-icon {
@@ -165,7 +163,6 @@
 
 .gray_container:hover {
     background: var(--highlighted);
-    transform: var(--hover-transform);
 }
 
 .gray_container div {

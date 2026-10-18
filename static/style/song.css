@@ -23,7 +23,6 @@
 
 .song:hover {
     background: var(--highlighted);
-    transform: var(--hover-transform);
 }
 
 .song:not(:last-child) {
@@ -42,7 +41,7 @@
     margin: 0;
     font-weight: 900;
     color: var(--text);
-    font-size: min(4vw, 32px);
+    font-size: clamp(20px, 4vw, 32px);
     text-overflow: ellipsis;
     overflow: hidden;
     line-height: 1.2;

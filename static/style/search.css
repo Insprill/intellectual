@@ -14,11 +14,9 @@
 }
 
 .pagination a.active {
-    transform: var(--hover-transform);
     background-color: var(--highlighted);
 }
 
 .pagination a:hover:not(.active) {
-    transform: var(--hover-transform);
     background-color: var(--foreground);
 }

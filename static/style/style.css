@@ -4,7 +4,6 @@
     --twitter: #1da1f2;
     --radius: 5px;
     --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    --hover-transform: translate3d(0px, -1px, 0px);
     --hover-transition: 0.3s all;
     --page-width: 920px;
     --page-gutter: 16px;
@@ -71,8 +70,10 @@ nav {
     padding: 6px 10px;
 }
 
-.nav-search input:focus {
-    outline: 2px solid var(--text-dark);
+input:focus,
+select:focus,
+button:focus-visible {
+    outline: 2px solid var(--text);
 }
 
 @media only screen and (max-width: 512px) {
@@ -129,6 +130,10 @@ body {
         InterVariable,
         sans-serif;
     background-color: var(--background);
+}
+
+html {
+    scrollbar-gutter: stable;
 }
 
 body {
