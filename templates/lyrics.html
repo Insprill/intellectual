@@ -11,30 +11,32 @@
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
-        <div class="song-info">
-            <p class="title">{{ song.title|e }}</p>
-            <p class="artist-name">By 
-                <a href="/{{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
-                    <cite>{{ song.primary_artist.name|e }}</cite>
-                </a>
-            </p>
-            {% if song.album.is_some() %}
-                <p class="album-name">On
-                    <a href="/{{ utils::path_from_url(song.album.as_ref().unwrap().url)|urlencode }}">
-                        <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
+        <img class="header-cover" src="/api/image?url={{ song.header_image_url|urlencode }}&size=500" alt="Thumbnail"/>
+        <div class="header-details">
+            <div class="song-info">
+                <p class="title">{{ song.title|e }}</p>
+                <p class="artist-name">By 
+                    <a href="/{{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
+                        <cite>{{ song.primary_artist.name|e }}</cite>
                     </a>
                 </p>
-            {% endif %}
+                {% if song.album.is_some() %}
+                    <p class="album-name">On
+                        <a href="/{{ utils::path_from_url(song.album.as_ref().unwrap().url)|urlencode }}">
+                            <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+            <div class="stats">
+                {% if song.release_date_for_display.is_some() %}
+                    <p class="stats-release-date">Released on {{ song.release_date_for_display.as_ref().unwrap()|e }}</p>
+                {% endif %}
+                {% if song.stats.pageviews.is_some() %}
+                    <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
+                {% endif %}
+            </div>
         </div>
-        <div class="stats">
-            {% if song.release_date_for_display.is_some() %}
-                <p class="stats-release-date">Released on {{ song.release_date_for_display.as_ref().unwrap()|e }}</p>
-            {% endif %}
-            {% if song.stats.pageviews.is_some() %}
-                <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
-            {% endif %}
-        </div>
-        <img class="header-cover" src="/api/image?url={{ song.header_image_url|urlencode }}&size=500" alt="Thumbnail"/>
     </div>
     <br/>
     {% for verse in verses %}

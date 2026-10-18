@@ -14,20 +14,22 @@
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
-        <div class="song-info">
-            <p class="title">{{ album.name|e }}</p>
-            <p class="artist-name">By 
-                <a href="/{{ utils::path_from_url(album.artist.url)|urlencode }}">
-                    <cite>{{ album.artist.name|e }}</cite>
-                </a>
-            </p>
-        </div>
-        <div class="stats">
-            {% if album.release_date_for_display.is_some() %}
-                <p class="stats-release-date">Released on {{ album.release_date_for_display.as_ref().unwrap()|e }}</p>
-            {% endif %}
-        </div>
         <img class="header-cover" src="/api/image?url={{ album.cover_art_url|urlencode }}&size=500" alt="Thumbnail"/>
+        <div class="header-details">
+            <div class="song-info">
+                <p class="title">{{ album.name|e }}</p>
+                <p class="artist-name">By 
+                    <a href="/{{ utils::path_from_url(album.artist.url)|urlencode }}">
+                        <cite>{{ album.artist.name|e }}</cite>
+                    </a>
+                </p>
+            </div>
+            <div class="stats">
+                {% if album.release_date_for_display.is_some() %}
+                    <p class="stats-release-date">Released on {{ album.release_date_for_display.as_ref().unwrap()|e }}</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
     <br/>
     {% if album.tracks.is_some() %}
