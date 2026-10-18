@@ -132,7 +132,7 @@
     background-color: var(--twitter);
 }
 
-@media only screen and (max-width: 512px) {
+@media only screen and (max-width: 768px) {
     .artist-header {
         flex-direction: column;
     }
