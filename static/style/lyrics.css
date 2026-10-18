@@ -1,44 +1,57 @@
 .song-lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    box-sizing: border-box;
+    width: 100%;
     padding: 0.75rem;
-    margin: 2rem auto;
-    max-width: 920px;
     border-radius: var(--radius);
     background: var(--foreground);
     color: var(--text);
 }
 
 .song-lyric {
-    margin: 0.33rem;
+    margin: 0.33rem 0;
     line-height: 1.2;
 }
 
+.verse > :first-child {
+    margin-top: 0;
+}
+
+.verse > :last-child {
+    margin-bottom: 0;
+}
+
 .header {
-    display: grid;
-    grid-template-columns: 12em auto;
-    grid-template-rows: 3em 3em 6em;
-    gap: 0 0.75em;
-    grid-template-areas:
-        "cover song"
-        "cover song"
-        "cover stats";
+    display: flex;
+    gap: 0.75em;
+}
+
+.header-cover {
+    flex-shrink: 0;
+    width: 12em;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+.header-details {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1em;
 }
 
 @media only screen and (max-width: 512px) {
     .header {
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-        grid-template-areas:
-            "cover"
-            "song"
-            "stats";
+        flex-direction: column;
     }
-}
 
-.header-cover {
-    grid-area: cover;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius);
+    .header-cover {
+        width: 100%;
+    }
 }
 
 .song-info {
@@ -51,8 +64,6 @@
         "title"
         "artist"
         "album";
-    grid-area: song;
-    margin-top: 1em;
 }
 
 .title {
@@ -86,22 +97,23 @@
 
 .stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
     grid-template-rows: 1fr;
+    align-items: end;
     gap: 0 1.5em;
     grid-template-areas: "release-date views";
-    grid-area: stats;
-    margin-top: auto;
 }
 
 .stats-release-date {
     grid-area: release-date;
     font-size: 14px;
+    margin: 0;
 }
 
 .stats-views {
     grid-area: views;
     font-size: 14px;
+    margin: 0;
     text-align: right;
 }
 

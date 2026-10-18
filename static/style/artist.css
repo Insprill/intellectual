@@ -1,36 +1,37 @@
 .artist {
-    display: grid;
-    grid-template-columns: 15em 25em;
-    grid-template-rows: 6.5em 8.5em 1fr;
-    gap: 1em 1em;
-    grid-template-areas:
-        "image name"
-        "image social"
-        "description description"
-        "songs songs";
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    box-sizing: border-box;
+    width: 100%;
     padding: 0.75rem;
-    margin: 2rem auto;
     border-radius: var(--radius);
     background: var(--foreground);
     color: var(--text);
 }
 
+.artist-header {
+    display: flex;
+    gap: 1em;
+}
+
 .artist-image {
-    grid-area: image;
+    flex-shrink: 0;
+    width: 15em;
+    aspect-ratio: 1;
     object-fit: cover;
-    width: 100%;
-    max-height: 100%;
     border-radius: var(--radius);
 }
 
-@media only screen and (min-width: 513px) {
-    .artist-image {
-        height: 100%;
-    }
+.artist-details {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1em;
 }
 
 .artist-info {
-    grid-area: name;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -55,18 +56,18 @@
     margin: 0;
 }
 
-.artist-description {
-    grid-area: description;
+.artist-description > :first-child {
+    margin-top: 0;
 }
 
-.artist-songs {
-    grid-area: songs;
+.artist-description > :last-child {
+    margin-bottom: 0;
 }
 
 .artist-search-songs {
     padding: 10px 20px;
     border-radius: var(--radius);
-    background-color: var(--background);
+    background-color: var(--foreground);
     color: var(--text);
     border: none;
     cursor: pointer;
@@ -77,11 +78,9 @@
 
 .artist-search-songs:hover {
     background: var(--highlighted);
-    transform: var(--hover-transform);
 }
 
 .artist-socials {
-    grid-area: social;
     display: flex;
     flex-direction: column;
     gap: 0.5em 0;
@@ -102,7 +101,6 @@
 
 .social:hover {
     box-shadow: var(--shadow);
-    transform: var(--hover-transform);
 }
 
 .social-icon {
@@ -134,28 +132,13 @@
     background-color: var(--twitter);
 }
 
-@media only screen and (max-width: 512px) {
-    .artist {
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-        grid-template-areas:
-            "image"
-            "name"
-            "social"
-            "description"
-            "songs";
+@media only screen and (max-width: 768px) {
+    .artist-header {
+        flex-direction: column;
     }
-}
 
-@media only screen and (min-width: 513px) and (max-width: 768px) {
-    .artist {
-        grid-template-columns: auto auto auto;
-        grid-template-rows: auto;
-        grid-template-areas:
-            "image name"
-            "image social"
-            "description description"
-            "songs songs";
+    .artist-image {
+        width: 100%;
     }
 }
 
@@ -180,7 +163,6 @@
 
 .gray_container:hover {
     background: var(--highlighted);
-    transform: var(--hover-transform);
 }
 
 .gray_container div {

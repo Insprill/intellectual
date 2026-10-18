@@ -18,7 +18,8 @@
 <body>
 <nav>
     <div class="inner-nav">
-        <div class="nav-item">
+        <div class="nav-brand">
+            <a href="/" class="site-name">Intellectual</a>
             <a class="site-version 
                 {% if env!("IN_VERSION").contains("dirty") %}
                     site-version-dirty-color
@@ -28,9 +29,13 @@
                 v{{ env!("IN_VERSION") }}
             </a>
         </div>
-        <a href="/" class="site-name">Intellectual</a>
-        <div class="nav-item right">
-            {% block navright %}{% endblock %}
+        {% block navsearch %}
+        <form class="nav-search" method="get" action="/search" autocomplete="off">
+            <input type="search" required="true" name="q" value="{% block navsearchvalue %}{% endblock %}" placeholder="Search..." aria-label="Search" dir="auto"/>
+        </form>
+        {% endblock %}
+        <div class="nav-links">
+            <a class="external-link" href="/settings">Settings</a>
         </div>
     </div>
 </nav>

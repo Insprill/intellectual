@@ -12,13 +12,19 @@
     padding: 12px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin: -50px auto auto;
     background: var(--foreground);
 }
 
 .settings > form label {
     color: var(--text);
     font-size: 16px;
+}
+
+.settings > form select {
+    background: var(--background);
+    color: var(--text);
+    border: 0;
+    border-radius: var(--radius);
 }
 
 .settings > form option {

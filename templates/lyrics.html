@@ -4,66 +4,63 @@
 
 {% block style %}/style/lyrics.css{% endblock %}
 
-{% block navright %}
-<div class="nav-item.right">
-    <a class="external-link" href="https://genius.com/{{ path|urlencode }}">View on Genius</a>
-</div>
-{% endblock %}
-
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
-        <div class="song-info">
-            <p class="title">{{ song.title|e }}</p>
-            <p class="artist-name">By 
-                <a href="/{{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
-                    <cite>{{ song.primary_artist.name|e }}</cite>
-                </a>
-            </p>
-            {% if song.album.is_some() %}
-                <p class="album-name">On
-                    <a href="/{{ utils::path_from_url(song.album.as_ref().unwrap().url)|urlencode }}">
-                        <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
+        <img class="header-cover" src="/api/image?url={{ song.header_image_url|urlencode }}&size=500" alt="Thumbnail"/>
+        <div class="header-details">
+            <div class="song-info">
+                <p class="title">{{ song.title|e }}</p>
+                <p class="artist-name">By 
+                    <a href="/{{ utils::path_from_url(song.primary_artist.url)|urlencode }}">
+                        <cite>{{ song.primary_artist.name|e }}</cite>
                     </a>
                 </p>
-            {% endif %}
-        </div>
-        <div class="stats">
-            {% if song.release_date_for_display.is_some() %}
-                <p class="stats-release-date">Released on {{ song.release_date_for_display.as_ref().unwrap()|e }}</p>
-            {% endif %}
-            {% if song.stats.pageviews.is_some() %}
-                <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
-            {% endif %}
-        </div>
-        <img class="header-cover" src="/api/image?url={{ song.header_image_url|urlencode }}&size=500" alt="Thumbnail"/>
-    </div>
-    <br/>
-    {% for verse in verses %}
-        <h2 class="song-lyric">{{ verse.title|e }}</h2>
-        {% for lyric in verse.lyrics %}
-            {% match lyric %}
-                {% when Lyric::Blank %}
-                    <br/>
-                {% when Lyric::Text(text_lyric) %}
-                    <p class="song-lyric">
-                        {% for part in text_lyric.parts %}
-                            {% if part.annotation.is_some() %}
-                                <span>
-                                    <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
-                            {% endif %}
-                                {{ part.text|e }}
-                            {% if part.annotation.is_some() %}
-                                    </a>
-                                </span>
-                            {% endif %}
-                        {% endfor %}
+                {% if song.album.is_some() %}
+                    <p class="album-name">On
+                        <a href="/{{ utils::path_from_url(song.album.as_ref().unwrap().url)|urlencode }}">
+                            <cite>{{ song.album.as_ref().unwrap().name|e }}</cite>
+                        </a>
                     </p>
-            {% endmatch %}
-        {% endfor %}
-        {% if !loop.last %}
-        <br>
-        {% endif %}
+                {% endif %}
+                <a class="external-link genius-link" href="https://genius.com/{{ path|urlencode }}">View on Genius</a>
+            </div>
+            <div class="stats">
+                {% if song.release_date_for_display.is_some() %}
+                    <p class="stats-release-date">Released on {{ song.release_date_for_display.as_ref().unwrap()|e }}</p>
+                {% endif %}
+                {% if song.stats.pageviews.is_some() %}
+                    <p class="stats-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% for verse in verses %}
+        <div class="verse">
+            {% if !verse.title.is_empty() %}
+                <h2 class="song-lyric">{{ verse.title|e }}</h2>
+            {% endif %}
+            {% for lyric in verse.lyrics %}
+                {% match lyric %}
+                    {% when Lyric::Blank %}
+                        <br/>
+                    {% when Lyric::Text(text_lyric) %}
+                        <p class="song-lyric">
+                            {% for part in text_lyric.parts %}
+                                {% if part.annotation.is_some() %}
+                                    <span>
+                                        <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
+                                {% endif %}
+                                    {{ part.text|e }}
+                                {% if part.annotation.is_some() %}
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                {% endmatch %}
+            {% endfor %}
+        </div>
     {% endfor %}
 </div>
 {% for annotation in annotations %}

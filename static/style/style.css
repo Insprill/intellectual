@@ -4,8 +4,9 @@
     --twitter: #1da1f2;
     --radius: 5px;
     --shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    --hover-transform: translate3d(0px, -1px, 0px);
     --hover-transition: 0.3s all;
+    --page-width: 920px;
+    --page-gutter: 16px;
 }
 
 a {
@@ -15,48 +16,92 @@ a {
 /* region Navigation Bar */
 
 nav {
-    display: flex;
-    align-items: center;
-    position: fixed;
+    position: sticky;
+    top: 0;
     background-color: var(--foreground);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
-    width: 100%;
-    height: 50px;
     z-index: 1000;
 }
 
-.inner-nav {
-    margin: auto;
-    box-sizing: border-box;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    flex-basis: 920px;
-    height: 50px;
+.inner-nav,
+.container {
+    width: min(100% - 2 * var(--page-gutter), var(--page-width));
+    margin: 0 auto;
 }
 
-.nav-item {
+.inner-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 50px;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.nav-links a {
+    text-decoration: unset;
+}
+
+.nav-search {
     display: flex;
     flex: 1;
-    height: 50px;
-    overflow: hidden;
-    flex-wrap: wrap;
-    align-items: center;
 }
 
-.nav-item.right {
-    text-align: right;
-    justify-content: flex-end;
+.nav-search input {
+    width: 100%;
+    min-width: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    border: 0;
+    border-radius: var(--radius);
+    padding: 6px 10px;
 }
 
-.nav-item.right a {
-    padding-left: 4px;
-    text-decoration: unset;
+input:focus,
+select:focus,
+button:focus-visible {
+    outline: 2px solid var(--text);
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 512px) {
+    .inner-nav {
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        padding: 10px 0;
+    }
+
+    .nav-brand {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .nav-search {
+        order: 1;
+        flex-basis: 100%;
+    }
 }
 
 .site-name {
     font-size: 26px;
     font-weight: 800;
+    line-height: 1;
     color: var(--yellow);
     text-decoration: unset;
 }
@@ -77,11 +122,10 @@ nav {
 
 .container {
     display: flex;
+    flex: 1;
     flex-wrap: wrap;
-    box-sizing: border-box;
-    padding-top: 50px;
-    margin: auto;
-    min-height: 100vh;
+    row-gap: var(--page-gutter);
+    padding: var(--page-gutter) 0;
 }
 
 html,
@@ -91,12 +135,28 @@ body {
     font-family:
         InterVariable,
         sans-serif;
+    color: var(--text);
     background-color: var(--background);
+}
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .external-link {
     font-weight: 500;
     color: var(--text);
+}
+
+.genius-link {
+    justify-self: start;
+    font-size: 14px;
 }
 
 .text-centered {

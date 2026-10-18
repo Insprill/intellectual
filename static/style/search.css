@@ -1,3 +1,8 @@
+.song-list > .genius-link {
+    align-self: flex-end;
+    margin-bottom: var(--page-gutter);
+}
+
 .pagination {
     display: inline-block;
     margin: auto;
@@ -14,11 +19,9 @@
 }
 
 .pagination a.active {
-    transform: var(--hover-transform);
     background-color: var(--highlighted);
 }
 
 .pagination a:hover:not(.active) {
-    transform: var(--hover-transform);
     background-color: var(--foreground);
 }
