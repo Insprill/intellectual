@@ -282,11 +282,42 @@ impl LyricsBuilder {
 mod tests {
     use super::*;
 
-    const CUT_THE_BRIDGE: &str =
-        include_str!("../tests/fixtures/Linkin-park-cut-the-bridge-lyrics.html");
-    const IN_THE_END: &str = include_str!("../tests/fixtures/Linkin-park-in-the-end-lyrics.html");
-    const A_LINE_IN_THE_DUST: &str =
-        include_str!("../tests/fixtures/Landmvrks-a-line-in-the-dust-lyrics.html");
+    /// The lyrics part of a Genius song page, laid out the way Genius sends it.
+    const GENIUS_PAGE: &str = concat!(
+        "<html><body>",
+        "<div data-lyrics-container=\"true\" class=\"Lyrics__Container-sc-12f9e8d3-1 jhVhlB\">",
+        "<div data-exclude-from-selection=\"true\"><button><span>3 Contributors</span></button>",
+        "<h2 font-weight=\"light\">Lorem Ipsum Lyrics</h2></div>",
+        "[Verse 1: <b>Lorem</b>, <i>Ipsum &amp; Dolor</i>]<br/>",
+        "Lorem ipsum <i>dolor</i> sit amet<br/>",
+        "<a href=\"/111/Lorem-ipsum/Consectetur-adipiscing-elit\" data-ignore-on-click-outside=\"true\">",
+        "<span>Consectetur adipiscing elit</span></a>",
+        "<span tabindex=\"0\"></span><span><span tabindex=\"0\"></span></span><br/>",
+        "<a href=\"/222/Lorem-ipsum/Sed-do-eiusmod\" data-ignore-on-click-outside=\"true\">",
+        "<span>Sed do eiusmod</span></a>",
+        "<span tabindex=\"0\"></span><span><span tabindex=\"0\"></span></span> tempor incididunt<br/>",
+        "<b>Ut labore et </b><b>dolore</b><br/><br/>",
+        "Magna aliqua ut enim<br/>",
+        "<a href=\"/333/Lorem-ipsum/Ad-minim-veniam-quis-nostrud\" data-ignore-on-click-outside=\"true\">",
+        "<span>Ad minim <i>veniam</i><br/>Quis nostrud</span></a>",
+        "<span tabindex=\"0\"></span><span><span tabindex=\"0\"></span></span><br/>",
+        "</div>",
+        "<div class=\"RightSidebar__Container-sc-eb801a17-0\">",
+        "<div id=\"div-gpt-ad-desktop_song_lyrics_sidebar-desktop_song_lyrics_sidebar-1\"></div>",
+        "<aside><div>You might also like</div></aside></div>",
+        "<div data-lyrics-container=\"true\" class=\"Lyrics__Container-sc-12f9e8d3-1 jhVhlB\"></div>",
+        "<div data-exclude-from-selection=\"true\">",
+        "<div id=\"div-gpt-ad-desktop_song_lyrics_inread-desktop_song_lyrics_inread-1\"></div></div>",
+        "<div data-lyrics-container=\"true\" class=\"Lyrics__Container-sc-12f9e8d3-1 jhVhlB\">",
+        "Exercitation ullamco<br/>Laboris nisi ut<br/><br/>",
+        "<a href=\"/444/Lorem-ipsum/Chorus-lorem\" data-ignore-on-click-outside=\"true\">",
+        "<span>[Chorus: Lorem]</span></a>",
+        "<span tabindex=\"0\"></span><span><span tabindex=\"0\"></span></span><br/>",
+        "Duis aute irure<br/>",
+        "<i>Dolor in reprehenderit</i>",
+        "</div>",
+        "</body></html>",
+    );
 
     fn parse(html: &str) -> Vec<Verse> {
         parse_lyrics(&Html::parse_document(html))
@@ -318,38 +349,6 @@ mod tests {
             }
         }
         out
-    }
-
-    fn titles(verses: &[Verse]) -> Vec<&str> {
-        verses.iter().map(|verse| verse.title.as_str()).collect()
-    }
-
-    /// The paragraph structure of each verse: `T` for a line of text, `.` for a blank line.
-    fn shapes(verses: &[Verse]) -> Vec<String> {
-        verses
-            .iter()
-            .map(|verse| {
-                verse
-                    .lyrics
-                    .iter()
-                    .map(|lyric| match lyric {
-                        Lyric::Text(_) => 'T',
-                        Lyric::Blank => '.',
-                    })
-                    .collect()
-            })
-            .collect()
-    }
-
-    fn lines(verse: &Verse) -> Vec<&TextLyric> {
-        verse
-            .lyrics
-            .iter()
-            .filter_map(|lyric| match lyric {
-                Lyric::Text(text) => Some(text),
-                Lyric::Blank => None,
-            })
-            .collect()
     }
 
     #[test]
@@ -423,123 +422,28 @@ mod tests {
     }
 
     #[test]
-    fn cut_the_bridge() {
-        let verses = parse(CUT_THE_BRIDGE);
+    fn genius_page() {
+        // The sidebar and ad between the containers split the first verse into two paragraphs,
+        // and the annotated heading still starts a new verse.
         assert_eq!(
-            titles(&verses),
-            [
-                "[Verse 1: Mike Shinoda]",
-                "[Pre-Chorus: Emily Armstrong & Mike Shinoda]",
-                "[Chorus: Emily Armstrong, All except Emily Armstrong]",
-                "[Verse 2: Mike Shinoda]",
-                "[Pre-Chorus: Emily Armstrong & Mike Shinoda]",
-                "[Chorus: Emily Armstrong, All except Emily Armstrong]",
-                "[Bridge: Mike Shinoda, Mike Shinoda & Emily Armstrong]",
-                "[Chorus: Emily Armstrong, All]",
-                "[Outro: All, All except Emily Armstrong]",
-            ]
-        );
-        assert_eq!(
-            shapes(&verses),
-            [
-                "TTTTTTTT",
-                "TTTT",
-                "TTTTTTTT",
-                "TTTTTTTT",
-                "TTTT",
-                "TTTTTTTT",
-                "TTTTTTTTTT",
-                "TTTTTTTT",
-                "T"
-            ]
-        );
-
-        // An annotation spanning two lines applies to both of them.
-        let verse_two = lines(&verses[3]);
-        assert_eq!(verse_two[2].parts[0].annotation_id, Some(37514664));
-        assert_eq!(verse_two[3].parts[0].annotation_id, Some(37514664));
-        // Annotated and plain text on the same line are separate parts.
-        assert_eq!(verse_two[0].parts.len(), 2);
-        assert_eq!(verse_two[0].parts[0].annotation_id, Some(37834004));
-        assert_eq!(verse_two[0].parts[1].annotation_id, None);
-    }
-
-    #[test]
-    fn in_the_end() {
-        let verses = parse(IN_THE_END);
-        assert_eq!(
-            titles(&verses),
-            [
-                "[Intro: Chester Bennington]",
-                "[Verse 1: Mike Shinoda, Mike Shinoda & Chester Bennington]",
-                "[Pre-Chorus: Mike Shinoda]",
-                "[Chorus: Chester Bennington]",
-                "[Verse 2: Mike Shinoda, Mike Shinoda & Chester Bennington]",
-                "[Pre-Chorus: Mike Shinoda]",
-                "[Chorus: Chester Bennington]",
-                "[Bridge: Chester Bennington]",
-                "[Chorus: Chester Bennington]",
-            ]
-        );
-        assert_eq!(
-            shapes(&verses),
-            [
-                "T",
-                "TTTTTTTTTTTT",
-                "TTTT",
-                "TTTT",
-                "TTTTTTTTTTTT",
-                "TTTT",
-                "TTTT",
-                "TTTTTT",
-                "TTTT"
-            ]
-        );
-    }
-
-    #[test]
-    fn a_line_in_the_dust() {
-        let verses = parse(A_LINE_IN_THE_DUST);
-        assert_eq!(
-            titles(&verses),
-            [
-                "[Verse 1: Florent Salfati]",
-                "[Pre-Chorus: Florent Salfati]",
-                "[Chorus: Florent Salfati]",
-                "[Verse 2: Mat Welsh, Florent Salfati and Mat Welsh]",
-                "[Pre-Chorus: Mat Welsh, Florent Salfati and Mat Welsh]",
-                "[Chorus: Mat Welsh, Florent Salfati]",
-                "[Breakdown: Mat Welsh, Florent Salfati, Florent Salfati and Mat Welsh]",
-                "[Chorus: Mat Welsh, Florent Salfati and Mat Welsh]",
-                "[Outro: Mat Welsh, Florent Salfati, Florent Salfati and Mat Welsh]",
-            ]
-        );
-        // The second pre-chorus and the second half of the last chorus start a new container,
-        // separated from the previous one by a sidebar block instead of a double <br>.
-        assert_eq!(
-            shapes(&verses),
-            [
-                "TTTT",
-                "TTT",
-                "TTT.TTTTT",
-                "TTTTT",
-                "TTT",
-                "TTT.TTT",
-                "TTTTT.TT",
-                "TTTT.TTT",
-                "TT"
-            ]
-        );
-        // `<b>…for </b><b>real</b>` is a single part.
-        let verse_two = lines(&verses[3]);
-        assert_eq!(verse_two[0].parts.len(), 1);
-        assert!(verse_two[0].parts[0].text.ends_with("for real"));
-        // Every line consists of a single part since nothing here is annotated.
-        assert!(
-            verses
-                .iter()
-                .flat_map(lines)
-                .all(|line| line.parts.len() == 1)
+            render(&parse(GENIUS_PAGE)),
+            concat!(
+                "[Verse 1: Lorem, Ipsum & Dolor]\n",
+                "|Lorem ipsum dolor sit amet|\n",
+                "|Consectetur adipiscing elit@111|\n",
+                "|Sed do eiusmod@222|| tempor incididunt|\n",
+                "|Ut labore et dolore|\n",
+                "\n",
+                "|Magna aliqua ut enim|\n",
+                "|Ad minim veniam@333|\n",
+                "|Quis nostrud@333|\n",
+                "\n",
+                "|Exercitation ullamco|\n",
+                "|Laboris nisi ut|\n",
+                "[Chorus: Lorem]\n",
+                "|Duis aute irure|\n",
+                "|Dolor in reprehenderit|\n",
+            )
         );
     }
 }
