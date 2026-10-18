@@ -46,18 +46,15 @@
                 {% when Lyric::Blank %}
                     <br/>
                 {% when Lyric::Text(text_lyric) %}
+                    {# No whitespace between the parts, as it would show up as a space in the middle of a word. #}
                     <p class="song-lyric">
-                        {% for part in text_lyric.parts %}
-                            {% if part.annotation.is_some() %}
-                                <span>
-                                    <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
-                            {% endif %}
+                        {%- for part in text_lyric.parts -%}
+                            {%- if let Some(id) = part.annotation_id -%}
+                                <span><a class="annotation-link" href="#annotation-{{ id }}">{{ part.text|e }}</a></span>
+                            {%- else -%}
                                 {{ part.text|e }}
-                            {% if part.annotation.is_some() %}
-                                    </a>
-                                </span>
-                            {% endif %}
-                        {% endfor %}
+                            {%- endif -%}
+                        {%- endfor -%}
                     </p>
             {% endmatch %}
         {% endfor %}

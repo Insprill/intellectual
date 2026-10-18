@@ -308,7 +308,6 @@ pub struct GeniusReferentResponse {
 
 #[derive(Deserialize, Debug)]
 pub struct GeniusAnnotation {
-    pub id: i32,
     pub body: GeniusAnnotationBody,
     pub votes_total: i32,
     // pub verified: bool, // TODO: indicate this in the UI
