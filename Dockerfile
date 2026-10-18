@@ -7,10 +7,15 @@ RUN apk add --no-cache musl-dev
 
 WORKDIR /intellectual
 
+# Build dependencies in their own layer so it stays cached until Cargo.toml or Cargo.lock change
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo 'fn main() {}' > src/main.rs && cargo build --release && rm -rf src
+
 COPY . .
 
 # Set environment variables so the build has git info
-RUN export $(cat .env | xargs) && cargo build --release
+# main.rs is touched because COPY keeps its old mtime, which cargo would treat as already built
+RUN export $(cat .env | xargs) && touch src/main.rs && cargo build --release
 
 ####################################################################################################
 ## Final image
