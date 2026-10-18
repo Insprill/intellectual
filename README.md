@@ -91,7 +91,7 @@ To create a new directory, download the `docker-compose.yml`, and cd into the di
 ```bash
 curl https://raw.githubusercontent.com/Insprill/intellectual/master/docker-compose.yml --create-dirs -o intellectual/docker-compose.yml && cd intellectual
 ```
-By default, it'll bind to `127.0.0.1:8080`.
+By default, it'll bind to `0.0.0.0:8080`. Use `127.0.0.1:8080:8080` in the compose file if you're using a reverse proxy on the same machine.
 Once you're satisfied with the container, you can start it with
 ```bash
 docker compose up -d
