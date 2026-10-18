@@ -7,10 +7,6 @@
 <link rel="stylesheet" type="text/css" href="/style/song.css?v={{ env!("IN_VERSION") }}">
 {% endblock %}
 
-{% block navright %}
-<a class="external-link" href="{{ album.url }}">View on Genius</a>
-{% endblock %}
-
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
@@ -23,6 +19,7 @@
                         <cite>{{ album.artist.name|e }}</cite>
                     </a>
                 </p>
+                <a class="external-link genius-link" href="{{ album.url }}">View on Genius</a>
             </div>
             <div class="stats">
                 {% if album.release_date_for_display.is_some() %}

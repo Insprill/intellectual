@@ -8,10 +8,6 @@
 {% endblock %}
 
 
-{% block navright %}
-<a class="external-link" href="{{ artist.url }}">View on Genius</a>
-{% endblock %}
-
 {% block content %}
 <div class="artist">
     <div class="artist-header">
@@ -27,6 +23,7 @@
                         {% endfor %}
                     </p>
                 {% endif %}
+                <a class="external-link genius-link" href="{{ artist.url }}">View on Genius</a>
             </div>
             <div class="artist-socials">
                 {% for social in artist.socials() %}

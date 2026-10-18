@@ -9,12 +9,9 @@
 
 {% block navsearchvalue %}{{ q }}{% endblock %}
 
-{% block navright %}
-<a class="external-link" href="https://genius.com/search?q={{ q|urlencode }}">Search on Genius</a>
-{% endblock %}
-
 {% block content %}
 <div class="song-list">
+    <a class="external-link genius-link" href="https://genius.com/search?q={{ q|urlencode }}">Search on Genius</a>
     {% for song in songs %}
         {% include "song.html" %}
     {% endfor %}

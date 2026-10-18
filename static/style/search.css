@@ -1,3 +1,8 @@
+.song-list > .genius-link {
+    align-self: flex-end;
+    margin-bottom: 10px;
+}
+
 .pagination {
     display: inline-block;
     margin: auto;

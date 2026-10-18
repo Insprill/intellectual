@@ -4,10 +4,6 @@
 
 {% block style %}/style/lyrics.css{% endblock %}
 
-{% block navright %}
-<a class="external-link" href="https://genius.com/{{ path|urlencode }}">View on Genius</a>
-{% endblock %}
-
 {% block content %}
 <div class="song-lyrics">
     <div class="header">
@@ -27,6 +23,7 @@
                         </a>
                     </p>
                 {% endif %}
+                <a class="external-link genius-link" href="https://genius.com/{{ path|urlencode }}">View on Genius</a>
             </div>
             <div class="stats">
                 {% if song.release_date_for_display.is_some() %}

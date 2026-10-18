@@ -147,6 +147,11 @@ body {
     color: var(--text);
 }
 
+.genius-link {
+    justify-self: start;
+    font-size: 14px;
+}
+
 .text-centered {
     text-align: center;
 }
