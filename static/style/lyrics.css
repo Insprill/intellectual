@@ -110,8 +110,15 @@
     text-decoration: none;
 }
 
-/* Prevent scrolling the main page while an annotation is open */
-html:has(.annotation:target) {
+html {
+    /* Hiding the scrollbar below must not shift the page sideways */
+    scrollbar-gutter: stable;
+}
+
+/* Prevent scrolling the main page while an annotation is open.
+   Same condition as the display rule below, or a targeted lyric without
+   a loaded annotation would leave the page stuck. */
+html:has(.annotation:target, .annotation-link:target + .annotation) {
     overflow: hidden;
 }
 
@@ -123,7 +130,10 @@ html:has(.annotation:target) {
     padding: 2vh 1em;
 }
 
-.annotation:target {
+/* Opened in place by its own id, or by the lyric link's id right before it
+   when the page was just reloaded to land on that line. */
+.annotation:target,
+.annotation-link:target + .annotation {
     display: flex;
     align-items: center;
     justify-content: center;

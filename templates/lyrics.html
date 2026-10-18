@@ -46,19 +46,21 @@
                 {% when Lyric::Blank %}
                     <br/>
                 {% when Lyric::Text(text_lyric) %}
-                    <p class="song-lyric">
+                    <div class="song-lyric">
                         {% for part in text_lyric.parts %}
-                            {% if part.annotation.is_some() %}
-                                <span>
-                                    <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
-                            {% endif %}
+                            {% if let Some(referent) = part.referent %}
+                                {# A loaded annotation opens in place. Otherwise reload with annotations, landing on this line. #}
+                                <a class="annotation-link"{% if referent.anchor %} id="ref-{{ referent.id }}-{{ referent.occurrence }}"{% endif %} href="{% if annotations.contains_key(referent.id) %}#{{ referent.note_id() }}{% else %}/{{ path|urlencode }}?id={{ song.id }}&amp;referent_id={{ referent.id }}#ref-{{ referent.id }}-{{ referent.occurrence }}{% endif %}">{{ part.text|e }}</a>
+                                {% if referent.anchor %}
+                                    {% if let Some(annotation) = annotations.get(referent.id) %}
+                                        {% include "annotation.html" %}
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
                                 {{ part.text|e }}
-                            {% if part.annotation.is_some() %}
-                                    </a>
-                                </span>
                             {% endif %}
                         {% endfor %}
-                    </p>
+                    </div>
             {% endmatch %}
         {% endfor %}
         {% if !loop.last %}
@@ -66,26 +68,4 @@
         {% endif %}
     {% endfor %}
 </div>
-{% for annotation in annotations %}
-  <div id="annotation-{{ annotation.id }}" class="annotation">
-    <a href="#!" class="annotation__backdrop" aria-label="Close Annotation"></a>
-    <div class="annotation__inner">
-        <div class="annotation__header">
-          <div class="annotation__quote">
-            “{{ annotation.quote }}”
-          </div>
-          <div class="annotation__actions">
-            <div class="annotation__votes">
-              👍 {{ annotation.votes }}
-            </div>
-            <a href="#!" class="annotation__close" aria-label="Close">&times;</a>
-          </div>
-        </div>
-
-        <div class="annotation__content">
-            {{ annotation.body|safe }}
-        </div>
-    </div>
-  </div>
-{% endfor %}
 {% endblock %}
