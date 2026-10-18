@@ -97,8 +97,9 @@
 
 .stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
     grid-template-rows: 1fr;
+    align-items: end;
     gap: 0 1.5em;
     grid-template-areas: "release-date views";
 }
