@@ -64,10 +64,6 @@
     margin-bottom: 0;
 }
 
-.artist-songs h1 {
-    margin-top: 0;
-}
-
 .artist-search-songs {
     padding: 10px 20px;
     border-radius: var(--radius);

@@ -6,6 +6,10 @@
     border-radius: var(--radius);
 }
 
+.song-list h1 {
+    margin-top: 0;
+}
+
 .song {
     background: var(--foreground);
     border-radius: var(--radius);

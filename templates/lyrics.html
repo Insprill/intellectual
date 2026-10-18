@@ -38,32 +38,32 @@
             </div>
         </div>
     </div>
-    <br/>
     {% for verse in verses %}
-        <h2 class="song-lyric">{{ verse.title|e }}</h2>
-        {% for lyric in verse.lyrics %}
-            {% match lyric %}
-                {% when Lyric::Blank %}
-                    <br/>
-                {% when Lyric::Text(text_lyric) %}
-                    <p class="song-lyric">
-                        {% for part in text_lyric.parts %}
-                            {% if part.annotation.is_some() %}
-                                <span>
-                                    <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
-                            {% endif %}
-                                {{ part.text|e }}
-                            {% if part.annotation.is_some() %}
-                                    </a>
-                                </span>
-                            {% endif %}
-                        {% endfor %}
-                    </p>
-            {% endmatch %}
-        {% endfor %}
-        {% if !loop.last %}
-        <br>
-        {% endif %}
+        <div class="verse">
+            {% if !verse.title.is_empty() %}
+                <h2 class="song-lyric">{{ verse.title|e }}</h2>
+            {% endif %}
+            {% for lyric in verse.lyrics %}
+                {% match lyric %}
+                    {% when Lyric::Blank %}
+                        <br/>
+                    {% when Lyric::Text(text_lyric) %}
+                        <p class="song-lyric">
+                            {% for part in text_lyric.parts %}
+                                {% if part.annotation.is_some() %}
+                                    <span>
+                                        <a class="annotation-link" href="#annotation-{{ part.annotation.as_ref().unwrap().id }}">
+                                {% endif %}
+                                    {{ part.text|e }}
+                                {% if part.annotation.is_some() %}
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                {% endmatch %}
+            {% endfor %}
+        </div>
     {% endfor %}
 </div>
 {% for annotation in annotations %}

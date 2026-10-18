@@ -1,4 +1,7 @@
 .song-lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
     box-sizing: border-box;
     width: 100%;
     padding: 0.75rem;
@@ -8,8 +11,16 @@
 }
 
 .song-lyric {
-    margin: 0.33rem;
+    margin: 0.33rem 0;
     line-height: 1.2;
+}
+
+.verse > :first-child {
+    margin-top: 0;
+}
+
+.verse > :last-child {
+    margin-bottom: 0;
 }
 
 .header {
