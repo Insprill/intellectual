@@ -47,7 +47,7 @@ jobs:
             os: ubuntu
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
@@ -66,7 +66,7 @@ jobs:
         run: cross build --release --target=${{ matrix.target }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Intellectual-${{ matrix.target }}
           if-no-files-found: ignore
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
