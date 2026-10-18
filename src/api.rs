@@ -15,12 +15,16 @@ pub struct UrlQuery {
 
 #[get("/api/image")]
 pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl Responder> {
-    let img_path = match info.url.split('/').next_back() {
-        Some(path) => path,
-        None => return Ok(HttpResponse::BadRequest().finish()),
+    // Songs without art point to a placeholder on assets.genius.com, which images.genius.com refuses.
+    let (subdomain, img_path) = match info.url.strip_prefix("https://assets.genius.com/") {
+        Some(path) => (SubDomain::Assets, path),
+        None => match info.url.split('/').next_back() {
+            Some(path) => (SubDomain::Images, path),
+            None => return Ok(HttpResponse::BadRequest().finish()),
+        },
     };
 
-    let (status, body, headers) = genius::get_raw(SubDomain::Images, img_path, None).await?;
+    let (status, body, headers) = genius::get_raw(subdomain, img_path, None).await?;
 
     if status != StatusCode::OK {
         return Ok(HttpResponse::build(status).finish());

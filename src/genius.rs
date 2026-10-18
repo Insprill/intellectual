@@ -270,6 +270,7 @@ where
 
 pub enum SubDomain {
     Api,
+    Assets,
     Images,
     Root,
 }
@@ -277,6 +278,7 @@ pub enum SubDomain {
 impl SubDomain {
     fn value(&self) -> &'static str {
         match *self {
+            SubDomain::Assets => "assets.",
             SubDomain::Images => "images.",
             SubDomain::Root => "",
             SubDomain::Api => "",
