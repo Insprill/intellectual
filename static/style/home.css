@@ -33,6 +33,10 @@
     height: unset;
 }
 
+.search-bar > form input:focus {
+    outline: 2px solid var(--text-dark);
+}
+
 @media only screen and (min-width: 513px) {
     .site-name {
         position: absolute;
