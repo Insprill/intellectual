@@ -31,10 +31,14 @@ pub async fn settings(req: HttpRequest) -> impl Responder {
 #[post("/settings")]
 pub async fn settings_form(form: Form<Settings>) -> impl Responder {
     match serde_json::to_string(&form) {
-        Ok(str) => HttpResponse::SeeOther()
-            .cookie(Cookie::new(SETTINGS_KEY, str))
-            .append_header(("Location", "/settings"))
-            .finish(),
+        Ok(str) => {
+            let mut cookie = Cookie::new(SETTINGS_KEY, str);
+            cookie.set_max_age(cookie::time::Duration::days(365));
+            HttpResponse::SeeOther()
+                .cookie(cookie)
+                .append_header(("Location", "/settings"))
+                .finish()
+        }
         Err(_) => HttpResponse::BadRequest().finish(),
     }
 }
