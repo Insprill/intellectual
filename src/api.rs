@@ -1,6 +1,6 @@
 use std::io::{BufWriter, Cursor};
 
-use ::image::{EncodableLayout, ImageFormat, imageops::FilterType, load_from_memory};
+use ::image::{DynamicImage, EncodableLayout, ImageFormat, imageops::FilterType, load_from_memory};
 use actix_web::{HttpRequest, HttpResponse, Responder, get, http::StatusCode, http::header, web};
 use serde::Deserialize;
 
@@ -44,14 +44,9 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
         .unwrap_or(false);
 
     if let Ok(abstract_image) = load_from_memory(body.as_bytes()) {
-        let size = info
-            .size
-            .unwrap_or(abstract_image.height())
-            .clamp(1, abstract_image.height().max(1000));
-
         // Images typically aren't smaller than 2kb
         let mut buf = BufWriter::new(Cursor::new(Vec::with_capacity(2048)));
-        let resized = abstract_image.resize_exact(size, size, FilterType::Nearest);
+        let resized = resize(abstract_image, info.size);
 
         let image_format = if supports_webp {
             ImageFormat::WebP
@@ -75,9 +70,61 @@ pub async fn image(req: HttpRequest, info: web::Query<UrlQuery>) -> Result<impl 
     Ok(HttpResponse::InternalServerError().finish())
 }
 
+const MAX_SIZE: u32 = 1000;
+
+fn resize(img: DynamicImage, size: Option<u32>) -> DynamicImage {
+    match size {
+        Some(size) => {
+            let size = size.clamp(1, MAX_SIZE);
+            img.resize_exact(size, size, FilterType::Nearest)
+        }
+        None if img.width() > MAX_SIZE || img.height() > MAX_SIZE => {
+            img.resize(MAX_SIZE, MAX_SIZE, FilterType::Nearest)
+        }
+        None => img,
+    }
+}
+
 fn send_image(bytes: Vec<u8>, content_type: &'static str) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok()
         .append_header(("Cache-Control", "public, max-age=31536000, immutable"))
         .append_header(("Content-Type", content_type))
         .body(bytes))
+}
+
+#[cfg(test)]
+mod tests {
+    use ::image::GenericImageView;
+
+    use super::*;
+
+    #[test]
+    fn resize_keeps_dimensions_without_size() {
+        let resized = resize(DynamicImage::new_rgb8(900, 600), None);
+        assert_eq!(resized.dimensions(), (900, 600));
+    }
+
+    #[test]
+    fn resize_fits_large_images_within_cap() {
+        let resized = resize(DynamicImage::new_rgb8(600, 6000), None);
+        assert_eq!(resized.dimensions(), (100, 1000));
+    }
+
+    #[test]
+    fn resize_caps_requested_size() {
+        let resized = resize(DynamicImage::new_rgb8(1, 4000), Some(4000));
+        assert_eq!(resized.dimensions(), (MAX_SIZE, MAX_SIZE));
+    }
+
+    #[test]
+    fn resize_makes_square_thumbnails() {
+        assert_eq!(
+            resize(DynamicImage::new_rgb8(300, 300), Some(150)).dimensions(),
+            (150, 150)
+        );
+        assert_eq!(
+            resize(DynamicImage::new_rgb8(300, 200), Some(0)).dimensions(),
+            (1, 1)
+        );
+    }
 }
