@@ -3,9 +3,11 @@
         src="/api/image?url={{ song.song_art_image_thumbnail_url|urlencode }}&size=150"
         alt="Thumbnail"
     />
-    <h2 class="song-title">{{ song.title|e }}</h2>
-    <h3 class="song-artist">{{ song.primary_artist.name|e }}</h3>
-    {% if song.stats.pageviews.is_some() %}
-        <h3 class="song-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</h3>
-    {% endif %}
+    <div class="song-details">
+        <h2 class="song-title">{{ song.title|e }}</h2>
+        <h3 class="song-artist">{{ song.primary_artist.name|e }}</h3>
+        {% if song.stats.pageviews.is_some() %}
+            <h3 class="song-views">{{ utils::pretty_format_num(song.stats.pageviews.unwrap())|e }} Views</h3>
+        {% endif %}
+    </div>
 </a>
