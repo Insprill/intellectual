@@ -107,14 +107,36 @@ pub async fn get_search_results(query: &str, page: u8) -> Result<Vec<GeniusSong>
     .collect())
 }
 
-pub async fn get_annotation(id: i32) -> Result<GeniusReferentResponse> {
+pub async fn get_referent(id: u32) -> Result<GeniusReferent> {
     Ok(get_json::<GeniusReferentRequest>(
         SubDomain::Api,
         &format!("referents/{id}"),
         Some(vec![("text_format", "html")]),
     )
     .await?
-    .response)
+    .response
+    .referent)
+}
+
+/// https://docs.genius.com/#/referents-index
+pub async fn get_song_referents(
+    song_id: u32,
+    page: u8,
+    per_page: u8,
+) -> Result<Vec<GeniusReferent>> {
+    Ok(get_json::<GeniusReferentsRequest>(
+        SubDomain::Api,
+        "referents",
+        Some(vec![
+            ("song_id", &song_id.to_string()),
+            ("page", &page.to_string()),
+            ("per_page", &per_page.to_string()),
+            ("text_format", "html"),
+        ]),
+    )
+    .await?
+    .response
+    .referents)
 }
 
 // AWC default limit is 2MB.
@@ -307,8 +329,17 @@ pub struct GeniusReferentResponse {
 }
 
 #[derive(Deserialize, Debug)]
+pub struct GeniusReferentsRequest {
+    pub response: GeniusReferentsResponse,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GeniusReferentsResponse {
+    pub referents: Vec<GeniusReferent>,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct GeniusAnnotation {
-    pub id: i32,
     pub body: GeniusAnnotationBody,
     pub votes_total: i32,
     // pub verified: bool, // TODO: indicate this in the UI
@@ -322,7 +353,7 @@ pub struct GeniusAnnotationBody {
 
 #[derive(Deserialize, Debug)]
 pub struct GeniusReferent {
-    pub id: i32,
+    pub id: u32,
     pub fragment: String,
     pub annotations: Vec<GeniusAnnotation>,
 }

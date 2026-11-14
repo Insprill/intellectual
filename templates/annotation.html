@@ -1,0 +1,20 @@
+<div id="{{ referent.note_id() }}" class="annotation">
+    <a href="#!" class="annotation__backdrop" aria-label="Close Annotation"></a>
+    <div class="annotation__inner">
+        <div class="annotation__header">
+            <div class="annotation__quote">
+                “{{ annotation.quote }}”
+            </div>
+            <div class="annotation__actions">
+                <div class="annotation__votes">
+                    👍 {{ annotation.votes }}
+                </div>
+                <a href="#!" class="annotation__close" aria-label="Close">&times;</a>
+            </div>
+        </div>
+
+        <div class="annotation__content">
+            {{ annotation.body|safe }}
+        </div>
+    </div>
+</div>
